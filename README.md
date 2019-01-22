@@ -7,10 +7,10 @@ Consider the following problem: given an unweighted directed graph G, and nodes 
 decide whether there exist at least two directed SIMPLE paths from s to t of 
 different lengths. Is the problem solvable in polynomial time, or is it NP-complete?
 
-
 ##########################################################################################################################################################
 
-The problem is solvable in polynomial time. 
+The problem is solvable in polynomial time.
+For a brief intuitive understanding of the algorith, read the following: https://docs.google.com/document/d/1TRAFvcLphKYWeRWB8b0ebDvTZB0Q6r1xdhyB3acIMdU/edit?usp=sharing
 
 The following is the algorithm :
 
