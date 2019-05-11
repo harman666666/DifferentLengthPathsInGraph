@@ -1,4 +1,5 @@
 
+import pprint
 from utility import bfs, get_path_to_root
 
 
@@ -13,8 +14,6 @@ def find_longer_path(graph, s, t, shortest_length):
     
     
     stack = [ (s, [s], set([s]) ) ]
-    parents = {}
-    dist = {}
 
     while stack:
         arg = stack.pop()
@@ -89,5 +88,6 @@ g = {
     9 : set([])
 }
 
-
+print("GRAPH IS: ")
+pprint.pprint(g)
 brute_force_solution(g, 1, 5)
