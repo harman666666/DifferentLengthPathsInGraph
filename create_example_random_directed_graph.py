@@ -13,8 +13,14 @@ def create_example_rand_directed_graph(vertices):
     
     # Now create adjacency list representation from this. Map is adjacency list
     for i in range(vertices):
-        ne = np.random.randint(vertices) 
-        g[i] = set(np.random.choice(vertices, ne, replace=False))
+        
+        # the graph cannot have a node that has itself as a neighbor
+        possible_neighbors = set(range(vertices)) - set([i])
+        
+        ne = np.random.randint(vertices) # degree is random
+
+        g[i] = set(np.random.choice(list(possible_neighbors), ne, replace=False))
 
 
     return g
+

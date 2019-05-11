@@ -75,7 +75,10 @@ def add_path_to_graph(path, g):
         child = path[i]
         g[parent].add(child)
         parent = child
-
+    
+    # check if last child in graph, if not, add with its value being empty set
+    if(path[-1] not in g):
+        g[path[-1]] = set()
 
 
 
@@ -225,7 +228,7 @@ def create_longer_path_using_lost_edges(graph,
 
 def create_longer_path_using_outer_vertex(s, t, X, Y, shortest_paths_dag):
     '''
-    PSUEDOCODE FOR THE 4 DFS's in this function numbered 1 to 4:
+     PSUEDOCODE FOR THE 4 DFS's in this function numbered 1 to 4:
 
      1) DFS from S->X on shortestPathsDAG and get a path, and store visited vertices in visitedX. 
         if S->X DFS see's vertex Y,  backtrack and try different path.
@@ -247,6 +250,7 @@ def create_longer_path_using_outer_vertex(s, t, X, Y, shortest_paths_dag):
                     the previous DFS would have suggested another way for Y to reach T.   
                     Fail Path Creation due to contention for this piece of critical segment in the DAG that both S->X and Y->T needed.
     '''
+    pass
 
 def solution(graph, s, t):
 
@@ -313,15 +317,14 @@ def solution(graph, s, t):
                 if( x != y ): 
                     # Possible path can be [S->X->Z->Y->T]
                     # However we must check for some bad cases
+                    pass
 
 
 
 ###############################################################################################
 ############################################################################################
 
-# EXECUTE POLYNOMIAL TIME SOLUTION TO PROBLEM HERE: 
-
-
+# EXECUTE POLYNOMIAL TIME SOLUTION TO PROBLEM HERE:
 g = create_example_rand_directed_graph(10)
 
 pprint.pprint(g)
