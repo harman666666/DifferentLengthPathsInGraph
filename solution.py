@@ -1,25 +1,26 @@
 
 import numpy as np
 import pprint
-from collections import deque  
+from collections import deque, defaultdict
 
 # Creates random directed unweighted graph. 
-def create_rand_directed_graph(vertices):
+def create_example_rand_directed_graph(vertices):
  
     # This is how we do it with 
     # an adjacency matrix representation
     # adjacency = np.random.randint(0,2,(vertices,vertices))
 
-    g = {}
+    g = defaultdict(set) # default dict is a key-value map datatype with values that have set type.
     
     # Now create adjacency list representation from this. Map is adjacency list
     for i in range(vertices):
         ne = np.random.randint(vertices) 
-        g[i] = np.random.choice(vertices, ne, replace=False)
+        g[i] = set(np.random.choice(vertices, ne, replace=False))
 
 
     return g
-g = create_rand_directed_graph(10)
+
+g = create_example_rand_directed_graph(10)
 
 pprint.pprint(g)
 
@@ -29,6 +30,7 @@ def bfs(graph, s, t):
     seen, queue = set([s]), deque([s])
     parent, dist = {}, {}
     dist[s] = 0
+    parent[s] = None
     
     while queue:
         v = queue.popleft()
@@ -52,19 +54,123 @@ result = bfs(g, 1, 3)
 pprint.pprint(result)
 
 
+def get_path_to_root(bfs_tree, node):
+    # root has parent called undefiend
+    n = node 
+    path = [n]
+
+    while True:
+        # print("n is", n)
+        parent = bfs_tree[n]
+        
+        if(parent is None):
+            break
+
+        path.append(parent)
+        n = parent
+
+    return path
+
+def add_path_to_graph(path, g):
+    
+    # add the path to the graph
+    parent = path[0]
+
+    for i in range(1, len(path)):
+        child = path[i]
+        g[parent].add(child)
+        parent = child
+
+
 
 
 # Shortest paths subgraph contains all the shortest paths from node s to t.
 # it is a DAG from s to t. 
-def create_shortest_paths_subgraph(graph, s, t):
+def create_shortest_paths_subgraph(graph, reversed_graph, s, t):
     # You can do this by doing BFS on every vertex. Then
-    pass
+    
+    graphBFS = bfs(graph, s, t)
+    reverseGraphBFS = bfs(reversed_graph, t, s)
+    
+    parentsS = graphBFS["parent"]
+    distS = graphBFS["dist"]
+    parentsT = reverseGraphBFS["parent"]
+    distT = reverseGraphBFS["dist"]
+    shortestLength = graphBFS["shortestPathDistance"]
+    print("shortest_path_length is ", shortestLength)
+
+    # test all vertices except s and t to be in the subgraph
+    vertices_to_test = set(graph.keys()) - set([s, t]) 
+    print("dist S", distS)
+    print("dist T",  distT)
+
+    shortest_paths_subgraph = defaultdict(set)
+    shortest_paths_vertices = set() # TODO: CHECK IF YOU HAVE TO  maintain THIS seperately
+
+    print(vertices_to_test)
+
+    for v in vertices_to_test:
+        print("v is ", v)
+        dist_from_s_to_v = distS.get(v)
+        dist_from_v_to_t = distT.get(v)
+        
+        # If the distances exist because they were traversed then
+        if(dist_from_s_to_v and dist_from_v_to_t):
+            length = dist_from_s_to_v + dist_from_v_to_t # Add them to find distance of path [S -> v -> T]
+            print("length was",  length)
+            
+            if(length == shortestLength):
+                # Add path [s -> v -> t] to shortest paths subgraph
+                path_V_to_S = get_path_to_root(parentsS, v)
+                path_V_to_T = get_path_to_root(parentsT, v) # remove the V node
+                print("path V to S", path_V_to_S)
+                print("path V to T", path_V_to_T)
+
+                path_S_to_V_to_T = path_V_to_S[::-1] + path_V_to_T[1::]
+                
+                print("path S to V to T", path_S_to_V_to_T)
+                # add path to subgraph
+                 
+                add_path_to_graph(path_S_to_V_to_T, shortest_paths_subgraph)
+                
+                # TODO: you can optimize here by subtracting vertices you added from vertices to test. 
+                             
+    print("shortest path subgraph is: ", shortest_paths_subgraph)
+
+    return {
+        "shortest_path_dag": shortest_paths_subgraph,
+        "shortest_path": shortestLength
+    }
+
+
+
+
 
     
 
 
-def solution(graph):
-    pass
+def solution(graph, s, t):
+
+    # Reversed graph is needed. 
+    reversed_graph = defaultdict(set) # a map with values as list type
+
+    # Go through graph and create reversed graph
+    for parent, neighbors in graph.items():
+        for n in neighbors:
+            reversed_graph[n].add(parent)
+    
+    pprint.pprint(reversed_graph)
+
+    buildResult = create_shortest_paths_subgraph(graph, reversed_graph, s, t)
+
+
+        
+
+
+
+
+# DOES THERE EXIST AT LEAST 2 DIRECTED SIMPLE PATHS FROM S TO T of different lengths
+solution(graph=g, s=1, t=5)
     
 
 
