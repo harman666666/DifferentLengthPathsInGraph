@@ -50,7 +50,13 @@ def create_shortest_paths_dag(graph, reversed_graph, s, t):
     parentsT = reverseGraphBFS["parent"]
     distT = reverseGraphBFS["dist"]
     
-    shortestLength = distS[t] # also equal to distT[s]
+    shortestLength = distS.get(t) # also equal to distT[s]
+
+    if(shortestLength is None):
+        # There is no path from s to t, FAIL!
+        return {
+            "is_there_shortest_path": False
+        }
 
     print("shortest_path_length is ", shortestLength)
 
@@ -95,6 +101,7 @@ def create_shortest_paths_dag(graph, reversed_graph, s, t):
     print("graph_bfs_tree_with_root_s", graphBFS)
     print("reverse_graph_bfs_tree_with_root_t", reverseGraphBFS)
     return {
+        "is_there_shortest_path": True,
         "shortest_path_dag": shortest_path_dag,
         "shortest_path_dag_vertices": shortest_path_vertices, 
         "a_shortest_path": get_path_to_root(parentsS, t)[::-1],
@@ -220,6 +227,10 @@ def solution(graph, s, t):
     pprint.pprint(reversed_graph)
 
     buildResult = create_shortest_paths_dag(graph, reversed_graph, s, t)
+
+    if(buildResult["is_there_shortest_path"] == False):
+        print("THERE IS NO SHORTEST PATH BETWEEN S AND T, SO THERE IS NO SOLUTION. FALSE. BYE")
+        return False
 
     # VARIABLE BELOW IS THE REASON WHY ALGO WILL BE POLYNOMIAL
     shortest_path_dag = buildResult["shortest_path_dag"] # DIRECTED ACYCLIC GRAPH that contains all shortest paths from s to t,
