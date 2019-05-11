@@ -1,8 +1,9 @@
 
 import numpy as np
 import pprint
-from collections import deque, defaultdict
-from create_example_random_directed_graph import create_example_rand_directed_graph
+from collections import defaultdict, deque
+from utility import bfs, get_path_to_root, create_example_rand_directed_graph
+
 
 '''
 Consider the following problem: 
@@ -17,52 +18,6 @@ ACYCLIC GRAPH AS A MAP STRUCTURE TO MEMOIZE LOTS OF SOLUTIONS QUICKLY TO ELIMINA
 KEY LEARNING: DIRECTECD ACYCLIC GRAPHS ARE USEFUL FOR DYNAMIC PROGRAMMING when the problem has to do with enumerating 
 all possible paths in graphs. 
 '''
-
-def bfs(graph, s):
-
-    seen, queue = set([s]), deque([s])
-    parent, dist = {}, {}
-    dist[s] = 0
-    parent[s] = None
-    
-    while queue:
-        v = queue.popleft()
-
-        for node in graph[v]:
-            if(node not in seen):
-                seen.add(node)
-                dist[node] = dist[v] + 1
-                parent[node] = v
-                queue.append(node)
-    
-    return ({
-        "seen": seen,
-        "parent": parent,
-        "dist": dist
-    })
-
-
-
-
-
-# Get the path to the root of a DFS or BFS tree. 
-def get_path_to_root(bfs_tree, node):
-    # root has parent called undefiend
-    n = node 
-    path = [n]
-
-    while True:
-        # print("n is", n)
-        parent = bfs_tree[n]
-        
-        if(parent is None):
-            break
-
-        path.append(parent)
-        n = parent
-
-    return path
-
 
 # Add a path, for example path [a,b,c], to a graph g
 # graph will then contain a->b->c
