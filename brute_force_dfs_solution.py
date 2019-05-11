@@ -78,16 +78,4 @@ def brute_force_solution(graph, s, t):
         return True
 
 
-g = {
 
-    0 : set([1,2]),
-    1 : set([2, 3]),
-    2: set([3,]),
-    3: set([0, 5]),
-    5: set([9]),
-    9 : set([])
-}
-
-print("GRAPH IS: ")
-pprint.pprint(g)
-brute_force_solution(g, 1, 5)

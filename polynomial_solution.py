@@ -214,7 +214,7 @@ def create_longer_path_using_outer_vertex(s, t, X, Y, shortest_paths_dag):
     '''
     pass
 
-def solution(graph, s, t):
+def poly_solution(graph, s, t):
 
     # Reversed graph is needed. 
     reversed_graph = defaultdict(set) # a map with values as list type
@@ -293,10 +293,10 @@ def solution(graph, s, t):
 # EXECUTE POLYNOMIAL TIME SOLUTION TO PROBLEM HERE:
 g = create_example_rand_directed_graph(10)
 
-pprint.pprint(g)
+# pprint.pprint(g)
 
 # DOES THERE EXIST AT LEAST 2 DIRECTED SIMPLE PATHS FROM S TO T of different lengths
-solution(graph=g, s=1, t=5)
+# poly_solution(graph=g, s=1, t=5)
     
 
 
