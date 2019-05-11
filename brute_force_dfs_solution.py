@@ -11,7 +11,8 @@ def find_longer_path(graph, s, t, shortest_length):
             "founder_longer_path": False, 
         }
     
-    stack = [ (s, [s]) ]
+    
+    stack = [ (s, [s], set([s]) ) ]
     parents = {}
     dist = {}
 
@@ -20,7 +21,8 @@ def find_longer_path(graph, s, t, shortest_length):
 
         node = arg[0]
         curr_path = arg[1]
-        
+        seen = arg[2]
+
         neighbors = graph[node]
         for neighbor in neighbors:
             if(neighbor == t):
@@ -33,7 +35,14 @@ def find_longer_path(graph, s, t, shortest_length):
                 # ignore if we just found the shortest path
                 continue
             
-            stack.append((neighbor, curr_path + [neighbor]))
+            if(neighbor not in seen):
+                newSeen =  set( list(seen) + [neighbor]) # deep copy
+                stack.append((neighbor, curr_path + [neighbor], newSeen))
+            else: 
+                # Detected cycle. kill recursion
+                continue
+            
+            
 
 
 
