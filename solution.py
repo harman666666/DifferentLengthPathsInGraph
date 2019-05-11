@@ -105,7 +105,7 @@ def create_shortest_paths_subgraph(graph, reversed_graph, s, t):
     print("dist T",  distT)
 
     shortest_paths_subgraph = defaultdict(set)
-    shortest_paths_vertices = set() # TODO: CHECK IF YOU HAVE TO  maintain THIS seperately
+    shortest_path_vertices = set() # have to maintain seperately
 
     print(vertices_to_test)
 
@@ -132,23 +132,71 @@ def create_shortest_paths_subgraph(graph, reversed_graph, s, t):
                 # add path to subgraph
                  
                 add_path_to_graph(path_S_to_V_to_T, shortest_paths_subgraph)
-                
+                shortest_path_vertices.update(path_S_to_V_to_T)
+
                 # TODO: you can optimize here by subtracting vertices you added from vertices to test. 
                              
     print("shortest path subgraph is: ", shortest_paths_subgraph)
 
     return {
         "shortest_path_dag": shortest_paths_subgraph,
+        "shortest_path_vertices": shortest_path_vertices, 
         "shortest_path": shortestLength
     }
 
 
 
+def crazyBFS(graph, Z, shortest_paths_dag, vertices_in_dag):
+    seen, queue = set([s]), deque([s])
+    parent, dist = {}, {}
+    dist[s] = 0
+    parent[s] = None
 
+    intersection_vertices = set()
+
+    while queue:
+        v = queue.popleft()
+
+        if(v in seen):
+            continue
+        else:
+             seen.add(node)
+
+        if(v in vertices_in_dag):
+            intersection_vertices.add(v)
+            continue
+            # KEEP DOING BFS WITH OTHER VERTICES. DONT GO INSIDE THE DAG after we touch surface
+
+        for node in graph[v]: 
+            dist[node] = dist[v] + 1
+            parent[node] = v
+            queue.append(node)
+    
+    return ({
+        "seen": seen,
+        "parent": parent,
+        "dist": dist,
+        "intersection_vertices": intersection_vertices,
+    })
+
+
+def create_longer_path_using_lost_edges(graph, shortest_path_dag, vertices_in_dag):
+    for V in vertices_in_dag: 
+        all_neighbors = graph[v]
+        dag_neighbors = shortest_path_dag[v]
+
+        not_in_dag_neighbors = all_neighbors - dag_neighbors # set subtraction
+        
+        for K in not_in_dag_neighbors:
+            if(k in vertices_in_dag):
+                # We found a lost edge. REPORT THAT 2 PATHS OF DIFFERENT SIZE EXIST.
+                # Lost edge creates [S->V, V->K, K->T] which is longer than shortest path 
+                # Question why would K -> T exist? it has to exist because K is a vertice in the DAG
+                return True
+    
+    return False
 
     
-
-
 def solution(graph, s, t):
 
     # Reversed graph is needed. 
@@ -162,9 +210,11 @@ def solution(graph, s, t):
     pprint.pprint(reversed_graph)
 
     buildResult = create_shortest_paths_subgraph(graph, reversed_graph, s, t)
+    shortest_path_dag = buildResult["shortest_path_dag"] # subgraph that contains all shortest paths from s to t
+    shortest_path_dag_vertices = buildResult["shortest_path_vertices"]
+    shotest_path = buildResult["shortest_path"] # shortest path from s to t
 
-
-        
+    
 
 
 
