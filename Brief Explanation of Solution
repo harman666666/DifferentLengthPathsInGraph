@@ -16,20 +16,57 @@ X and Y are needed to make our longer path algorithm polynomial time (The end go
 
 
 Naive version of algorithm: 
-We will run 2 BFS’s from coordination point F, and stop when we visit a vertex in K. The first BFS intersects K and identifies a path from F to X. The second BFS intersects K and identifies a path from F to Y. The longer path is [S,X,F,Y,T]. The problem with this is that the graph is directed and we cannot use the path from F to X (but there may be a path from X to F). 
+We will run 2 BFS’s from coordination point F, 
+and stop when we visit a vertex in K. 
+The first BFS intersects K and identifies a path 
+from F to X. The second BFS intersects K and 
+identifies a path from F to Y. The longer path is [S,X,F,Y,T]. 
+The problem with this is that the graph is directed 
+and we cannot use the path from F to X (but there may be a path from X to F). 
 
 Version 2:
-We will run BFS on the reverse of graph G from F, and stop when we intersect K to find the first intersection location X. Then we run BFS on normal G from coordination point F, and stop when we intersect K to find Y. The longer path is [S,X,F,Y,T]. This works for directed graphs!  However, the problem with this version is that there is a possibility that X == Y (X cannot equal Y otherwise the longer path is not a simple path). Also the X and Y can cause a failure scenario when you attempt to create [S,X,F,Y,T] because Y might come topologically before X in subgraph K, and in some cases, when Y comes before X, the longer path becomes non-simple. The original paper identifies these failure scenarios, and memoizes them for efficiency purposes. The identification algorithm can be found in the pseudocode for the longer-path-construction algorithm (it uses 4 DFS’s).  
+We will run BFS on the reverse of graph G from 
+F, and stop when we intersect K to find the first 
+intersection location X. Then we run BFS on normal 
+G from coordination point F, and stop when we intersect
+K to find Y. The longer path is [S,X,F,Y,T]. This works 
+for directed graphs!  However, the problem with this 
+version is that there is a possibility that X == Y 
+(X cannot equal Y otherwise the longer path is not a simple path). 
+Also the X and Y can cause a failure scenario when you attempt 
+to create [S,X,F,Y,T] because Y might come topologically 
+before X in subgraph K, and in some cases, when Y comes before X, 
+the longer path becomes non-simple. The original paper identifies 
+these failure scenarios, and memoizes them for efficiency purposes. 
+
+The identification algorithm can be found in the pseudocode for the 
+longer-path-construction algorithm (it uses 4 DFS’s).  
 
 Version 3 :
-We maintain Xarray and Yarray to find all the locations where coordination point F intersects subgraph K. All possible X’s are stored, and all possible Y	‘s are stored that can form possible longer paths [S,X,F,Y,T] using F. X’s and Y’s are found using the reverse BFS and the normal BFS from version 2. We only need one reverse BFS to find all the X’s and one normal BFS to find all the Y’s.  
-Then we use a double for loop, to try every possible pair (X,Y) from Xarray and Yarray to create longer path [S,X,F,Y,T]. We need to go through every possible pair in case of failure scenarios as described in version 2. We stop when we find the first valid simple path. This path is a longer path. We are done.
+We maintain Xarray and Yarray to find all the locations where coordination point F 
+intersects subgraph K. All possible X’s are stored, and all possible Y	‘s 
+are stored that can form possible longer paths [S,X,F,Y,T] using F. X’s 
+and Y’s are found using the reverse BFS and the normal BFS from version 2. 
+We only need one reverse BFS to find all the X’s and one normal BFS to find all the Y’s.  
+Then we use a double for loop, to try every possible pair (X,Y) from Xarray 
+and Yarray to create longer path [S,X,F,Y,T]. We need to go through every 
+possible pair in case of failure scenarios as described in version 2. We 
+stop when we find the first valid simple path. This path is a longer path. We are done.
 If we don't find a longer path, test the next coordination point F in G-K. 
 
-If we cannot find a longer path from lost edges method, or outer vertex method, a longer path does not exist with any set of vertices in G so return False.
-There are a lot of optimizations in the original paper. However, the following described is a polynomial time algorithm. 
+If we cannot find a longer path from lost edges method, or outer vertex method, 
+a longer path does not exist with any set of vertices in G so return False.
+There are a lot of optimizations in the original paper. However, 
+the following described is a polynomial time algorithm. 
 
 QUICK AND DIRTY RUNTIME ANALYSIS:
-We run BFS a lot but never in an exponential way. 2 BFS’s per vertex and a double for loop for checking every possible pair (X,Y) to construct possible paths [S,X,F,Y,T] (checking every possible pair in the very worst case is upper bounded by something a lot smaller than V^2). Checking failure conditions for one possible [S,X,F,Y,T] is done with 4 DFS’s in the worst case in our original paper.So worst case for this algorithm is O( 2*(V+E)*V + (4*(V+E) * V^2) * V ) 
+We run BFS a lot but never in an exponential way. 2 BFS’s per 
+vertex and a double for loop for checking every possible pair (X,Y) to 
+construct possible paths [S,X,F,Y,T] (checking every possible pair in 
+the very worst case is upper bounded by something a lot smaller than V^2). 
+Checking failure conditions for one possible [S,X,F,Y,T] is done with 4 DFS’s 
+in the worst case in our original paper.
+
+So worst case for this algorithm is O( 2*(V+E)*V + (4*(V+E) * V^2) * V ) 
 which is O((V+E) * V^3), and this is polynomial time.
 
