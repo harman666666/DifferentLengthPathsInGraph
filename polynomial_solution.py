@@ -2,7 +2,7 @@
 import numpy as np
 import pprint
 from collections import defaultdict, deque
-from utility import bfs, get_path_to_root, create_example_rand_directed_graph
+from utility import bfs, dfs_with_restriction_set, get_path_to_root, create_example_rand_directed_graph
 
 
 '''
@@ -187,13 +187,14 @@ def create_longer_path_using_lost_edges(graph,
 # otherwise tell them not possible.  
 # WE USE 4 DFS's to exhaust these possibilities in the shortest paths dag
 # and ensure that [S->X->Z->Y->T] is a simple path.
+# DFS on a DAG is O(V+E)
 
 def create_longer_path_using_outer_vertex(s, t, X, Y, shortest_paths_dag):
     '''
      PSUEDOCODE FOR THE 4 DFS's in this function numbered 1 to 4:
 
      1) DFS from S->X on shortestPathsDAG and get a path, and store visited vertices in visitedX. 
-        if S->X DFS see's vertex Y,  backtrack and try different path.
+        if S->X DFS see's vertex Y,  give up on path, continue dfs search with other nodes.
         1a) If DFS fails, and we can't avoid Y, then return False. 
         1b) We found a path. Go to Step 2
      
@@ -212,7 +213,85 @@ def create_longer_path_using_outer_vertex(s, t, X, Y, shortest_paths_dag):
                     the previous DFS would have suggested another way for Y to reach T.   
                     Fail Path Creation due to contention for this piece of critical segment in the DAG that both S->X and Y->T needed.
     '''
-    pass
+    
+    S_to_X_dfs = dfs_with_restriction_set(graph=shortest_paths_dag, 
+                                          start=s, 
+                                          end=X, 
+                                          restriction_set=set([Y]))
+
+    if(S_to_X_dfs["result"] == False):
+        print("FAILED ON FIRST DFS.")
+        return {
+            "result": False
+        }
+    
+    # Do second dfs
+
+    Y_to_T_dfs = dfs_with_restriction_set(graph=shortest_paths_dag, 
+                                          start=Y, 
+                                          end=t, 
+                                          restriction_set=S_to_X_dfs["seen"])
+
+    if(Y_to_T_dfs["result"] == True):
+        return {
+            "result": True,
+            "S_to_X_dfs_tree": S_to_X_dfs["parents"],
+            "Y_to_T_dfs_tree": Y_to_T_dfs["parents"] 
+        }
+
+    # The second dfs failed, so move on to the third dfs:
+
+    Y_to_T_dfs_2 =  dfs_with_restriction_set(graph=shortest_paths_dag, 
+                                          start=Y, 
+                                          end=t, 
+                                          restriction_set=set([X]))
+    if(Y_to_T_dfs_2["result"] == False):
+        print("FAILED ON THIRD DFS")
+        return {
+            "result": False
+        }
+    
+    # do fourth dfs
+
+    S_to_X_dfs_2 = dfs_with_restriction_set(graph=shortest_paths_dag, 
+                                          start=s, 
+                                          end=X, 
+                                          restriction_set=Y_to_T_dfs_2["seen"])
+
+    if(S_to_X_dfs_2["result"] == True):
+        print("DFS 3 AND 4 ALLOWED IT!")
+        return {
+            "result": True,
+            "S_to_X_dfs_tree": S_to_X_dfs_2["parents"],
+            "Y_to_T_dfs_tree": Y_to_T_dfs_2["parents"] 
+        }
+    else:
+        return {
+            "result": False
+        }
+
+    
+
+
+'''
+def dfs(graph, start, visited=None):
+    if visited is None:
+        visited = set()
+    visited.add(start)
+    for next in graph[start] - visited:
+        dfs(graph, next, visited)
+    return visited
+
+dfs(graph, 'C') # {'E', 'D', 'F', 'A', 'C', 'B'}
+
+'''
+
+        
+
+
+
+
+
 
 def poly_solution(graph, s, t):
 
@@ -271,21 +350,43 @@ def poly_solution(graph, s, t):
         Z = vertices_to_test.pop() # Get a random vertex from set and do crazy bfs and reverse crazy bfs on it.
         
         # We have to BFS on reverse graph to find exit point out of DAG
-        XResult = crazy_bfs(reversed_graph, Z, shortest_path_dag, shortest_path_dag_vertices)
+        X_to_Z_Result = crazy_bfs(reversed_graph, Z, shortest_path_dag, shortest_path_dag_vertices)
         # We BFS on normal graph to find entry point into DAG
-        YResult = crazy_bfs(graph, Z, shortest_path_dag, shortest_path_dag_vertices)
+        Z_to_Y_Result = crazy_bfs(graph, Z, shortest_path_dag, shortest_path_dag_vertices)
 
         # WE CAN ADD MORE DYNAMIC PROGRAMMING HERE TO MAKE THIS VERY FAST. 
         # but we wont for now because without it, its still polynomial time. check readme for extra dp.
 
-        for x in XResult["intersection_vertices"]:
-            for y in YResult["intersection_vertices"]:
+        for x in X_to_Z_Result["intersection_vertices"]:
+            for y in Z_to_Y_Result["intersection_vertices"]:
                 if( x != y ): 
                     # Possible path can be [S->X->Z->Y->T]
                     # However we must check for some bad cases
-                    pass
+                    longer_path_result = create_longer_path_using_outer_vertex(s, t, x, y, shortest_path_dag)
+                    if(longer_path_result["result"]):
+                        print("There are is a shorter and longer path! They are the following: ")
+                        print("a shortest path: " + a_shortest_path)
 
 
+                        # create [S->X->Z->Y->T]
+                        a_longer_path =  get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x) + \
+                                          get_path_to_root(X_to_Z_Result["parent"], Z)[1:] +  \
+                                          get_path_to_root(Z_to_Y_Result["parent"], y)[1:] + \
+                                          get_path_to_root(longer_path_result["Y_to_T_dfs_tree"], t)[1:]
+
+                        print("a longest path: "  + a_longer_path)
+                        return {
+                                "result": True,
+                                "a_shortest_path": a_shortest_path, 
+                                "a_longer_path": a_longer_path
+                                }
+    
+
+
+    return {
+        "result": False
+    }
+                                          
 
 ###############################################################################################
 ############################################################################################

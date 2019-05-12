@@ -51,6 +51,40 @@ def bfs(graph, s):
         "dist": dist
     })
 
+def dfs_with_restriction_set(graph, start, end, restriction_set, seen = None, parents=None):
+    # dont dfs in a cycle. visited set stops that!
+
+    if(seen is None):
+        seen = set()
+        parents = {}
+        parents[start] = None # start has no parents
+
+    if(start in restriction_set or start in seen):
+        # Kill this branch. 
+        return {
+            "result": False,
+        }
+    
+    seen.add(start)
+    
+    if(start == end):
+        return {
+                "result": True,
+                "parent": parents,
+                "seen": seen
+            }
+    neighbors = graph[start]
+    
+    for i in neighbors:
+        parents[i] = start
+        dfs_result = dfs(graph, i, end, restriction_set, seen, parents)
+        if(dfs_result["result"]):
+            return dfs_result
+
+    return {
+        "result": False
+    }
+
 # Get the path to the root of a DFS or BFS tree. 
 # bfs_tree is also the parents hashmap. we climb parents to get to root!
 def get_path_to_root(bfs_tree, node):

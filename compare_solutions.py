@@ -11,7 +11,6 @@ from polynomial_solution import poly_solution
 
 
 g = {
-
     0 : set([1,2]),
     1 : set([2, 3]),
     2: set([3,]),
