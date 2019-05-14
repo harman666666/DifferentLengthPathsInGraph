@@ -103,3 +103,23 @@ def get_path_to_root(bfs_tree, node):
         n = parent
 
     return path
+
+def verify_path_exists(graph, path):
+    
+    parent = path[0]
+
+    for i in range(1, len(path)):
+        child = path[i]
+
+        children = graph[parent]
+        if(child not in children):
+            print("FAILED")
+            return False
+        
+        parent = child
+
+    print("THE PATH " + str(path) + " has been verified")
+    return True
+
+
+
