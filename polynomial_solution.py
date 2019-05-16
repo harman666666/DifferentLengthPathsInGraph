@@ -213,6 +213,7 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag):
                                           restriction_set=S_to_X_dfs["seen"])
 
     if(Y_to_T_dfs["result"] == True):
+        print("IT WAS MERGED WITHIN 2 DFS'S")
         return {
             "result": True,
             "S_to_X_dfs_tree": S_to_X_dfs["parents"],
@@ -239,7 +240,8 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag):
                                           restriction_set=Y_to_T_dfs_2["seen"])
 
     if(S_to_X_dfs_2["result"] == True):
-        print("DFS 3 AND 4 ALLOWED IT!")
+        print("IT WAS MERGED WITHIN 4 DFS'S")
+
         return {
             "result": True,
             "S_to_X_dfs_tree": S_to_X_dfs_2["parents"],
@@ -354,6 +356,11 @@ def create_longer_path_using_an_outer_vertex(graph, reversed_graph, shortest_pat
 
 
                         # create [S->X->Z->Y->T]
+                        print("S->X", get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x))
+                        print("X->Z", get_path_to_root(X_to_Z_Result["parents"], Z))
+                        print("Z->Y", get_path_to_root(Z_to_Y_Result["parents"], y))
+                        print("Y->T", get_path_to_root(longer_path_result["Y_to_T_dfs_tree"], t))
+
                         a_longer_path =  get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x) + \
                                           get_path_to_root(X_to_Z_Result["parents"], Z)[1:] +  \
                                           get_path_to_root(Z_to_Y_Result["parents"], y)[1:] + \
