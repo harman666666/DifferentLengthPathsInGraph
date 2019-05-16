@@ -28,11 +28,11 @@ pprint.pprint(g)
 print("################################# BRUTE FORCE SOLUTION")
 
 
-brute_force_solution = brute_force_solution(g, 1, 5)
+brute_force_soln = brute_force_solution(g, 1, 5)
 
-if(brute_force_solution["result"]):
-    a = verify_path_exists(g, brute_force_solution["a_shortest_path"])
-    b = verify_path_exists(g, brute_force_solution["a_longer_path"])
+if(brute_force_soln["result"]):
+    a = verify_path_exists(g, brute_force_soln["a_shortest_path"])
+    b = verify_path_exists(g, brute_force_soln["a_longer_path"])
     if(a):
         print("brute force shorter path was correct")
     else: 
@@ -49,4 +49,21 @@ else:
 
 print("################################# POLY SOLUTION")
 
-poly_solution(g, 1, 5)
+poly_soln = poly_solution(g, 1, 5)
+
+if(poly_soln["result"]):
+    c = verify_path_exists(g, poly_soln["a_shortest_path"])
+    d = verify_path_exists(g, poly_soln["a_longer_path"])
+    if(c):
+        print("poly solution shorter path was correct")
+    else: 
+        print("poly solution shorter path was NOTTTT correct")
+    
+    if(d):
+        print("poly solution longer path was correct")
+    else: 
+        print("poly solution longer path was NOTTTT correct")
+
+
+else:
+    print("Solution was not found with poly solution")

@@ -4,7 +4,14 @@ We need 2 paths of different lengths. One path is the shortest path from s to t.
 
 Lets find all the shortest paths from s to t in the graph G. The edges and vertices of all the shortest paths from s to t will make up subgraph K. Subgraph K can be constructed in polynomial time (look at original paper for details. It does this using 2 BFS’s and for looping through every vertex.). Subgraph K is also a directed acyclic graph from S to T. 
 
-There are 2 ways to construct a longer path. The lost edges method and the outer vertex method. Both algorithms need to be used to say without doubt that there is no longer path in a graph. The lost edges method is described in the original paper. It tries to create a longer path using only the vertices in K. If we can find an edge E between 2 vertices in K, and edge E is not in the edge set of K, then E is a “lost edge” in K. E is not part of any shortest path, that is why it was not added to K, so E cannot be a forward edge or a tree edge. A simple path that traverses the lost edge to go from S to T is a longer path (proof, pseudocode, and detailed explanation in the original paper).  
+There are 2 ways to construct a longer path. The lost edges method and the outer vertex method. 
+Both algorithms need to be used to say without doubt that there is no longer path in a graph. 
+The lost edges method is described in the original paper. It tries to create a longer path 
+using only the vertices in K. If we can find an edge E between 2 vertices in K, 
+and edge E is not in the edge set of K, then E is a “lost edge” in K. E is not part of 
+any shortest path, that is why it was not added to K, so E cannot be a 
+forward edge or a tree edge. A simple path that traverses the lost edge to go 
+from S to T is a longer path (proof, pseudocode, and detailed explanation in the original paper).  
     
 The second method is the outer vertex method. To find a longer path, we need to find a vertex F that isn't in a shortest path  and attempt to construct a longer path by going from S to F, and then F to T. In other words, to find a longer path, we need to identify a vertex F called the coordination point in G-K that we can use so that we can go from S to F, then F to T (we denote this longer path [S,F,T]). This will be a longer path because it cannot be a shortest path; otherwise, the edges and vertices of [S,F,T] are already in K.
 

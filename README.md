@@ -3,7 +3,8 @@ CS 341 Challenge #10: Paths in graphs
 Completed by Harman Singh and Vaibhav Khaitan
 
 
-Consider the following problem: given an unweighted directed graph G, and nodes s and t, 
+Consider the following problem: 
+given an unweighted directed graph G, and nodes s and t, 
 decide whether there exist at least two directed SIMPLE paths from s to t of 
 different lengths. Is the problem solvable in polynomial time, or is it NP-complete?
 
