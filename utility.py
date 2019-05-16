@@ -104,7 +104,31 @@ def get_path_to_root(bfs_tree, node):
 
     return path
 
-def verify_path_exists(graph, path):
+def verify_solution_if_paths_exist(graph, small_path, long_path, s, t):
+
+    if(len(small_path) < len(long_path)):
+        print("One path is not longer than the other. FALSE SOLUTION")
+        return False
+    
+
+    a = verify_path_exists(graph, small_path, s, t)
+    b = verify_path_exists(graph, long_path, s, t)
+
+    if(a and b):
+        print("Two paths are GOOD. VERIFIED")
+        return True
+    elif(a):
+        print("only short path was correct")
+        return False
+    elif(b): 
+        print("only long path was correct")
+        return False
+    else: 
+        print("neither path was correct")
+        return False
+
+
+def verify_path_exists(graph, path, s, t):
     
     parent = path[0]
 
@@ -118,8 +142,12 @@ def verify_path_exists(graph, path):
         
         parent = child
 
-    print("THE PATH " + str(path) + " has been verified")
-    return True
+    if(path[0] == s and path[-1] == t):
+        print("THE PATH " + str(path) + " has been verified")
+        return True
+    else: 
+        print("The path does not start at S, and end at T")
+        return False
 
 
 

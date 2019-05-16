@@ -1,6 +1,6 @@
 import pprint
 
-from utility import verify_path_exists
+from utility import verify_solution_if_paths_exist
 from brute_force_dfs_solution import brute_force_solution
 from polynomial_solution import poly_solution
 
@@ -31,19 +31,13 @@ print("################################# BRUTE FORCE SOLUTION")
 brute_force_soln = brute_force_solution(g, 1, 5)
 
 if(brute_force_soln["result"]):
-    a = verify_path_exists(g, brute_force_soln["a_shortest_path"])
-    b = verify_path_exists(g, brute_force_soln["a_longer_path"])
+    a = verify_solution_if_paths_exist(g, brute_force_soln["a_shortest_path"], brute_force_soln["a_longer_path"], 1, 5)
+
+
     if(a):
-        print("brute force shorter path was correct")
-    else: 
-        print("brute force shorter path was NOTTTT correct")
-    
-    if(b):
-        print("brute force longer path was correct")
-    else: 
-        print("brute force longer path was NOTTTT correct")
-
-
+        print("brute force correct")
+    else:
+        print("solution brute force came up with is WRONG")
 else:
     print("Solution was not found with brute force solution")
 
@@ -52,17 +46,11 @@ print("################################# POLY SOLUTION")
 poly_soln = poly_solution(g, 1, 5)
 
 if(poly_soln["result"]):
-    c = verify_path_exists(g, poly_soln["a_shortest_path"])
-    d = verify_path_exists(g, poly_soln["a_longer_path"])
-    if(c):
-        print("poly solution shorter path was correct")
-    else: 
-        print("poly solution shorter path was NOTTTT correct")
-    
-    if(d):
-        print("poly solution longer path was correct")
-    else: 
-        print("poly solution longer path was NOTTTT correct")
+    b = verify_solution_if_paths_exist(g, poly_soln["a_shortest_path"],poly_soln["a_longer_path"], 1, 5)
+    if(b):
+        print("poly soln is correct")
+    else:
+        print("solution POLY came up with is WRONG")
 
 
 else:
