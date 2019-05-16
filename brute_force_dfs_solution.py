@@ -52,7 +52,7 @@ def brute_force_solution(graph, s, t):
 
     graphBFS = bfs(graph, s)
 
-    bfs_parents_root_s = graphBFS["parent"]
+    bfs_parents_root_s = graphBFS["parents"]
     bfs_dist_root_s = graphBFS["dist"]
 
     shortest_length = bfs_dist_root_s.get(t)

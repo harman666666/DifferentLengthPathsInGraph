@@ -47,7 +47,7 @@ def bfs(graph, s):
     
     return ({
         "seen": seen,
-        "parent": parent,
+        "parents": parent,
         "dist": dist
     })
 
@@ -70,14 +70,14 @@ def dfs_with_restriction_set(graph, start, end, restriction_set, seen = None, pa
     if(start == end):
         return {
                 "result": True,
-                "parent": parents,
+                "parents": parents,
                 "seen": seen
             }
     neighbors = graph[start]
     
     for i in neighbors:
         parents[i] = start
-        dfs_result = dfs(graph, i, end, restriction_set, seen, parents)
+        dfs_result = dfs_with_restriction_set(graph, i, end, restriction_set, seen, parents)
         if(dfs_result["result"]):
             return dfs_result
 

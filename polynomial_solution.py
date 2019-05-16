@@ -45,9 +45,9 @@ def create_shortest_paths_dag(graph, reversed_graph, s, t):
     graphBFS = bfs(graph, s)
     reverseGraphBFS = bfs(reversed_graph, t)
     
-    parentsS = graphBFS["parent"]
+    parentsS = graphBFS["parents"]
     distS = graphBFS["dist"]
-    parentsT = reverseGraphBFS["parent"]
+    parentsT = reverseGraphBFS["parents"]
     distT = reverseGraphBFS["dist"]
     
     shortestLength = distS.get(t) # also equal to distT[s]
@@ -106,20 +106,20 @@ def create_shortest_paths_dag(graph, reversed_graph, s, t):
         "shortest_paths_dag": shortest_paths_dag,
         "a_shortest_path": get_path_to_root(parentsS, t)[::-1],
         "shortest_path_length": shortestLength,
-        "graph_bfs_tree_with_root_s": graphBFS["parent"],
-        "reverse_graph_bfs_tree_with_root_t": reverseGraphBFS["parent"]
+        "graph_bfs_tree_with_root_s": graphBFS["parents"],
+        "reverse_graph_bfs_tree_with_root_t": reverseGraphBFS["parents"]
     }
 
 
 
-def crazy_bfs(graph, Z, shortest_paths_dag):
-    seen, queue = set([Z]), deque([Z])
+def crazy_bfs(graph, Z, shortest_paths_dag, DEBUG=True):
+    seen, queue = set(), deque([Z])
     parent, dist = {}, {}
     dist[Z] = 0
     parent[Z] = None # root has no parent
 
     vertices_in_dag = set(shortest_paths_dag.keys())
-
+    
     intersection_vertices = set()
 
     while queue:
@@ -128,7 +128,7 @@ def crazy_bfs(graph, Z, shortest_paths_dag):
         if(v in seen):
             continue
         else:
-             seen.add(node)
+             seen.add(v)
 
         if(v in vertices_in_dag):
             intersection_vertices.add(v)
@@ -140,9 +140,15 @@ def crazy_bfs(graph, Z, shortest_paths_dag):
             parent[node] = v
             queue.append(node)
     
+    if DEBUG: print("CRAZY BFS GRAPH FOR " + str(Z) + " is the following: " + str(graph))
+    if DEBUG: print("CRAZY BFS SEEN FOR " + str(Z) + " is the following: " + str(seen))
+    if DEBUG: print("CRAZY BFS PARENTS FOR " + str(Z) + " is the following: " + str(parent))
+    if DEBUG: print("CRAZY BFS DIST FOR " + str(Z) + " is the following: " + str(dist))
+    if DEBUG: print("CRAZY BFS INTERSECTION VERTICES FOR " + str(Z) + " is the following: " + str(intersection_vertices))
+ 
     return ({
         "seen": seen,
-        "parent": parent,
+        "parents": parent,
         "dist": dist,
         "intersection_vertices": intersection_vertices,
     })
@@ -252,7 +258,9 @@ def create_longer_path_using_lost_edges(graph,
                                         t,
                                         shortest_paths_dag, 
                                         graph_bfs_tree_with_root_s, 
-                                        reverse_graph_bfs_tree_with_root_t, DEBUG = True):
+                                        reverse_graph_bfs_tree_with_root_t, 
+                                        DEBUG = True):
+    if(DEBUG): print("Start lost edges method")
     vertices_in_dag = set(shortest_paths_dag.keys())
     for V in vertices_in_dag: 
         all_neighbors = graph[V]
@@ -297,6 +305,7 @@ def create_longer_path_using_lost_edges(graph,
                     "a_longer_path": get_path_to_root(graph_bfs_tree_with_root_s, V)[::-1] + [V, K] + get_path_to_root(reverse_graph_bfs_tree_with_root_t, K)
                     }
     
+    if(DEBUG): print("Lost edges method yielded no results")
     return {
         "result": False,
         "a_longer_path": None
@@ -304,7 +313,8 @@ def create_longer_path_using_lost_edges(graph,
 
 
     
-def create_longer_path_using_an_outer_vertex(graph, reversed_graph, shortest_paths_dag, s, t):
+def create_longer_path_using_an_outer_vertex(graph, reversed_graph, shortest_paths_dag, s, t, DEBUG=True):
+    if DEBUG: print("START OUTER VERTEX METHOD")
     shortest_paths_dag_vertices = set(shortest_paths_dag.keys()) 
 
     vertices_to_test = set(graph.keys()) - shortest_paths_dag_vertices # possible coordinate vertices
@@ -313,6 +323,9 @@ def create_longer_path_using_an_outer_vertex(graph, reversed_graph, shortest_pat
     # this is why its called the outer vertex method. we use a vertex on the outside to go into the shortest_paths_dag
     # we are attempting to make a longer st-path by doing the following: [S->X->Z->Y->T]. 
     # X, and Y are places where we touch the shortest_paths_dag from coordinate vertex Z (Z is from vertices_to_test variable above)
+    
+    if DEBUG: print("OUTER VERTICES TO TEST", vertices_to_test)
+
     while vertices_to_test:
         Z = vertices_to_test.pop() # Get a random vertex from set and do crazy bfs and reverse crazy bfs on it.
         
@@ -326,10 +339,15 @@ def create_longer_path_using_an_outer_vertex(graph, reversed_graph, shortest_pat
 
         for x in X_to_Z_Result["intersection_vertices"]:
             for y in Z_to_Y_Result["intersection_vertices"]:
+
+                if DEBUG: print("WE WILL TEST X, Y PAIR: ", (x,y))
+
                 if( x != y ): 
                     # Possible path can be [S->X->Z->Y->T]
                     # However we must check for some bad cases
                     longer_path_result = merge_two_overlapping_paths_in_dag(s, t, x, y, shortest_paths_dag)
+                    print("LONGER PATH RESULT FOR " + str( (x,y)) + "is the following: " + str(longer_path_result))
+
                     if(longer_path_result["result"]):
                         print("There are is a shorter and longer path! They are the following: ")
                         
@@ -337,17 +355,18 @@ def create_longer_path_using_an_outer_vertex(graph, reversed_graph, shortest_pat
 
                         # create [S->X->Z->Y->T]
                         a_longer_path =  get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x) + \
-                                          get_path_to_root(X_to_Z_Result["parent"], Z)[1:] +  \
-                                          get_path_to_root(Z_to_Y_Result["parent"], y)[1:] + \
+                                          get_path_to_root(X_to_Z_Result["parents"], Z)[1:] +  \
+                                          get_path_to_root(Z_to_Y_Result["parents"], y)[1:] + \
                                           get_path_to_root(longer_path_result["Y_to_T_dfs_tree"], t)[1:]
 
-                        print("a longest path: "  + a_longer_path)
+                        print("a longest path: "  + str(a_longer_path))
                         return {
                                 "result": True,
                                 "a_longer_path": a_longer_path
                                 }
     
 
+    if DEBUG: print("OUTER VERTEX METHOD DID NOT YIELD RESULTS")
 
     return {
         "result": False
