@@ -338,6 +338,10 @@ def create_longer_path_using_an_outer_vertex(graph, reversed_graph, shortest_pat
 
         # WE CAN ADD MORE DYNAMIC PROGRAMMING HERE TO MAKE THIS VERY FAST. 
         # but we wont for now because without it, its still polynomial time. check readme for extra dp.
+        print("TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print("COORDINATION POINT Z IS ", Z)
+        if DEBUG: print("CRAZY BFS RESULT X_to_Z_result", X_to_Z_Result)
+        if DEBUG: print("CRAZY_BFS_RESULT_Z_to_Y",Z_to_Y_Result)
 
         for x in X_to_Z_Result["intersection_vertices"]:
             for y in Z_to_Y_Result["intersection_vertices"]:
@@ -348,30 +352,35 @@ def create_longer_path_using_an_outer_vertex(graph, reversed_graph, shortest_pat
                     # Possible path can be [S->X->Z->Y->T]
                     # However we must check for some bad cases
                     longer_path_result = merge_two_overlapping_paths_in_dag(s, t, x, y, shortest_paths_dag)
-                    print("LONGER PATH RESULT FOR " + str( (x,y)) + "is the following: " + str(longer_path_result))
+                    if DEBUG: print("LONGER PATH RESULT FOR (z,x,y) = " + str((Z, x, y)) + "is the following: " + str(longer_path_result))
+                    if DEBUG: print("CRAZY BFS RESULT X_to_Z_result[parents]", X_to_Z_Result["parents"])
+                    if DEBUG: print("CRAZY_BFS_RESULT_Z_to_Y[parents]",Z_to_Y_Result["parents"])
 
                     if(longer_path_result["result"]):
                         print("There are is a shorter and longer path! They are the following: ")
                         
 
+                        
 
                         # create [S->X->Z->Y->T]
-                        print("S->X", get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x))
-                        print("X->Z", get_path_to_root(X_to_Z_Result["parents"], Z))
-                        print("Z->Y", get_path_to_root(Z_to_Y_Result["parents"], y))
-                        print("Y->T", get_path_to_root(longer_path_result["Y_to_T_dfs_tree"], t))
+                        print("S->X", get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x)) 
+                        print("X->Z", get_path_to_root(X_to_Z_Result["parents"], x) ) # Z is the root of this parents array
+                        print("Z->Y", get_path_to_root(Z_to_Y_Result["parents"], y)[::-1] ) # Z is the root of this parents array
+                        print("Y->T", get_path_to_root(longer_path_result["Y_to_T_dfs_tree"], t)[::-1])
 
                         a_longer_path =  get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x) + \
-                                          get_path_to_root(X_to_Z_Result["parents"], Z)[1:] +  \
-                                          get_path_to_root(Z_to_Y_Result["parents"], y)[1:] + \
-                                          get_path_to_root(longer_path_result["Y_to_T_dfs_tree"], t)[1:]
+                                          get_path_to_root(X_to_Z_Result["parents"], x)[1:] +  \
+                                          get_path_to_root(Z_to_Y_Result["parents"], y)[::-1][1:] + \
+                                          get_path_to_root(longer_path_result["Y_to_T_dfs_tree"], t)[::-1][1:]
 
                         print("a longest path: "  + str(a_longer_path))
                         return {
                                 "result": True,
                                 "a_longer_path": a_longer_path
                                 }
-    
+
+    print("END TEST FOR COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
 
     if DEBUG: print("OUTER VERTEX METHOD DID NOT YIELD RESULTS")
 
