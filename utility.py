@@ -106,7 +106,7 @@ def get_path_to_root(bfs_tree, node):
 
 def verify_solution_if_paths_exist(graph, small_path, long_path, s, t):
 
-    if(len(small_path) < len(long_path)):
+    if(len(small_path) >= len(long_path)):
         print("One path is not longer than the other. FALSE SOLUTION")
         return False
     

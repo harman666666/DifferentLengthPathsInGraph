@@ -11,7 +11,8 @@ different lengths. Is the problem solvable in polynomial time, or is it NP-compl
 ##########################################################################################################################################################
 
 The problem is solvable in polynomial time.
-For a brief intuitive understanding of the algorith, read the following: https://docs.google.com/document/d/1TRAFvcLphKYWeRWB8b0ebDvTZB0Q6r1xdhyB3acIMdU/edit?usp=sharing
+For a brief intuitive understanding of the algorith, read the following: 
+https://docs.google.com/document/d/1TRAFvcLphKYWeRWB8b0ebDvTZB0Q6r1xdhyB3acIMdU/edit?usp=sharing
 
 The following is the algorithm :
 

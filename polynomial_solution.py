@@ -363,10 +363,10 @@ def create_longer_path_using_an_outer_vertex(graph, reversed_graph, shortest_pat
                         
 
                         # create [S->X->Z->Y->T]
-                        print("S->X", get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x)) 
+                        print("S->X", get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x) ) # S is the root of this. get path to s. WE want away from S so flip 
                         print("X->Z", get_path_to_root(X_to_Z_Result["parents"], x) ) # Z is the root of this parents array
                         print("Z->Y", get_path_to_root(Z_to_Y_Result["parents"], y)[::-1] ) # Z is the root of this parents array
-                        print("Y->T", get_path_to_root(longer_path_result["Y_to_T_dfs_tree"], t)[::-1])
+                        print("Y->T", get_path_to_root(longer_path_result["Y_to_T_dfs_tree"], t)[::-1]) # Y is the roof of this. Dont want path to Y, but path to T, so flip it with [::-1]
 
                         a_longer_path =  get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x) + \
                                           get_path_to_root(X_to_Z_Result["parents"], x)[1:] +  \
