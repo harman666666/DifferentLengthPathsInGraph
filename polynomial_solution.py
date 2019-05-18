@@ -154,21 +154,19 @@ def crazy_bfs(graph, Z, shortest_paths_dag, DEBUG=True):
     })
 
 
-# Path we want to make is  [S->X->Z->Y->T], 
-# X is the exit point of the DAG
-# Y is the re-entry point into the DAG
-# Z is the coordination point (the point we run crazy bfs and reverse crazy bfs on)
-# s is the root of the DAG 
-# t is the end of the DAG.
+# This method merges overlapping paths together in the shortest_paths_dag
+# It finds two paths in the DAG, one that is s->X and one that is Y->t, and these two paths DONT OVERLAP!
+# Overlapping occurs due to Y topologically coming before X in the DAG so the two paths created overlap
+# 
+# This method tries to find 2 paths that go from s->X and Y->t without either overlapping to create SIMPLE paths 
+# When the function returns, it sends back 2 parent arrays, one for each path, to allow for the creation of the 
+# longer path (or fails because every possible 2 paths will overlap when S is trying to reach X and Y is trying to reach T in their respective DFS's
 
-# [S->X->Z->Y->T] can fail if Y comes topologically before X in shortest_paths_dag because 
-# this will cause a NONSIMPLE PATH (Y->T may intersect with S->X) 
-# we have to exhaust all possible paths to find segments Y->T and S->X that dont intersect, 
-# otherwise tell them not possible.  
-# WE USE 4 DFS's to exhaust these possibilities in the shortest paths dag
-# and ensure that [S->X->Z->Y->T] is a simple path.
-# DFS on a DAG is O(V+E)
-
+# This functions is used by Lost edges method and outer vertex method which merge the two paths returned either with a 
+# lost edge (edge between two vertices in shortest paths dag, but edge isnt in shortest paths dag. edge is in graph however!), 
+# or outer vertex (an outer vertex is a vertex in the graph but not in the DAG) 
+# respectively to create the longer path from s->t
+# RUNTIME ANALYSIS: DFS on a DAG is O(V+E). WE DO 4 IN THIS BACK TO BACK WORST CASE SO 4 * O(V+E)
 def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag):
     '''
      PSUEDOCODE FOR THE 4 DFS's in this function numbered 1 to 4:
@@ -284,17 +282,14 @@ def create_longer_path_using_lost_edges(graph,
         for K in lost_dag_neighbors:            
             # We found a lost edge. REPORT THAT 2 PATHS OF DIFFERENT SIZE EXIST.
             # Lost edge creates [S->V, V->K, K->T] which is longer than shortest path, 
-            # V-> K is the lost edge. It has length 1 trivially because its an edge. 
-            # [S->V, V->K, K->T] is also [S->V, K->T] which we can use in merge_two_overlapping_paths_in_dag
+            # V->K is the lost edge. It has length 1 trivially because its an edge. 
+            # [S->V, V->K, K->T] is also [S->V] + [K->T] which we can use in merge_two_overlapping_paths_in_dag
             # You have to check if the path is a simple path 
             # How to check simple, why would it not be simple? 
             # Because V->K is a backedge, path S->V and path K->T can overlap
             # one way to fix that is exhuastively checking all S->V, and K->T so that they do not overlap, and 
             # that is a longer path
             # a better way to do this is using merge_two_overlapping_paths_in_dags which only requires 4 DFS's to do this
-            # let X = V, Y = K. Y topologically comes before X so this problem will be fixed by that!
-
-            # merge_two_overlapping_paths_in_dag()
 
             did_path_merge_work = merge_two_overlapping_paths_in_dag(s=s, t=t, X=V, Y=K, shortest_paths_dag=shortest_paths_dag)
 
@@ -304,7 +299,7 @@ def create_longer_path_using_lost_edges(graph,
 
                 return {
                     "result": True,
-                    "a_longer_path": get_path_to_root(graph_bfs_tree_with_root_s, V)[::-1] + [V, K] + get_path_to_root(reverse_graph_bfs_tree_with_root_t, K)
+                    "a_longer_path": get_path_to_root(graph_bfs_tree_with_root_s, V)[::-1] + get_path_to_root(reverse_graph_bfs_tree_with_root_t, K)
                     }
     
     if(DEBUG): print("Lost edges method yielded no results")
@@ -351,6 +346,21 @@ def create_longer_path_using_an_outer_vertex(graph, reversed_graph, shortest_pat
                 if( x != y ): 
                     # Possible path can be [S->X->Z->Y->T]
                     # However we must check for some bad cases
+                    
+                    # Path we want to make is  [S->X->Z->Y->T], 
+                    # X is the exit point of the DAG
+                    # Y is the re-entry point into the DAG
+                    # Z is the coordination point (the point we run crazy bfs and reverse crazy bfs on)
+                    # s is the root of the DAG 
+                    # t is the end of the DAG.
+
+                    # [S->X->Z->Y->T] can fail if Y comes topologically before X in shortest_paths_dag because 
+                    # this will cause a NONSIMPLE PATH (Y->T may intersect with S->X) 
+                    # we have to exhaust all possible paths to find segments Y->T and S->X that dont intersect, 
+                    # otherwise tell them not possible.  
+                    # WE USE 4 DFS's to exhaust these possibilities in merge_two_overlapping_paths_in_dag
+                    # and ensure that [S->X->Z->Y->T] is a simple path.
+                    
                     longer_path_result = merge_two_overlapping_paths_in_dag(s, t, x, y, shortest_paths_dag)
                     if DEBUG: print("LONGER PATH RESULT FOR (z,x,y) = " + str((Z, x, y)) + "is the following: " + str(longer_path_result))
                     if DEBUG: print("CRAZY BFS RESULT X_to_Z_result[parents]", X_to_Z_Result["parents"])
@@ -387,12 +397,6 @@ def create_longer_path_using_an_outer_vertex(graph, reversed_graph, shortest_pat
     return {
         "result": False
     }
-
-        
-
-
-
-
 
 ##### START READING THE CODE FROM HERE. THIS IS THE MAIN METHOD. 
 def poly_solution(graph, s, t):
