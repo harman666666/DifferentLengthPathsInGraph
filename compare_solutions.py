@@ -1,6 +1,6 @@
 import pprint
 
-from utility import verify_solution_if_paths_exist
+from utility import verify_solution_if_paths_exist, create_example_rand_directed_graph
 from brute_force_dfs_solution import brute_force_solution
 from polynomial_solution import poly_solution
 
@@ -104,4 +104,51 @@ def test_lost_edge():
     else:
         print("Solution was not found with poly solution")
 
-test_lost_edge()
+# test_lost_edge()
+
+
+# SAVE RESULTS FOR THE TEST USING BRUTEFORCE!
+
+def benchmark_correctness_testing():
+    for i in range(1):
+        g = create_example_rand_directed_graph(vertices=100, max_neighbors=3)
+        S = 1
+        T = 89
+
+        print("GRAPH IS: ")
+        pprint.pprint(g)
+
+        print("################################# BRUTE FORCE SOLUTION")
+
+
+        brute_force_soln = brute_force_solution(g, S, T)
+
+        if(brute_force_soln["result"]):
+            a = verify_solution_if_paths_exist(g, brute_force_soln["a_shortest_path"], brute_force_soln["a_longer_path"], S, T)
+
+
+            if(a):
+                print("brute force correct")
+            else:
+                print("solution brute force came up with is WRONG")
+        else:
+            print("Solution was not found with brute force solution")
+
+        print("################################# POLY SOLUTION")
+
+        poly_soln = poly_solution(g, S, T)
+
+        if(poly_soln["result"]):
+            b = verify_solution_if_paths_exist(g, poly_soln["a_shortest_path"],poly_soln["a_longer_path"], S, T)
+            if(b):
+                print("poly soln is correct")
+            else:
+                print("solution POLY came up with is WRONG")
+
+
+        else:
+            print("Solution was not found with poly solution")
+        
+benchmark_correctness_testing()
+
+

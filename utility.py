@@ -6,8 +6,8 @@ from collections import defaultdict, deque
 
 
 # Creates random directed unweighted graph. 
-def create_example_rand_directed_graph(vertices):
- 
+def create_example_rand_directed_graph(vertices, max_neighbors):
+    
     # This is how we do it with 
     # an adjacency matrix representation
     # adjacency = np.random.randint(0,2,(vertices,vertices))
@@ -20,7 +20,7 @@ def create_example_rand_directed_graph(vertices):
         # the graph cannot have a node that has itself as a neighbor
         possible_neighbors = set(range(vertices)) - set([i])
         
-        ne = np.random.randint(vertices) # degree is random
+        ne = np.random.randint(max_neighbors) # degree is random
 
         g[i] = set(np.random.choice(list(possible_neighbors), ne, replace=False))
 
