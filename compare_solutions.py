@@ -149,6 +149,10 @@ def benchmark_correctness_testing():
         else:
             print("Solution was not found with poly solution")
         
+        print("##############################################")
+        print(brute_force_soln)
+        
+
 benchmark_correctness_testing()
 
 
