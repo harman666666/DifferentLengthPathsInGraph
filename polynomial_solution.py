@@ -149,25 +149,30 @@ def create_shortest_paths_dag(graph, reversed_graph, s, t, DEBUG=DO_DEBUG):
     if(DEBUG): print("shortest_path_length is ", shortestLength)
     if(DEBUG): print("shortest length other way is ", distT[s])
 
-    # test all vertices except s and t to be in the subgraph
-    vertices_to_test = set(graph.keys()) - set([s, t]) 
+    a_shortest_path = get_path_to_root(parentsS, t)[::-1]
+
+    shortest_paths_dag = defaultdict(set)
+    # add shortest path to dag first, add other shortest paths after
+
+    add_path_to_graph(a_shortest_path, shortest_paths_dag)
+
+    vertices_to_test = set(graph.keys()) # - set([s, t]) 
     if(DEBUG): print("dist S", distS)
     if(DEBUG): print("dist T",  distT)
 
-    shortest_paths_dag = defaultdict(set)
     # shortest_path_vertices = set() # have to maintain seperately
 
     if(DEBUG): print(vertices_to_test)
 
     for v in vertices_to_test:
-        if(DEBUG): print("v is ", v)
+        # if(DEBUG): print("v is ", v)
         dist_from_s_to_v = distS.get(v)
         dist_from_v_to_t = distT.get(v)
         
         # If the distances exist because they were traversed then
         if(dist_from_s_to_v and dist_from_v_to_t):
             length = dist_from_s_to_v + dist_from_v_to_t # Add them to find distance of path [S -> v -> T]
-            if(DEBUG): print("length was",  length)
+            # if(DEBUG): print("length was",  length)
             
             if(length == shortestLength):
                 # Add path [s -> v -> t] to shortest paths subgraph
@@ -192,7 +197,7 @@ def create_shortest_paths_dag(graph, reversed_graph, s, t, DEBUG=DO_DEBUG):
     return {
         "is_there_shortest_path": True,
         "shortest_paths_dag": shortest_paths_dag,
-        "a_shortest_path": get_path_to_root(parentsS, t)[::-1],
+        "a_shortest_path": a_shortest_path,
         "shortest_path_length": shortestLength,
         "graph_bfs_tree_with_root_s": graphBFS["parents"],
         "reverse_graph_bfs_tree_with_root_t": reverseGraphBFS["parents"]
@@ -225,11 +230,11 @@ def crazy_bfs(graph, Z, shortest_paths_dag, DEBUG=DO_DEBUG):
                 parent[node] = v
                 queue.append(node)
     
-    if DEBUG: print("CRAZY BFS GRAPH FOR " + str(Z) + " is the following: " + str(graph))
-    if DEBUG: print("CRAZY BFS SEEN FOR " + str(Z) + " is the following: " + str(seen))
-    if DEBUG: print("CRAZY BFS PARENTS FOR " + str(Z) + " is the following: " + str(parent))
-    if DEBUG: print("CRAZY BFS DIST FOR " + str(Z) + " is the following: " + str(dist))
-    if DEBUG: print("CRAZY BFS INTERSECTION VERTICES FOR " + str(Z) + " is the following: " + str(intersection_vertices))
+    #if DEBUG: print("CRAZY BFS GRAPH FOR " + str(Z) + " is the following: " + str(graph))
+    #if DEBUG: print("CRAZY BFS SEEN FOR " + str(Z) + " is the following: " + str(seen))
+    #if DEBUG: print("CRAZY BFS PARENTS FOR " + str(Z) + " is the following: " + str(parent))
+    #if DEBUG: print("CRAZY BFS DIST FOR " + str(Z) + " is the following: " + str(dist))
+    #if DEBUG: print("CRAZY BFS INTERSECTION VERTICES FOR " + str(Z) + " is the following: " + str(intersection_vertices))
  
     return ({
         "seen": seen,
@@ -448,8 +453,8 @@ def create_longer_path_using_an_outer_vertex(graph, reversed_graph, shortest_pat
                     
                     longer_path_result = merge_two_overlapping_paths_in_dag(s, t, x, y, shortest_paths_dag)
                     if DEBUG: print("LONGER PATH RESULT FOR (z,x,y) = " + str((Z, x, y)) + "is the following: " + str(longer_path_result))
-                    if DEBUG: print("CRAZY BFS RESULT X_to_Z_result[parents]", X_to_Z_Result["parents"])
-                    if DEBUG: print("CRAZY_BFS_RESULT_Z_to_Y[parents]",Z_to_Y_Result["parents"])
+                    # if DEBUG: print("CRAZY BFS RESULT X_to_Z_result[parents]", X_to_Z_Result["parents"])
+                    # if DEBUG: print("CRAZY_BFS_RESULT_Z_to_Y[parents]",Z_to_Y_Result["parents"])
 
                     if(longer_path_result["result"]):
                         print("There are is a shorter and longer path! They are the following: ")
