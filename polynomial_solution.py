@@ -201,7 +201,7 @@ def create_shortest_paths_dag(graph, reversed_graph, s, t, DEBUG=DO_DEBUG):
 
 
 def crazy_bfs(graph, Z, shortest_paths_dag, DEBUG=DO_DEBUG):
-    seen, queue = set(), deque([Z])
+    seen, queue = set([Z]), deque([Z])
     parent, dist = {}, {}
     dist[Z] = 0
     parent[Z] = None # root has no parent
@@ -212,21 +212,18 @@ def crazy_bfs(graph, Z, shortest_paths_dag, DEBUG=DO_DEBUG):
 
     while queue:
         v = queue.popleft()
-
-        if(v in seen):
-            continue
-        else:
-             seen.add(v)
-
+        
         if(v in vertices_in_dag):
             intersection_vertices.add(v)
             continue
             # KEEP DOING BFS WITH OTHER VERTICES. DONT GO INSIDE THE DAG after we touch surface
 
         for node in graph[v]: 
-            dist[node] = dist[v] + 1
-            parent[node] = v
-            queue.append(node)
+            if(node not in seen):
+                seen.add(node)
+                dist[node] = dist[v] + 1
+                parent[node] = v
+                queue.append(node)
     
     if DEBUG: print("CRAZY BFS GRAPH FOR " + str(Z) + " is the following: " + str(graph))
     if DEBUG: print("CRAZY BFS SEEN FOR " + str(Z) + " is the following: " + str(seen))

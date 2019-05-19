@@ -92,15 +92,22 @@ def get_path_to_root(bfs_tree, node):
     n = node 
     path = [n]
 
+    print("GET PATH TO ROOT CALLED WITH FOLLOWING; ")
+    print("NODE IS: ", node)
+    print("bfs_tree", bfs_tree)
+    
+
     while True:
         # print("n is", n)
         parent = bfs_tree[n]
-        
+        print(parent)    
+
         if(parent is None):
             break
 
         path.append(parent)
         n = parent
+
 
     return path
 
@@ -111,9 +118,18 @@ def verify_solution_if_paths_exist(graph, small_path, long_path, s, t):
         return False
     
 
+    if(not verify_path_is_simple(small_path)):    
+        print("Small path is not simple")
+        return False
+    
+    if(not verify_path_is_simple(long_path)):
+        print("Long path is not simple")
+        return False
 
     a = verify_path_exists(graph, small_path, s, t)
     b = verify_path_exists(graph, long_path, s, t)
+    
+    
 
     if(a and b):
         print("Two paths are GOOD. VERIFIED")
@@ -128,6 +144,8 @@ def verify_solution_if_paths_exist(graph, small_path, long_path, s, t):
         print("neither path was correct")
         return False
 
+def verify_path_is_simple(path):
+    return len(path) == len(set(path))
 
 def verify_path_exists(graph, path, s, t):
     

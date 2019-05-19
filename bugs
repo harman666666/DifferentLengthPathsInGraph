@@ -1,0 +1,28 @@
+# FIX THIS BUG: (happens with lost edges when 4 dfs's needed for merge!)
+
+('A SHORTEST PATH IS: ', [1, 21, 46, 0, 89])
+('SHORTEST PATH LENGTH IS ', 4)
+Start lost edges method
+NOT IN DAG NEIGHBORS IS 
+set([])
+NOT IN DAG NEIGHBORS IS 
+set([])
+NOT IN DAG NEIGHBORS IS 
+set([])
+NOT IN DAG NEIGHBORS IS 
+set([])
+NOT IN DAG NEIGHBORS IS 
+set([50])
+ >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>IT WAS MERGED WITHIN 4 DFS'S
+('S_TO_X_DFS_TREE', {0: 4, 1: None, 4: 6, 6: 1, 39: 6, 41: 6, 46: 21, 50: 62, 21: 1, 89: 0, 90: 21, 62: 6, 95: 90})
+('Y_TO_T_DFS_TREE', {89: 50, 50: None})
+WE FOUND A SHORTER AND A LONGER DIRECTED SIMPLE PATH USING LOST EDGES METHOD. THEY ARE: 
+[1, 21, 46, 0, 89]
+[1, 6, 39, 50, 89]
+One path is not longer than the other. FALSE SOLUTION
+solution POLY came up with is WRONG
+
+
+
+###################################################3
+
