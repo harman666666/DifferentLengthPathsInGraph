@@ -111,6 +111,7 @@ def verify_solution_if_paths_exist(graph, small_path, long_path, s, t):
         return False
     
 
+
     a = verify_path_exists(graph, small_path, s, t)
     b = verify_path_exists(graph, long_path, s, t)
 

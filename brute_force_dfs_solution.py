@@ -52,7 +52,10 @@ def brute_force_solution(graph, s, t, DEBUG=False):
     if(shortest_length is None):
         # There is no path from s to t, FAIL!
         if(DEBUG): print("Hi brute force here. THERE IS NO SHORTEST PATH. FAIL.")
-        return False
+        return {
+            "result": False,     
+        }
+
 
     a_shortest_path = get_path_to_root(bfs_parents_root_s, t)[::-1]
 
@@ -75,7 +78,8 @@ def brute_force_solution(graph, s, t, DEBUG=False):
     else:
         if(DEBUG): print("DID NOT FIND 2 SIMPLE PATHS")
         return {
-            "result": False
+            "result": False,
+           
         }
 
 

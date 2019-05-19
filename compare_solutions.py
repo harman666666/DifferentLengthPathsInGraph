@@ -111,7 +111,7 @@ def test_lost_edge():
 
 def benchmark_correctness_testing():
     for i in range(1):
-        g = create_example_rand_directed_graph(vertices=100, max_neighbors=3)
+        g = create_example_rand_directed_graph(vertices=100, max_neighbors=20)
         S = 1
         T = 89
 
@@ -122,7 +122,7 @@ def benchmark_correctness_testing():
 
 
         brute_force_soln = brute_force_solution(g, S, T)
-
+        print(brute_force_soln)
         if(brute_force_soln["result"]):
             a = verify_solution_if_paths_exist(g, brute_force_soln["a_shortest_path"], brute_force_soln["a_longer_path"], S, T)
 

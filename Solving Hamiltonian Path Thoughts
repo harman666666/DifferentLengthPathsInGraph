@@ -1,0 +1,94 @@
+THIS IS A DISCUSSION OF HOW TO SOLVE HAMILTONIAN PATH IN POLYNOMIAL TIME. 
+JUST A LIST OF IDEAS I HAVE THAT I WILL MIX AND MATCH TO SEE IF ITS POSSIBLE!
+
+
+
+Lost Edges and Outer vertex method can be used to create longer paths.
+
+
+I refer to Different Length Paths Questions as DLPQ
+
+Question A) For DLPQ, do we need shortest paths dag? Could we just use lost edges and outer vertex method on
+just a shortest path between s and t, and not the entire dag. Well yeah ofc! SHORTSET PATHS dag was just an optimization,
+
+We can start with just one shortest path and keep doing lost edges and outer vertex. if we find a path and it is the same size
+as shortest path, 
+start building up the shortest paths dag. otherwise we found a longer path.
+
+HOWEVER HOW DO WE FIND THE LONGEST PATH!!!! AKA THE HAMILTONIAN PATH or say one does not exist? HMMM
+
+#######################################################################################################################33
+
+
+QUESTION: WHAT DO YOU ENUMERATE, IF YOU LET DLPQ RUN UNTIL COMPLETION, AND WE JUST SAVED ALL THE LONGER PATHS WE FOUND?
+WHAT SPECIFIC LONGER PATHS DID WE FIND? 
+CAN WE USE THE ONES WE FOUND AS A WAY TO EXHAUST ALL THE POSSIBILITIES FOR LONGER PATHS? 
+
+Thrm: DLPQ exhaust all longer paths N+1 if  dag you are running it on had length N
+
+
+Cool ideas to use:
+
+METHOD A)
+
+Keep a dag for each length 
+=> Shortest path dag
+
+
+
+=> Length 5 DAG 
+
+=> Length 6 DAG
+
+=> When you find a path of length N, create a new DAG with it. 
+
+=> Therefore you have N dags => Total space is N*N then
+=> You let DLPQ run until it finishes for the shortest path and build up all the other paths. 
+
+=> Let DLPQ run again for the next longest path => run till completion, build up paths 
+
+=> Do that until N-1, then see if you got a length N path at any point. 
+
+IF DLPQ always exhausts graph to find longer paths, than we can keep trying to make longer paths!
+
+=> We dont need a completed DAG. 
+
+
+Add to these dags, 
+
+METHOD B)
+
+
+You build up shortest paths dag, keep adding longer paths to the shortest paths dag, 
+
+dag becomes => paths weve seen so far dag. 
+
+as you find longer paths => overwrite their counter
+
+
+when we do backedges, ...
+
+Method A is sorta better tbh!!!
+
+
+
+
+
+
+
+########################################
+COOL TRICKS TO USE:
+
+fixed counter DAG trick:
+QUESTION: 
+You have a dag that goes from s to t and contains only paths you added that were length 6.
+Are there shorter lengths in this dag between s and t?
+MAYBE.
+to not enumerate them, you can set a counter on each node. 
+
+So S node has counter 0, next node has counter 1, next node after that has counter 2. because its 2 away from s.
+and the rule is you can only go towards nodes that have a counter that is 1 higher than you. not same or less. 
+This way, all paths in the DAG will have exactly length N. 
+
+
+
