@@ -65,7 +65,8 @@ def dfs_with_restriction_set(graph, start, end, restriction_set, seen = None, pa
             "result": False,
         }
     
-    
+    seen.add(start)
+
     
     if(start == end):
         return {
@@ -81,7 +82,6 @@ def dfs_with_restriction_set(graph, start, end, restriction_set, seen = None, pa
     for i in neighbors:
         if( i not in seen): 
             parents[i] = start
-            seen.add(start)
 
             dfs_result = dfs_with_restriction_set(graph, i, end, restriction_set, seen, parents)
             if(dfs_result["result"]):

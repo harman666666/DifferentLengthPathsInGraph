@@ -263,9 +263,11 @@ def create_crazy_path_without_overlaps(X,
     # BFS from Z to Y
     # Then DFS from X to Z
     
+
+   
     print("CALLLED CREATE CRAZY PATH WITHOUT OVERLAPPING! #########################################3")
     print("X is " + str(X) + " Y is " + str(Y) + " Z is " + str(Z))
-
+    
     shortest_path_x_to_z = get_path_to_root(X_to_Z_bfs_tree_parents, X)
     if(DEBUG): print("SHORTEST PATH FROM X TO Z IS THE FOLLOWING ", shortest_path_x_to_z)
     
@@ -283,9 +285,10 @@ def create_crazy_path_without_overlaps(X,
     if(dfs_path_from_z_to_y["result"]):
         return {
             "result": True,
-            "crazy_path": shortest_path_x_to_z[::1] + 
-                          get_path_to_root(dfs_path_from_z_to_y["parents"], Y) 
+            "crazy_path": shortest_path_x_to_z[:-1] +  # remove z from end
+                          get_path_to_root(dfs_path_from_z_to_y["parents"], Y)[::-1] 
         }
+    
     
 
     if(DEBUG): print("CRAZY PATH BUILD FAILED ON FIRST ATTEMPT. SECOND ATTEMPT")
@@ -305,7 +308,7 @@ def create_crazy_path_without_overlaps(X,
     if(dfs_path_from_x_to_z["result"]):
             return {
             "result": True,
-            "crazy_path": get_path_to_root(dfs_path_from_x_to_z["parents"], Z)[::1] + shortest_path_z_to_y
+            "crazy_path": get_path_to_root(dfs_path_from_x_to_z["parents"], Z)[::-1][:-1] + shortest_path_z_to_y[::-1] #IDK IF THIS WORKS!!!
         }
 
     
@@ -356,7 +359,7 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_
     S_to_X_dfs = dfs_with_restriction_set(graph=shortest_paths_dag, 
                                           start=s, 
                                           end=X, 
-                                          restriction_set=set([Y]))
+                                          restriction_set=set([Y, t]))
 
     if(S_to_X_dfs["result"] == False):
         if(DEBUG): print("FAILED ON FIRST DFS.")
@@ -384,7 +387,7 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_
     Y_to_T_dfs_2 =  dfs_with_restriction_set(graph=shortest_paths_dag, 
                                           start=Y, 
                                           end=t, 
-                                          restriction_set=set([X]))
+                                          restriction_set=set([X, s]))
     if(Y_to_T_dfs_2["result"] == False):
         if(DEBUG): print("FAILED ON THIRD DFS")
         return {
@@ -547,16 +550,16 @@ def create_longer_path_using_an_outer_vertex(graph, reversed_graph, shortest_pat
                         
 
                         # create [S->X->Z->Y->T]
-                        if(DEBUG): print("S->X", get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x) ) # S is the root of this. get path to s. WE want away from S so flip 
-                        if(DEBUG): print("X->Z", get_path_to_root(X_to_Z_Result["parents"], x) ) # Z is the root of this parents array
-                        if(DEBUG): print("Z->Y", get_path_to_root(Z_to_Y_Result["parents"], y)[::-1] ) # Z is the root of this parents array
+                        if(DEBUG): print("S->X", get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x)[::-1]  ) # S is the root of this. get path to s. WE want away from S so flip 
+                        #if(DEBUG): print("X->Z", get_path_to_root(X_to_Z_Result["parents"], x) ) # Z is the root of this parents array
+                        #if(DEBUG): print("Z->Y", get_path_to_root(Z_to_Y_Result["parents"], y)[::-1] ) # Z is the root of this parents array
+                        if(DEBUG): print("X->Z->Y CRAZY PATH", X_to_Z_to_Y_path["crazy_path"])
                         if(DEBUG): print("Y->T", get_path_to_root(longer_path_result["Y_to_T_dfs_tree"], t)[::-1]) # Y is the roof of this. Dont want path to Y, but path to T, so flip it with [::-1]
-                        if(DEBUG): print("X->Z->Y CRAZY PATH", X_to_Z_to_Y_path)
+                        
                        
                         
                         a_longer_path =  get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x)[::-1] + \
-                                          get_path_to_root(X_to_Z_Result["parents"], x)[1:] +  \
-                                          get_path_to_root(Z_to_Y_Result["parents"], y)[::-1][1:] + \
+                                          X_to_Z_to_Y_path["crazy_path"][1:] + \
                                           get_path_to_root(longer_path_result["Y_to_T_dfs_tree"], t)[::-1][1:]
 
                         if(DEBUG): print("a longest path: "  + str(a_longer_path))
