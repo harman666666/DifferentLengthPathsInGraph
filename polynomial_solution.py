@@ -34,8 +34,6 @@ def poly_solution(graph, s, t, DEBUG=DO_DEBUG):
         for n in neighbors:
             reversed_graph[n].add(parent)
     
-    pprint.pprint(reversed_graph)
-
     buildResult = create_shortest_paths_dag(graph, reversed_graph, s, t)
 
     if(buildResult["is_there_shortest_path"] == False):
@@ -63,7 +61,8 @@ def poly_solution(graph, s, t, DEBUG=DO_DEBUG):
     # WE TRY 2 METHODS to create our 2 paths: LOST_EDGES method, and OUTER VERTEX Method. 
     # if both methods fail, THERE IS NO 2 PATHS, where 1 is longer than the other from S to T 
     # These 2 methods encapsulate all possible ways for these 2 paths to exist, that's why if they fail, then there is none
-
+    
+    
     did_we_get_2_paths_using_lost_edges = create_longer_path_using_lost_edges(graph, 
                                                              s,
                                                              t,
@@ -80,7 +79,7 @@ def poly_solution(graph, s, t, DEBUG=DO_DEBUG):
             "a_shortest_path": a_shortest_path,
             "a_longer_path": did_we_get_2_paths_using_lost_edges["a_longer_path"]
         }
-
+    
     # OK LOST EDGES FAILED. now have to try outer vertex method.
     did_we_get_2_paths_using_outer_an_outer_vertex = create_longer_path_using_an_outer_vertex(graph=graph, 
                                                                                               reversed_graph=reversed_graph, 

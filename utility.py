@@ -51,9 +51,9 @@ def bfs(graph, s):
         "dist": dist
     })
 
-def dfs_with_restriction_set(graph, start, end, restriction_set, seen = None, parents=None):
+def dfs_with_restriction_set(graph, start, end, restriction_set, seen = None, parents=None, DEBUG=False):
     # dont dfs in a cycle. visited set stops that!
-    print("FOR THIS DFS, (start, end), restrict set was ", (start, end), restriction_set)
+    if DEBUG: print("FOR THIS DFS, (start, end), restrict set was ", (start, end), restriction_set)
     if(seen is None):
         seen = set([start])
         parents = {}

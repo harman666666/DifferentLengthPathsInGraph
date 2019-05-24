@@ -157,16 +157,16 @@ def test_when_shortest_path_is_length_1():
 def benchmark_correctness_testing():
     score = 0
     for i in range(999999):
-        g = create_example_rand_directed_graph(vertices=100, max_neighbors=20)
+        g = create_example_rand_directed_graph(vertices=20, max_neighbors=3)
         S = 1
-        T = 89
+        T = 19
         
       
 
-        print("GRAPH IS: ")
+        # print("GRAPH IS: ")
         pprint.pprint(g)
 
-        print("################################# BRUTE FORCE SOLUTION")
+        print("################################# BRUTE FORCE SOLUTION, index is ", i)
 
 
         brute_force_soln = brute_force_solution(g, S, T)
@@ -183,7 +183,7 @@ def benchmark_correctness_testing():
         else:
             print("Solution was not found with brute force solution")
 
-        print("################################# POLY SOLUTION")
+        print("################################# POLY SOLUTION, index is ", i)
 
         poly_soln = poly_solution(g, S, T)
 
@@ -209,9 +209,57 @@ def benchmark_correctness_testing():
             score += 1
     print("THE SCORE OUR POLY SOLUTION RECIEVED IS ", score)
 
+def run_example(g, S, T):
+    print("GRAPH IS: ")
+    pprint.pprint(g)
+
+    print("################################# BRUTE FORCE SOLUTION")
 
 
-benchmark_correctness_testing()
+    brute_force_soln = brute_force_solution(g, S, T)
+
+    if(brute_force_soln["result"]):
+        a = verify_solution_if_paths_exist(g, brute_force_soln["a_shortest_path"], brute_force_soln["a_longer_path"], S, T)
+
+
+        if(a):
+            print("brute force correct")
+        else:
+            print("solution brute force came up with is WRONG")
+    else:
+        print("Solution was not found with brute force solution")
+
+    print("################################# POLY SOLUTION")
+
+    poly_soln = poly_solution(g, S, T)
+
+    if(poly_soln["result"]):
+        b = verify_solution_if_paths_exist(g, poly_soln["a_shortest_path"],poly_soln["a_longer_path"], S, T)
+        if(b):
+            print("poly soln is correct")
+        else:
+            print("solution POLY came up with is WRONG")
+
+
+    else:
+        print("Solution was not found with poly solution")
+    
+    print("##############################################")
+    print(brute_force_soln)
+
+
+# HARD EXAMPLE 1 ONLY PASSES IF YOU USE LOST EDGES METHOD
+def hard_example_1():
+    g = {0: set([]), 1: set([13, 14]), 2: set([14, 7]), 3: set([]), 4: set([]), 5: set([19, 4]), 6: set([11]), 7: set([10, 12]), 8: set([17, 11]), 9: set([10]), 10: set([17]), 11: set([]), 12: set([16, 19]), 13: set([4]), 14: set([10, 7]), 15: set([]), 16: set([]), 17: set([19]), 18: set([9, 4]), 19: set([16])}
+    S = 1
+    T = 19
+    run_example(g, S, T)
+
+
+
+
+
+# benchmark_correctness_testing()
  
 # test_when_shortest_path_is_length_1()
-
+hard_example_1()
