@@ -92,15 +92,15 @@ def get_path_to_root(bfs_tree, node):
     n = node 
     path = [n]
 
-    # print("GET PATH TO ROOT CALLED WITH FOLLOWING; ")
-    # print("NODE IS: ", node)
-    # print("bfs_tree", bfs_tree)
+    print("GET PATH TO ROOT CALLED WITH FOLLOWING; ")
+    print("NODE IS: ", node)
+    print("bfs_tree", bfs_tree)
     
 
     while True:
-        # print("n is", n)
+        print("n is", n)
         parent = bfs_tree[n]
-        # print(parent)    
+        print(parent)    
 
         if(parent is None):
             break

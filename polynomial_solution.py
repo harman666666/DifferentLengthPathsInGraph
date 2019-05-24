@@ -243,6 +243,73 @@ def crazy_bfs(graph, Z, shortest_paths_dag, DEBUG=DO_DEBUG):
         "intersection_vertices": intersection_vertices,
     })
 
+'''
+                get_path_to_root(X_to_Z_Result["parents"], x)[1:] +  \
+                                          get_path_to_root(Z_to_Y_Result["parents"], y)[::-1][1:] + \
+'''
+def create_crazy_path_without_overlaps(X, 
+                                       Y, 
+                                       Z, 
+                                       X_to_Z_bfs_tree_parents, 
+                                       Z_to_Y_bfs_tree_parents, 
+                                       graph, 
+                                       reversed_graph,
+                                       shortest_paths_dag, 
+                                       DEBUG=DO_DEBUG):
+
+    # BFS from X to Z to get shortest path (visits least numebr of vertices)
+    # DFS from Z to Y (if this fails, the shortest path from X to Z had important nodes)
+    # If it intersects, then do the following:
+
+    # BFS from Z to Y
+    # Then DFS from X to Z
+    
+
+    shortest_path_x_to_z = get_path_to_root(X_to_Z_bfs_tree_parents, X)[:-1]
+    if(DEBUG): print("SHORTEST PATH FROM X TO Z IS THE FOLLOWING ", shortest_path_x_to_z)
+    
+    
+
+    dfs_path_from_z_to_y = dfs_with_restriction_set(graph=reversed_graph, 
+                                                    start=Z, 
+                                                    end=Y, 
+                                                    restriction_set=(set(shortest_path_x_to_z + shortest_paths_dag.keys()) - set([Z, Y])))
+
+    if(DEBUG): print("dfs path from z to y crazy path", dfs_path_from_z_to_y)
+
+
+    if(dfs_path_from_z_to_y["result"]):
+        return {
+            "result": True,
+            "crazy_path": shortest_path_x_to_z[::1] + get_path_to_root(dfs_path_from_z_to_y["parents"], Y) 
+        }
+    
+
+    if(DEBUG): print("CRAZY PATH BUILD FAILED ON FIRST ATTEMPT. SECOND ATTEMPT")
+
+    shortest_path_z_to_y = get_path_to_root(Z_to_Y_bfs_tree_parents, Y)[1::]
+    
+    if(DEBUG): print("SHORTEST PATH FROM Z TO Y IS THE FOLLOWING ", shortest_path_z_to_y)
+
+    dfs_path_from_x_to_z = dfs_with_restriction_set(graph=graph, 
+                                               start=X, 
+                                               end=Z, 
+                                               restriction_set=(set(shortest_path_z_to_y + shortest_paths_dag.keys()) - set([X, Z])) ) 
+    
+    if(DEBUG): print("dfs path from x to z crazy path", dfs_path_from_x_to_z)
+
+    if(dfs_path_from_x_to_z["result"]):
+            return {
+            "result": True,
+            "crazy_path": get_path_to_root(dfs_path_from_x_to_z["parents"], Z)[::1] + shortest_path_z_to_y
+        }
+
+    
+    return {
+        "result": False,
+    }
+
+
 
 # This method merges overlapping paths together in the shortest_paths_dag
 # It finds two paths in the DAG, one that is s->X and one that is Y->t, and these two paths DONT OVERLAP!
@@ -456,6 +523,20 @@ def create_longer_path_using_an_outer_vertex(graph, reversed_graph, shortest_pat
                     # if DEBUG: print("CRAZY BFS RESULT X_to_Z_result[parents]", X_to_Z_Result["parents"])
                     # if DEBUG: print("CRAZY_BFS_RESULT_Z_to_Y[parents]",Z_to_Y_Result["parents"])
 
+
+                    X_to_Z_to_Y_path = create_crazy_path_without_overlaps(X=x, 
+                                                                              Y=y, 
+                                                                              Z=Z, 
+                                                                              X_to_Z_bfs_tree_parents=X_to_Z_Result["parents"],
+                                                                              Z_to_Y_bfs_tree_parents=Z_to_Y_Result["parents"],
+                                                                              graph=graph, 
+                                                                              reversed_graph=reversed_graph,
+                                                                              shortest_paths_dag=shortest_paths_dag)
+                    if(X_to_Z_to_Y_path["result"] == False):
+                        if(DEBUG): print(" SIMPLE PATH FROM X TO Z TO Y does not exist!!! CREATING CRAZY PATH WITHOUT OVERLAPS FAILED.")
+                        continue
+                    
+
                     if(longer_path_result["result"]):
                         print("There are is a shorter and longer path! They are the following: ")
                         
@@ -467,7 +548,9 @@ def create_longer_path_using_an_outer_vertex(graph, reversed_graph, shortest_pat
                         if(DEBUG): print("X->Z", get_path_to_root(X_to_Z_Result["parents"], x) ) # Z is the root of this parents array
                         if(DEBUG): print("Z->Y", get_path_to_root(Z_to_Y_Result["parents"], y)[::-1] ) # Z is the root of this parents array
                         if(DEBUG): print("Y->T", get_path_to_root(longer_path_result["Y_to_T_dfs_tree"], t)[::-1]) # Y is the roof of this. Dont want path to Y, but path to T, so flip it with [::-1]
-
+                        if(DEBUG): print("X->Z->Y CRAZY PATH", X_to_Z_to_Y_path)
+                       
+                        
                         a_longer_path =  get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x)[::-1] + \
                                           get_path_to_root(X_to_Z_Result["parents"], x)[1:] +  \
                                           get_path_to_root(Z_to_Y_Result["parents"], y)[::-1][1:] + \

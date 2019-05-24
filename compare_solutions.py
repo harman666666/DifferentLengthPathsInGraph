@@ -155,7 +155,7 @@ def test_when_shortest_path_is_length_1():
 # SAVE RESULTS FOR THE TEST USING BRUTEFORCE!
 
 def benchmark_correctness_testing():
-    for i in range(1):
+    for i in range(999999):
         g = create_example_rand_directed_graph(vertices=100, max_neighbors=20)
         S = 1
         T = 89
@@ -176,6 +176,7 @@ def benchmark_correctness_testing():
                 print("brute force correct")
             else:
                 print("solution brute force came up with is WRONG")
+                break
         else:
             print("Solution was not found with brute force solution")
 
@@ -189,6 +190,7 @@ def benchmark_correctness_testing():
                 print("poly soln is correct")
             else:
                 print("solution POLY came up with is WRONG")
+                break
 
 
         else:
@@ -197,8 +199,12 @@ def benchmark_correctness_testing():
         print("##############################################")
         print(brute_force_soln)
         
+        if brute_force_soln["result"] != poly_soln["result"]:
+            print("BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK")
+            break
 
-#benchmark_correctness_testing()
+
+benchmark_correctness_testing()
  
-test_when_shortest_path_is_length_1()
+# test_when_shortest_path_is_length_1()
 
