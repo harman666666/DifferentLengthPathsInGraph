@@ -53,7 +53,7 @@ def bfs(graph, s):
 
 def dfs_with_restriction_set(graph, start, end, restriction_set, seen = None, parents=None):
     # dont dfs in a cycle. visited set stops that!
-
+    print("FOR THIS DFS, (start, end), restrict set was ", (start, end), restriction_set)
     if(seen is None):
         seen = set([start])
         parents = {}
@@ -80,7 +80,7 @@ def dfs_with_restriction_set(graph, start, end, restriction_set, seen = None, pa
     neighbors = graph[start]
     
     for i in neighbors:
-        if( i not in seen): 
+        if( i not in seen and i not in restriction_set): 
             parents[i] = start
 
             dfs_result = dfs_with_restriction_set(graph, i, end, restriction_set, seen, parents)

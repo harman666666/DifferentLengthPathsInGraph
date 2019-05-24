@@ -67,9 +67,7 @@ def poly_solution(graph, s, t, DEBUG=DO_DEBUG):
     did_we_get_2_paths_using_lost_edges = create_longer_path_using_lost_edges(graph, 
                                                              s,
                                                              t,
-                                                             shortest_paths_dag, 
-                                                             graph_bfs_tree_with_root_s, 
-                                                             reverse_graph_bfs_tree_with_root_t)
+                                                             shortest_paths_dag) 
 
     if(did_we_get_2_paths_using_lost_edges["result"]):
         # WE FOUND 2 PATHS!!!
@@ -368,6 +366,7 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_
         }
     
     # Do second dfs
+    print("S_to_X_dfs_seen", S_to_X_dfs["seen"])
 
     Y_to_T_dfs = dfs_with_restriction_set(graph=shortest_paths_dag, 
                                           start=Y, 
@@ -395,7 +394,7 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_
         }
     
     # do fourth dfs
-
+    print("Y TO T DFS 2 SEEN ", Y_to_T_dfs_2["seen"])
     S_to_X_dfs_2 = dfs_with_restriction_set(graph=shortest_paths_dag, 
                                           start=s, 
                                           end=X, 
@@ -421,8 +420,6 @@ def create_longer_path_using_lost_edges(graph,
                                         s,
                                         t,
                                         shortest_paths_dag, 
-                                        graph_bfs_tree_with_root_s, 
-                                        reverse_graph_bfs_tree_with_root_t, 
                                         DEBUG=DO_DEBUG):
     if(DEBUG): print("Start lost edges method")
     vertices_in_dag = set(shortest_paths_dag.keys())
@@ -455,15 +452,23 @@ def create_longer_path_using_lost_edges(graph,
             # that is a longer path
             # a better way to do this is using merge_two_overlapping_paths_in_dags which only requires 4 DFS's to do this
 
-            did_path_merge_work = merge_two_overlapping_paths_in_dag(s=s, t=t, X=V, Y=K, shortest_paths_dag=shortest_paths_dag)
+            did_path_merge_work = merge_two_overlapping_paths_in_dag(s=s, t=t, X=V, Y=K, 
+            shortest_paths_dag=shortest_paths_dag)
 
             if(did_path_merge_work["result"]):
+                S_TO_V_DFS_TREE =  did_path_merge_work["S_to_X_dfs_tree"]
+                K_TO_T_DFS_TREE = did_path_merge_work["Y_to_T_dfs_tree"]
+                if(DEBUG): print("(s, t, V, K) is ", (s,t,V,K))
+           
                 if(DEBUG): print("S_TO_X_DFS_TREE", did_path_merge_work["S_to_X_dfs_tree"])
                 if(DEBUG): print("Y_TO_T_DFS_TREE", did_path_merge_work["Y_to_T_dfs_tree"])
+                
+                if(DEBUG): print("S_TO_V", get_path_to_root(S_TO_V_DFS_TREE,  V)[::-1] )
+                if(DEBUG): print("K_To_T", get_path_to_root(K_TO_T_DFS_TREE, t)[::-1])
 
                 return {
                     "result": True,
-                    "a_longer_path": get_path_to_root(graph_bfs_tree_with_root_s, V)[::-1] + get_path_to_root(reverse_graph_bfs_tree_with_root_t, K)
+                    "a_longer_path": get_path_to_root(S_TO_V_DFS_TREE, V)[::-1] + get_path_to_root(K_TO_T_DFS_TREE, t)[::-1]
                     }
     
     if(DEBUG): print("Lost edges method yielded no results")
