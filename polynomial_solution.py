@@ -20,7 +20,7 @@ all possible paths in graphs.
 '''
 
 
-DO_DEBUG=True
+DO_DEBUG=False
 
 
 ##### START READING THE CODE FROM HERE. THIS IS THE MAIN METHOD. 
@@ -267,8 +267,8 @@ def create_crazy_path_without_overlaps(X,
     
 
    
-    print("CALLLED CREATE CRAZY PATH WITHOUT OVERLAPPING! #########################################3")
-    print("X is " + str(X) + " Y is " + str(Y) + " Z is " + str(Z))
+    if DEBUG: print("CALLLED CREATE CRAZY PATH WITHOUT OVERLAPPING! #########################################3")
+    if DEBUG: print("X is " + str(X) + " Y is " + str(Y) + " Z is " + str(Z))
     
     shortest_path_x_to_z = get_path_to_root(X_to_Z_bfs_tree_parents, X)
     if(DEBUG): print("SHORTEST PATH FROM X TO Z IS THE FOLLOWING ", shortest_path_x_to_z)
@@ -370,7 +370,7 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_
         }
     
     # Do second dfs
-    print("S_to_X_dfs_seen", S_to_X_dfs["seen"])
+    if DEBUG: print("S_to_X_dfs_seen", S_to_X_dfs["seen"])
 
     Y_to_T_dfs = dfs_with_restriction_set(graph=shortest_paths_dag, 
                                           start=Y, 
@@ -398,7 +398,7 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_
         }
     
     # do fourth dfs
-    print("Y TO T DFS 2 SEEN ", Y_to_T_dfs_2["seen"])
+    if(DEBUG): print("Y TO T DFS 2 SEEN ", Y_to_T_dfs_2["seen"])
     S_to_X_dfs_2 = dfs_with_restriction_set(graph=shortest_paths_dag, 
                                           start=s, 
                                           end=X, 
@@ -559,7 +559,7 @@ def create_longer_path_using_an_outer_vertex(graph, reversed_graph, shortest_pat
                     
 
                     if(longer_path_result["result"]):
-                        print("There are is a shorter and longer path! They are the following: ")
+                        if(DEBUG): print("There are is a shorter and longer path! They are the following: ")
                         
 
                         

@@ -4,6 +4,8 @@ from utility import verify_solution_if_paths_exist, create_example_rand_directed
 from brute_force_dfs_solution import brute_force_solution
 from polynomial_solution import poly_solution
 
+import pickle
+import time
 
 def test_outer_vertex_method():
     # This graph will test outer vertex method for the polynomial solution
@@ -150,6 +152,36 @@ def test_when_shortest_path_is_length_1():
     print(brute_force_soln)
         
 
+def create_performance_graphs(name, amount=10000, vertices=50, max_neighbors=5):
+    graphs = []
+    for i in range(amount):
+        g = create_example_rand_directed_graph(vertices, max_neighbors)
+        graphs.append(g)
+
+    with open(name, 'wb') as f:
+        pickle.dump(graphs, f)
+
+
+def performance_testing(name, s=1, t=19):
+    # One way is to create lots of big graphs, and test both algos and see which ones better
+    with open(name, 'rb') as f:
+        graphs = pickle.load(f)
+
+    start_time = time.time()
+
+    for g in graphs:
+        run_poly_example(g, s, t)
+    
+    duration = (time.time() - start_time)
+    print("TIME TO EXECUTE IN SECONDS FOR POLY WAS", duration)
+    
+    start_time2 = time.time()
+    for g in graphs:
+            run_brute_force_example(g, s, t)
+    
+    duration2 = (time.time() - start_time2)
+    print("TIME TO EXECUTE IN SECONDS FOR BRUTE FORCE WAS", duration2)
+
 
 
 # SAVE RESULTS FOR THE TEST USING BRUTEFORCE!
@@ -157,7 +189,7 @@ def test_when_shortest_path_is_length_1():
 def benchmark_correctness_testing():
     score = 0
     for i in range(999999):
-        g = create_example_rand_directed_graph(vertices=20, max_neighbors=3)
+        g = create_example_rand_directed_graph(vertices=20, max_neighbors=4)
         S = 1
         T = 19
         
@@ -208,6 +240,25 @@ def benchmark_correctness_testing():
         else:
             score += 1
     print("THE SCORE OUR POLY SOLUTION RECIEVED IS ", score)
+
+def run_poly_example(g, S, T):
+
+    poly_soln = poly_solution(g, S, T)
+
+    #if(poly_soln["result"]):
+    #    b = verify_solution_if_paths_exist(g, poly_soln["a_shortest_path"],poly_soln["a_longer_path"], S, T)
+    #    if(b):
+    #        print("poly soln is correct")
+    #    else:
+    #        print("solution POLY came up with is WRONG")
+
+
+    #else:
+    #    print("Solution was not found with poly solution")
+
+def run_brute_force_example(g, S, T):
+    brute_force_soln = brute_force_solution(g, S, T)
+
 
 def run_example(g, S, T):
     print("GRAPH IS: ")
@@ -264,8 +315,11 @@ def hard_example_2():
     run_example(g, S, T)
 
 
-benchmark_correctness_testing()
+# benchmark_correctness_testing()
  
 #test_when_shortest_path_is_length_1()
 #hard_example_1()
 # hard_example_2()
+
+# create_performance_graphs("10000graphs50V5N")
+performance_testing(name="10000graphs50V5N")
