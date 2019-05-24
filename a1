@@ -1,0 +1,484 @@
+GRAPH IS: 
+defaultdict(<type 'set'>, {0: set([]), 1: set([10]), 2: set([4]), 3: set([2, 14]), 4: set([]), 5: set([9, 11]), 6: set([11, 7]), 7: set([]), 8: set([19, 7]), 9: set([]), 10: set([5]), 11: set([]), 12: set([18]), 13: set([18, 11]), 14: set([2, 7]), 15: set([1, 5]), 16: set([13]), 17: set([]), 18: set([16, 10]), 19: set([0])})
+################################# BRUTE FORCE SOLUTION
+{'result': False}
+Solution was not found with brute force solution
+################################# POLY SOLUTION
+defaultdict(<type 'set'>, {0: set([19]), 1: set([15]), 2: set([3, 14]), 4: set([2]), 5: set([10, 15]), 7: set([8, 14, 6]), 9: set([5]), 10: set([1, 18]), 11: set([5, 6, 13]), 13: set([16]), 14: set([3]), 16: set([18]), 18: set([12, 13]), 19: set([8])})
+THERE IS NO SHORTEST PATH BETWEEN S AND T, SO THERE IS NO SOLUTION. FALSE. BYE
+Solution was not found with poly solution
+##############################################
+{'result': False}
+GRAPH IS: 
+defaultdict(<type 'set'>, {0: set([5, 6]), 1: set([7]), 2: set([18]), 3: set([2, 15]), 4: set([]), 5: set([]), 6: set([]), 7: set([0, 1]), 8: set([2, 7]), 9: set([0, 14]), 10: set([]), 11: set([7]), 12: set([17]), 13: set([11, 6]), 14: set([8]), 15: set([19]), 16: set([]), 17: set([16, 9]), 18: set([9, 13]), 19: set([16, 4])})
+################################# BRUTE FORCE SOLUTION
+{'result': False}
+Solution was not found with brute force solution
+################################# POLY SOLUTION
+defaultdict(<type 'set'>, {0: set([9, 7]), 1: set([7]), 2: set([8, 3]), 4: set([19]), 5: set([0]), 6: set([0, 13]), 7: set([8, 1, 11]), 8: set([14]), 9: set([17, 18]), 11: set([13]), 13: set([18]), 14: set([9]), 15: set([3]), 16: set([17, 19]), 17: set([12]), 18: set([2]), 19: set([15])})
+THERE IS NO SHORTEST PATH BETWEEN S AND T, SO THERE IS NO SOLUTION. FALSE. BYE
+Solution was not found with poly solution
+##############################################
+{'result': False}
+GRAPH IS: 
+defaultdict(<type 'set'>, {0: set([11]), 1: set([0, 18]), 2: set([]), 3: set([]), 4: set([]), 5: set([]), 6: set([0]), 7: set([]), 8: set([]), 9: set([]), 10: set([11]), 11: set([]), 12: set([1, 2]), 13: set([0]), 14: set([11, 6]), 15: set([]), 16: set([5, 6]), 17: set([9, 11]), 18: set([]), 19: set([14])})
+################################# BRUTE FORCE SOLUTION
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 18)
+('bfs_tree', {0: 1, 1: None, 18: 1, 11: 0})
+('n is', 18)
+('n is', 1)
+{'result': False}
+Solution was not found with brute force solution
+################################# POLY SOLUTION
+defaultdict(<type 'set'>, {0: set([1, 13, 6]), 1: set([12]), 2: set([12]), 5: set([16]), 6: set([16, 14]), 9: set([17]), 11: set([0, 17, 10, 14]), 14: set([19]), 18: set([1])})
+('shortest_path_length is ', 1)
+('shortest length other way is ', 1)
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 18)
+('bfs_tree', {0: 1, 1: None, 18: 1, 11: 0})
+('n is', 18)
+('n is', 1)
+('dist S', {0: 1, 1: 0, 18: 1, 11: 2})
+('dist T', {1: 1, 18: 0, 12: 2})
+set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19])
+('shortest path subgraph is: ', defaultdict(<type 'set'>, {1: set([18]), 18: set([])}))
+('graph_bfs_tree_with_root_s', {'seen': set([0, 1, 18, 11]), 'parents': {0: 1, 1: None, 18: 1, 11: 0}, 'dist': {0: 1, 1: 0, 18: 1, 11: 2}})
+('reverse_graph_bfs_tree_with_root_t', {'seen': set([1, 18, 12]), 'parents': {1: 18, 18: None, 12: 1}, 'dist': {1: 1, 18: 0, 12: 2}})
+('A SHORTEST PATH IS: ', [1, 18])
+('SHORTEST PATH LENGTH IS ', 1)
+Start lost edges method
+NOT IN DAG NEIGHBORS IS 
+set([])
+NOT IN DAG NEIGHBORS IS 
+set([])
+Lost edges method yielded no results
+START OUTER VERTEX METHOD
+('OUTER VERTICES TO TEST', set([0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19]))
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 0)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([0, 1, 6, 13, 14, 16, 19]), 'intersection_vertices': set([1]), 'parents': {0: None, 1: 0, 6: 0, 13: 0, 14: 6, 16: 6, 19: 14}, 'dist': {0: 0, 1: 1, 6: 1, 13: 1, 14: 2, 16: 2, 19: 3}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([0, 11]), 'intersection_vertices': set([]), 'parents': {0: None, 11: 0}, 'dist': {0: 0, 11: 1}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 2)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([2, 12]), 'intersection_vertices': set([]), 'parents': {2: None, 12: 2}, 'dist': {2: 0, 12: 1}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([2]), 'intersection_vertices': set([]), 'parents': {2: None}, 'dist': {2: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 3)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([3]), 'intersection_vertices': set([]), 'parents': {3: None}, 'dist': {3: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([3]), 'intersection_vertices': set([]), 'parents': {3: None}, 'dist': {3: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 4)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([4]), 'intersection_vertices': set([]), 'parents': {4: None}, 'dist': {4: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([4]), 'intersection_vertices': set([]), 'parents': {4: None}, 'dist': {4: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 5)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([16, 5]), 'intersection_vertices': set([]), 'parents': {16: 5, 5: None}, 'dist': {16: 1, 5: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([5]), 'intersection_vertices': set([]), 'parents': {5: None}, 'dist': {5: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 6)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([16, 19, 14, 6]), 'intersection_vertices': set([]), 'parents': {16: 6, 19: 14, 14: 6, 6: None}, 'dist': {16: 1, 19: 2, 14: 1, 6: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([0, 11, 6]), 'intersection_vertices': set([]), 'parents': {0: 6, 11: 0, 6: None}, 'dist': {0: 1, 11: 2, 6: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 7)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([7]), 'intersection_vertices': set([]), 'parents': {7: None}, 'dist': {7: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([7]), 'intersection_vertices': set([]), 'parents': {7: None}, 'dist': {7: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 8)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([8]), 'intersection_vertices': set([]), 'parents': {8: None}, 'dist': {8: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([8]), 'intersection_vertices': set([]), 'parents': {8: None}, 'dist': {8: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 9)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([9, 17]), 'intersection_vertices': set([]), 'parents': {9: None, 17: 9}, 'dist': {9: 0, 17: 1}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([9]), 'intersection_vertices': set([]), 'parents': {9: None}, 'dist': {9: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 10)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([10]), 'intersection_vertices': set([]), 'parents': {10: None}, 'dist': {10: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([10, 11]), 'intersection_vertices': set([]), 'parents': {10: None, 11: 10}, 'dist': {10: 0, 11: 1}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 11)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([0, 1, 6, 10, 11, 13, 14, 16, 17, 19]), 'intersection_vertices': set([1]), 'parents': {0: 11, 1: 0, 6: 0, 10: 11, 11: None, 13: 0, 14: 11, 16: 6, 17: 11, 19: 14}, 'dist': {0: 1, 1: 2, 6: 2, 10: 1, 11: 0, 13: 2, 14: 1, 16: 3, 17: 1, 19: 2}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([11]), 'intersection_vertices': set([]), 'parents': {11: None}, 'dist': {11: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 12)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([12]), 'intersection_vertices': set([]), 'parents': {12: None}, 'dist': {12: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([1, 2, 12]), 'intersection_vertices': set([1]), 'parents': {1: 12, 2: 12, 12: None}, 'dist': {1: 1, 2: 1, 12: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 13)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([13]), 'intersection_vertices': set([]), 'parents': {13: None}, 'dist': {13: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([0, 11, 13]), 'intersection_vertices': set([]), 'parents': {0: 13, 11: 0, 13: None}, 'dist': {0: 1, 11: 2, 13: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 14)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([19, 14]), 'intersection_vertices': set([]), 'parents': {19: 14, 14: None}, 'dist': {19: 1, 14: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([0, 11, 6, 14]), 'intersection_vertices': set([]), 'parents': {0: 6, 11: 14, 6: 14, 14: None}, 'dist': {0: 2, 11: 1, 6: 1, 14: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 15)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([15]), 'intersection_vertices': set([]), 'parents': {15: None}, 'dist': {15: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([15]), 'intersection_vertices': set([]), 'parents': {15: None}, 'dist': {15: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 16)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([16]), 'intersection_vertices': set([]), 'parents': {16: None}, 'dist': {16: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([16, 0, 11, 5, 6]), 'intersection_vertices': set([]), 'parents': {16: None, 0: 6, 11: 0, 5: 16, 6: 16}, 'dist': {16: 0, 0: 2, 11: 3, 5: 1, 6: 1}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 17)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([17]), 'intersection_vertices': set([]), 'parents': {17: None}, 'dist': {17: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([17, 11, 9]), 'intersection_vertices': set([]), 'parents': {17: None, 11: 17, 9: 17}, 'dist': {17: 0, 11: 1, 9: 1}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 19)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([19]), 'intersection_vertices': set([]), 'parents': {19: None}, 'dist': {19: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([11, 0, 19, 6, 14]), 'intersection_vertices': set([]), 'parents': {11: 14, 0: 6, 19: None, 6: 14, 14: 19}, 'dist': {11: 2, 0: 3, 19: 0, 6: 2, 14: 1}})
+END TEST FOR COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+OUTER VERTEX METHOD DID NOT YIELD RESULTS
+Solution was not found with poly solution
+##############################################
+{'result': False}
+GRAPH IS: 
+defaultdict(<type 'set'>, {0: set([]), 1: set([8, 2]), 2: set([1, 12]), 3: set([10]), 4: set([17, 10]), 5: set([]), 6: set([]), 7: set([14, 15]), 8: set([18, 10]), 9: set([4, 13]), 10: set([5]), 11: set([6]), 12: set([9, 4]), 13: set([]), 14: set([16]), 15: set([9]), 16: set([0, 11]), 17: set([4]), 18: set([2, 4]), 19: set([9, 4])})
+################################# BRUTE FORCE SOLUTION
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 18)
+('bfs_tree', {1: None, 2: 1, 4: 18, 5: 10, 8: 1, 9: 12, 10: 8, 12: 2, 13: 9, 17: 4, 18: 8})
+('n is', 18)
+('n is', 8)
+('n is', 1)
+{'result': False}
+Solution was not found with brute force solution
+################################# POLY SOLUTION
+defaultdict(<type 'set'>, {0: set([16]), 1: set([2]), 2: set([1, 18]), 4: set([9, 18, 19, 12, 17]), 5: set([10]), 6: set([11]), 8: set([1]), 9: set([19, 12, 15]), 10: set([8, 3, 4]), 11: set([16]), 12: set([2]), 13: set([9]), 14: set([7]), 15: set([7]), 16: set([14]), 17: set([4]), 18: set([8])})
+('shortest_path_length is ', 2)
+('shortest length other way is ', 2)
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 18)
+('bfs_tree', {1: None, 2: 1, 4: 18, 5: 10, 8: 1, 9: 12, 10: 8, 12: 2, 13: 9, 17: 4, 18: 8})
+('n is', 18)
+('n is', 8)
+('n is', 1)
+('dist S', {1: 0, 2: 1, 4: 3, 5: 3, 8: 1, 9: 3, 10: 2, 12: 2, 13: 4, 17: 4, 18: 2})
+('dist T', {8: 1, 1: 2, 18: 0, 2: 3})
+set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19])
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 8)
+('bfs_tree', {1: None, 2: 1, 4: 18, 5: 10, 8: 1, 9: 12, 10: 8, 12: 2, 13: 9, 17: 4, 18: 8})
+('n is', 8)
+('n is', 1)
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 8)
+('bfs_tree', {8: 18, 1: 8, 18: None, 2: 1})
+('n is', 8)
+('n is', 18)
+('path V to S', [8, 1])
+('path V to T', [8, 18])
+('path S to V to T', [1, 8, 18])
+('shortest path subgraph is: ', defaultdict(<type 'set'>, {8: set([18]), 1: set([8]), 18: set([])}))
+('graph_bfs_tree_with_root_s', {'seen': set([1, 2, 4, 5, 8, 9, 10, 12, 13, 17, 18]), 'parents': {1: None, 2: 1, 4: 18, 5: 10, 8: 1, 9: 12, 10: 8, 12: 2, 13: 9, 17: 4, 18: 8}, 'dist': {1: 0, 2: 1, 4: 3, 5: 3, 8: 1, 9: 3, 10: 2, 12: 2, 13: 4, 17: 4, 18: 2}})
+('reverse_graph_bfs_tree_with_root_t', {'seen': set([8, 1, 18, 2]), 'parents': {8: 18, 1: 8, 18: None, 2: 1}, 'dist': {8: 1, 1: 2, 18: 0, 2: 3}})
+('A SHORTEST PATH IS: ', [1, 8, 18])
+('SHORTEST PATH LENGTH IS ', 2)
+Start lost edges method
+NOT IN DAG NEIGHBORS IS 
+set([])
+NOT IN DAG NEIGHBORS IS 
+set([])
+NOT IN DAG NEIGHBORS IS 
+set([])
+Lost edges method yielded no results
+START OUTER VERTEX METHOD
+('OUTER VERTICES TO TEST', set([0, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19]))
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 0)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([0, 16, 14, 7]), 'intersection_vertices': set([]), 'parents': {0: None, 16: 0, 14: 16, 7: 14}, 'dist': {0: 0, 16: 1, 14: 2, 7: 3}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([0]), 'intersection_vertices': set([]), 'parents': {0: None}, 'dist': {0: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 2)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([1, 2, 18]), 'intersection_vertices': set([1, 18]), 'parents': {1: 2, 2: None, 18: 2}, 'dist': {1: 1, 2: 0, 18: 1}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([1, 2, 4, 5, 9, 10, 12, 13, 17]), 'intersection_vertices': set([1]), 'parents': {1: 2, 2: None, 4: 12, 5: 10, 9: 12, 10: 4, 12: 2, 13: 9, 17: 4}, 'dist': {1: 1, 2: 0, 4: 2, 5: 4, 9: 2, 10: 3, 12: 1, 13: 3, 17: 3}})
+('WE WILL TEST X, Y PAIR: ', (1, 1))
+('WE WILL TEST X, Y PAIR: ', (18, 1))
+FAILED ON FIRST DFS.
+LONGER PATH RESULT FOR (z,x,y) = (2, 18, 1)is the following: {'result': False}
+CALLLED CREATE CRAZY PATH WITHOUT OVERLAPPING! #########################################3
+X is 18 Y is 1 Z is 2
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 18)
+('bfs_tree', {1: 2, 2: None, 18: 2})
+('n is', 18)
+('n is', 2)
+('SHORTEST PATH FROM X TO Z IS THE FOLLOWING ', [18, 2])
+('dfs path from z to y crazy path', {'seen': set([2]), 'end': 1, 'parents': {1: 2, 2: None}, 'result': True, 'start': 1})
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 1)
+('bfs_tree', {1: 2, 2: None})
+('n is', 1)
+('n is', 2)
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 3)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([3]), 'intersection_vertices': set([]), 'parents': {3: None}, 'dist': {3: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([10, 3, 5]), 'intersection_vertices': set([]), 'parents': {10: 3, 3: None, 5: 10}, 'dist': {10: 1, 3: 0, 5: 2}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 4)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([1, 2, 4, 7, 9, 12, 15, 17, 18, 19]), 'intersection_vertices': set([1, 18]), 'parents': {1: 2, 2: 12, 4: None, 7: 15, 9: 4, 12: 4, 15: 9, 17: 4, 18: 4, 19: 4}, 'dist': {1: 3, 2: 2, 4: 0, 7: 3, 9: 1, 12: 1, 15: 2, 17: 1, 18: 1, 19: 1}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([17, 10, 4, 5]), 'intersection_vertices': set([]), 'parents': {17: 4, 10: 4, 4: None, 5: 10}, 'dist': {17: 1, 10: 1, 4: 0, 5: 2}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 5)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([1, 2, 3, 4, 5, 7, 8, 9, 10, 12, 15, 17, 18, 19]), 'intersection_vertices': set([8, 1, 18]), 'parents': {1: 2, 2: 12, 3: 10, 4: 10, 5: None, 7: 15, 8: 10, 9: 4, 10: 5, 12: 4, 15: 9, 17: 4, 18: 4, 19: 4}, 'dist': {1: 5, 2: 4, 3: 2, 4: 2, 5: 0, 7: 5, 8: 2, 9: 3, 10: 1, 12: 3, 15: 4, 17: 3, 18: 3, 19: 3}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([5]), 'intersection_vertices': set([]), 'parents': {5: None}, 'dist': {5: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 6)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([16, 11, 14, 6, 7]), 'intersection_vertices': set([]), 'parents': {16: 11, 11: 6, 14: 16, 6: None, 7: 14}, 'dist': {16: 2, 11: 1, 14: 3, 6: 0, 7: 4}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([6]), 'intersection_vertices': set([]), 'parents': {6: None}, 'dist': {6: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 7)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([7]), 'intersection_vertices': set([]), 'parents': {7: None}, 'dist': {7: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([0, 4, 5, 6, 7, 9, 10, 11, 13, 14, 15, 16, 17]), 'intersection_vertices': set([]), 'parents': {0: 16, 4: 9, 5: 10, 6: 11, 7: None, 9: 15, 10: 4, 11: 16, 13: 9, 14: 7, 15: 7, 16: 14, 17: 4}, 'dist': {0: 3, 4: 3, 5: 5, 6: 4, 7: 0, 9: 2, 10: 4, 11: 3, 13: 3, 14: 1, 15: 1, 16: 2, 17: 4}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 9)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([1, 2, 7, 9, 12, 15, 18, 19]), 'intersection_vertices': set([1, 18]), 'parents': {1: 2, 2: 12, 7: 15, 9: None, 12: 9, 15: 9, 18: 2, 19: 9}, 'dist': {1: 3, 2: 2, 7: 2, 9: 0, 12: 1, 15: 1, 18: 3, 19: 1}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([4, 5, 9, 10, 13, 17]), 'intersection_vertices': set([]), 'parents': {4: 9, 5: 10, 9: None, 10: 4, 13: 9, 17: 4}, 'dist': {4: 1, 5: 3, 9: 0, 10: 2, 13: 1, 17: 2}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 10)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([1, 2, 3, 4, 7, 8, 9, 10, 12, 15, 17, 18, 19]), 'intersection_vertices': set([8, 1, 18]), 'parents': {1: 2, 2: 12, 3: 10, 4: 10, 7: 15, 8: 10, 9: 4, 10: None, 12: 4, 15: 9, 17: 4, 18: 4, 19: 4}, 'dist': {1: 4, 2: 3, 3: 1, 4: 1, 7: 4, 8: 1, 9: 2, 10: 0, 12: 2, 15: 3, 17: 2, 18: 2, 19: 2}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([10, 5]), 'intersection_vertices': set([]), 'parents': {10: None, 5: 10}, 'dist': {10: 0, 5: 1}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 11)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([16, 11, 14, 7]), 'intersection_vertices': set([]), 'parents': {16: 11, 11: None, 14: 16, 7: 14}, 'dist': {16: 1, 11: 0, 14: 2, 7: 3}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([11, 6]), 'intersection_vertices': set([]), 'parents': {11: None, 6: 11}, 'dist': {11: 0, 6: 1}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 12)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([1, 2, 12, 18]), 'intersection_vertices': set([1, 18]), 'parents': {1: 2, 2: 12, 12: None, 18: 2}, 'dist': {1: 2, 2: 1, 12: 0, 18: 2}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([4, 5, 9, 10, 12, 13, 17]), 'intersection_vertices': set([]), 'parents': {4: 12, 5: 10, 9: 12, 10: 4, 12: None, 13: 9, 17: 4}, 'dist': {4: 1, 5: 3, 9: 1, 10: 2, 12: 0, 13: 2, 17: 2}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 13)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([1, 2, 7, 9, 12, 13, 15, 18, 19]), 'intersection_vertices': set([1, 18]), 'parents': {1: 2, 2: 12, 7: 15, 9: 13, 12: 9, 13: None, 15: 9, 18: 2, 19: 9}, 'dist': {1: 4, 2: 3, 7: 3, 9: 1, 12: 2, 13: 0, 15: 2, 18: 4, 19: 2}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([13]), 'intersection_vertices': set([]), 'parents': {13: None}, 'dist': {13: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 14)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([14, 7]), 'intersection_vertices': set([]), 'parents': {14: None, 7: 14}, 'dist': {14: 0, 7: 1}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([16, 0, 11, 6, 14]), 'intersection_vertices': set([]), 'parents': {16: 14, 0: 16, 11: 16, 6: 11, 14: None}, 'dist': {16: 1, 0: 2, 11: 2, 6: 3, 14: 0}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 15)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([7, 15]), 'intersection_vertices': set([]), 'parents': {7: 15, 15: None}, 'dist': {7: 1, 15: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([4, 5, 9, 10, 13, 15, 17]), 'intersection_vertices': set([]), 'parents': {4: 9, 5: 10, 9: 15, 10: 4, 13: 9, 15: None, 17: 4}, 'dist': {4: 2, 5: 4, 9: 1, 10: 3, 13: 2, 15: 0, 17: 3}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 16)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([16, 14, 7]), 'intersection_vertices': set([]), 'parents': {16: None, 14: 16, 7: 14}, 'dist': {16: 0, 14: 1, 7: 2}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([16, 0, 11, 6]), 'intersection_vertices': set([]), 'parents': {16: None, 0: 16, 11: 16, 6: 11}, 'dist': {16: 0, 0: 1, 11: 1, 6: 2}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 17)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([1, 2, 4, 7, 9, 12, 15, 17, 18, 19]), 'intersection_vertices': set([1, 18]), 'parents': {1: 2, 2: 12, 4: 17, 7: 15, 9: 4, 12: 4, 15: 9, 17: None, 18: 4, 19: 4}, 'dist': {1: 4, 2: 3, 4: 1, 7: 4, 9: 2, 12: 2, 15: 3, 17: 0, 18: 2, 19: 2}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([17, 10, 4, 5]), 'intersection_vertices': set([]), 'parents': {17: None, 10: 4, 4: 17, 5: 10}, 'dist': {17: 0, 10: 2, 4: 1, 5: 3}})
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 19)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([19]), 'intersection_vertices': set([]), 'parents': {19: None}, 'dist': {19: 0}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([4, 5, 9, 10, 13, 17, 19]), 'intersection_vertices': set([]), 'parents': {4: 19, 5: 10, 9: 19, 10: 4, 13: 9, 17: 4, 19: None}, 'dist': {4: 1, 5: 3, 9: 1, 10: 2, 13: 2, 17: 2, 19: 0}})
+END TEST FOR COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+OUTER VERTEX METHOD DID NOT YIELD RESULTS
+Solution was not found with poly solution
+##############################################
+{'result': False}
+GRAPH IS: 
+defaultdict(<type 'set'>, {0: set([]), 1: set([]), 2: set([14]), 3: set([2, 5]), 4: set([7]), 5: set([14]), 6: set([1, 15]), 7: set([]), 8: set([16, 10]), 9: set([19, 13]), 10: set([]), 11: set([]), 12: set([]), 13: set([5, 14]), 14: set([]), 15: set([]), 16: set([2, 6]), 17: set([9]), 18: set([3, 14]), 19: set([9])})
+################################# BRUTE FORCE SOLUTION
+{'result': False}
+Solution was not found with brute force solution
+################################# POLY SOLUTION
+defaultdict(<type 'set'>, {1: set([6]), 2: set([16, 3]), 3: set([18]), 5: set([3, 13]), 6: set([16]), 7: set([4]), 9: set([17, 19]), 10: set([8]), 13: set([9]), 14: set([2, 18, 5, 13]), 15: set([6]), 16: set([8]), 19: set([9])})
+THERE IS NO SHORTEST PATH BETWEEN S AND T, SO THERE IS NO SOLUTION. FALSE. BYE
+Solution was not found with poly solution
+##############################################
+{'result': False}
+GRAPH IS: 
+defaultdict(<type 'set'>, {0: set([2]), 1: set([]), 2: set([12, 6]), 3: set([16, 7]), 4: set([14, 6]), 5: set([14]), 6: set([0]), 7: set([16]), 8: set([2]), 9: set([2, 18]), 10: set([4]), 11: set([0]), 12: set([9, 13]), 13: set([17, 2]), 14: set([]), 15: set([3]), 16: set([10]), 17: set([]), 18: set([3]), 19: set([16, 10])})
+################################# BRUTE FORCE SOLUTION
+{'result': False}
+Solution was not found with brute force solution
+################################# POLY SOLUTION
+defaultdict(<type 'set'>, {0: set([11, 6]), 2: set([0, 8, 13, 9]), 3: set([18, 15]), 4: set([10]), 6: set([2, 4]), 7: set([3]), 9: set([12]), 10: set([16, 19]), 12: set([2]), 13: set([12]), 14: set([4, 5]), 16: set([19, 3, 7]), 17: set([13]), 18: set([9])})
+THERE IS NO SHORTEST PATH BETWEEN S AND T, SO THERE IS NO SOLUTION. FALSE. BYE
+Solution was not found with poly solution
+##############################################
+{'result': False}
+GRAPH IS: 
+defaultdict(<type 'set'>, {0: set([]), 1: set([16, 3]), 2: set([16, 4]), 3: set([0]), 4: set([9, 18]), 5: set([16, 14]), 6: set([10, 3]), 7: set([]), 8: set([18, 4]), 9: set([]), 10: set([19, 15]), 11: set([]), 12: set([9, 19]), 13: set([]), 14: set([]), 15: set([8, 0]), 16: set([13]), 17: set([8]), 18: set([16, 2]), 19: set([])})
+################################# BRUTE FORCE SOLUTION
+{'result': False}
+Solution was not found with brute force solution
+################################# POLY SOLUTION
+defaultdict(<type 'set'>, {0: set([3, 15]), 2: set([18]), 3: set([1, 6]), 4: set([8, 2]), 8: set([17, 15]), 9: set([12, 4]), 10: set([6]), 13: set([16]), 14: set([5]), 15: set([10]), 16: set([1, 2, 18, 5]), 18: set([8, 4]), 19: set([10, 12])})
+THERE IS NO SHORTEST PATH BETWEEN S AND T, SO THERE IS NO SOLUTION. FALSE. BYE
+Solution was not found with poly solution
+##############################################
+{'result': False}
+GRAPH IS: 
+defaultdict(<type 'set'>, {0: set([15, 7]), 1: set([11, 12]), 2: set([19, 14]), 3: set([18]), 4: set([18, 14]), 5: set([6]), 6: set([4, 14]), 7: set([16, 18]), 8: set([1, 2]), 9: set([18]), 10: set([16]), 11: set([]), 12: set([13, 7]), 13: set([1, 18]), 14: set([7]), 15: set([5]), 16: set([15]), 17: set([10]), 18: set([0]), 19: set([5])})
+################################# BRUTE FORCE SOLUTION
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 18)
+('bfs_tree', {0: 18, 1: None, 4: 6, 5: 15, 6: 5, 7: 12, 11: 1, 12: 1, 13: 12, 14: 6, 15: 16, 16: 7, 18: 13})
+('n is', 18)
+('n is', 13)
+('n is', 12)
+('n is', 1)
+{'a_longer_path': [1, 12, 7, 16, 15, 5, 6, 4, 18], 'a_shortest_path': [1, 12, 13, 18], 'result': True}
+THE PATH [1, 12, 13, 18] has been verified
+THE PATH [1, 12, 7, 16, 15, 5, 6, 4, 18] has been verified
+Two paths are GOOD. VERIFIED
+brute force correct
+################################# POLY SOLUTION
+defaultdict(<type 'set'>, {0: set([18]), 1: set([8, 13]), 2: set([8]), 4: set([6]), 5: set([19, 15]), 6: set([5]), 7: set([0, 12, 14]), 10: set([17]), 11: set([1]), 12: set([1]), 13: set([12]), 14: set([2, 4, 6]), 15: set([0, 16]), 16: set([10, 7]), 18: set([9, 3, 4, 13, 7]), 19: set([2])})
+('shortest_path_length is ', 3)
+('shortest length other way is ', 3)
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 18)
+('bfs_tree', {0: 18, 1: None, 4: 6, 5: 15, 6: 5, 7: 12, 11: 1, 12: 1, 13: 12, 14: 6, 15: 16, 16: 7, 18: 13})
+('n is', 18)
+('n is', 13)
+('n is', 12)
+('n is', 1)
+('dist S', {0: 4, 1: 0, 4: 7, 5: 5, 6: 6, 7: 2, 11: 1, 12: 1, 13: 2, 14: 7, 15: 4, 16: 3, 18: 3})
+('dist T', {0: 2, 1: 3, 2: 3, 3: 1, 4: 1, 5: 3, 6: 2, 7: 1, 8: 4, 9: 1, 10: 6, 12: 2, 13: 1, 14: 2, 15: 4, 16: 5, 17: 7, 18: 0, 19: 4})
+set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19])
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 7)
+('bfs_tree', {0: 18, 1: None, 4: 6, 5: 15, 6: 5, 7: 12, 11: 1, 12: 1, 13: 12, 14: 6, 15: 16, 16: 7, 18: 13})
+('n is', 7)
+('n is', 12)
+('n is', 1)
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 7)
+('bfs_tree', {0: 7, 1: 12, 2: 14, 3: 18, 4: 18, 5: 6, 6: 4, 7: 18, 8: 1, 9: 18, 10: 16, 12: 13, 13: 18, 14: 7, 15: 5, 16: 15, 17: 10, 18: None, 19: 5})
+('n is', 7)
+('n is', 18)
+('path V to S', [7, 12, 1])
+('path V to T', [7, 18])
+('path S to V to T', [1, 12, 7, 18])
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 12)
+('bfs_tree', {0: 18, 1: None, 4: 6, 5: 15, 6: 5, 7: 12, 11: 1, 12: 1, 13: 12, 14: 6, 15: 16, 16: 7, 18: 13})
+('n is', 12)
+('n is', 1)
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 12)
+('bfs_tree', {0: 7, 1: 12, 2: 14, 3: 18, 4: 18, 5: 6, 6: 4, 7: 18, 8: 1, 9: 18, 10: 16, 12: 13, 13: 18, 14: 7, 15: 5, 16: 15, 17: 10, 18: None, 19: 5})
+('n is', 12)
+('n is', 13)
+('n is', 18)
+('path V to S', [12, 1])
+('path V to T', [12, 13, 18])
+('path S to V to T', [1, 12, 13, 18])
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 13)
+('bfs_tree', {0: 18, 1: None, 4: 6, 5: 15, 6: 5, 7: 12, 11: 1, 12: 1, 13: 12, 14: 6, 15: 16, 16: 7, 18: 13})
+('n is', 13)
+('n is', 12)
+('n is', 1)
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 13)
+('bfs_tree', {0: 7, 1: 12, 2: 14, 3: 18, 4: 18, 5: 6, 6: 4, 7: 18, 8: 1, 9: 18, 10: 16, 12: 13, 13: 18, 14: 7, 15: 5, 16: 15, 17: 10, 18: None, 19: 5})
+('n is', 13)
+('n is', 18)
+('path V to S', [13, 12, 1])
+('path V to T', [13, 18])
+('path S to V to T', [1, 12, 13, 18])
+('shortest path subgraph is: ', defaultdict(<type 'set'>, {1: set([12]), 18: set([]), 12: set([13, 7]), 13: set([18]), 7: set([18])}))
+('graph_bfs_tree_with_root_s', {'seen': set([0, 1, 4, 5, 6, 7, 11, 12, 13, 14, 15, 16, 18]), 'parents': {0: 18, 1: None, 4: 6, 5: 15, 6: 5, 7: 12, 11: 1, 12: 1, 13: 12, 14: 6, 15: 16, 16: 7, 18: 13}, 'dist': {0: 4, 1: 0, 4: 7, 5: 5, 6: 6, 7: 2, 11: 1, 12: 1, 13: 2, 14: 7, 15: 4, 16: 3, 18: 3}})
+('reverse_graph_bfs_tree_with_root_t', {'seen': set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19]), 'parents': {0: 7, 1: 12, 2: 14, 3: 18, 4: 18, 5: 6, 6: 4, 7: 18, 8: 1, 9: 18, 10: 16, 12: 13, 13: 18, 14: 7, 15: 5, 16: 15, 17: 10, 18: None, 19: 5}, 'dist': {0: 2, 1: 3, 2: 3, 3: 1, 4: 1, 5: 3, 6: 2, 7: 1, 8: 4, 9: 1, 10: 6, 12: 2, 13: 1, 14: 2, 15: 4, 16: 5, 17: 7, 18: 0, 19: 4}})
+('A SHORTEST PATH IS: ', [1, 12, 13, 18])
+('SHORTEST PATH LENGTH IS ', 3)
+Start lost edges method
+NOT IN DAG NEIGHBORS IS 
+set([])
+NOT IN DAG NEIGHBORS IS 
+set([])
+NOT IN DAG NEIGHBORS IS 
+set([])
+NOT IN DAG NEIGHBORS IS 
+set([1])
+FAILED ON FIRST DFS.
+NOT IN DAG NEIGHBORS IS 
+set([])
+Lost edges method yielded no results
+START OUTER VERTEX METHOD
+('OUTER VERTICES TO TEST', set([0, 2, 3, 4, 5, 6, 8, 9, 10, 11, 14, 15, 16, 17, 19]))
+TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+('COORDINATION POINT Z IS ', 0)
+('CRAZY BFS RESULT X_to_Z_result', {'seen': set([0, 18]), 'intersection_vertices': set([18]), 'parents': {0: None, 18: 0}, 'dist': {0: 0, 18: 1}})
+('CRAZY_BFS_RESULT_Z_to_Y', {'seen': set([0, 4, 5, 6, 7, 14, 15, 18]), 'intersection_vertices': set([18, 7]), 'parents': {0: None, 4: 6, 5: 15, 6: 5, 7: 0, 14: 6, 15: 0, 18: 4}, 'dist': {0: 0, 4: 4, 5: 2, 6: 3, 7: 1, 14: 4, 15: 1, 18: 5}})
+('WE WILL TEST X, Y PAIR: ', (18, 18))
+('WE WILL TEST X, Y PAIR: ', (18, 7))
+IT WAS MERGED WITHIN 2 DFS'S
+LONGER PATH RESULT FOR (z,x,y) = (0, 18, 7)is the following: {'Y_to_T_dfs_tree': {18: 7, 7: None}, 'S_to_X_dfs_tree': {1: None, 18: 13, 12: 1, 13: 12}, 'result': True}
+CALLLED CREATE CRAZY PATH WITHOUT OVERLAPPING! #########################################3
+X is 18 Y is 7 Z is 0
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 18)
+('bfs_tree', {0: None, 18: 0})
+('n is', 18)
+('n is', 0)
+('SHORTEST PATH FROM X TO Z IS THE FOLLOWING ', [18, 0])
+('dfs path from z to y crazy path', {'seen': set([0, 4, 5, 6, 14, 15]), 'end': 7, 'parents': {0: None, 4: 6, 5: 15, 6: 5, 7: 14, 14: 4, 15: 0, 18: 4}, 'result': True, 'start': 7})
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 7)
+('bfs_tree', {0: None, 4: 6, 5: 15, 6: 5, 7: 14, 14: 4, 15: 0, 18: 4})
+('n is', 7)
+('n is', 14)
+('n is', 4)
+('n is', 6)
+('n is', 5)
+('n is', 15)
+('n is', 0)
+There are is a shorter and longer path! They are the following: 
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 18)
+('bfs_tree', {1: None, 18: 13, 12: 1, 13: 12})
+('n is', 18)
+('n is', 13)
+('n is', 12)
+('n is', 1)
+('S->X', [18, 13, 12, 1])
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 18)
+('bfs_tree', {0: None, 18: 0})
+('n is', 18)
+('n is', 0)
+('X->Z', [18, 0])
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 7)
+('bfs_tree', {0: None, 4: 6, 5: 15, 6: 5, 7: 0, 14: 6, 15: 0, 18: 4})
+('n is', 7)
+('n is', 0)
+('Z->Y', [0, 7])
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 18)
+('bfs_tree', {18: 7, 7: None})
+('n is', 18)
+('n is', 7)
+('Y->T', [7, 18])
+('X->Z->Y CRAZY PATH', {'result': True, 'crazy_path': [18, 0, 7, 14, 4, 6, 5, 15, 0]})
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 18)
+('bfs_tree', {1: None, 18: 13, 12: 1, 13: 12})
+('n is', 18)
+('n is', 13)
+('n is', 12)
+('n is', 1)
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 18)
+('bfs_tree', {0: None, 18: 0})
+('n is', 18)
+('n is', 0)
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 7)
+('bfs_tree', {0: None, 4: 6, 5: 15, 6: 5, 7: 0, 14: 6, 15: 0, 18: 4})
+('n is', 7)
+('n is', 0)
+GET PATH TO ROOT CALLED WITH FOLLOWING; 
+('NODE IS: ', 18)
+('bfs_tree', {18: 7, 7: None})
+('n is', 18)
+('n is', 7)
+a longest path: [1, 12, 13, 18, 0, 7, 18]
+WE FOUND A SHORTER AND A LONGER DIRECTED SIMPLE PATH USING OUTER VERTEX METHOD. THEY ARE: 
+[1, 12, 13, 18]
+[1, 12, 13, 18, 0, 7, 18]
+Long path is not simple
+solution POLY came up with is WRONG

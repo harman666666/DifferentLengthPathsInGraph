@@ -55,31 +55,37 @@ def dfs_with_restriction_set(graph, start, end, restriction_set, seen = None, pa
     # dont dfs in a cycle. visited set stops that!
 
     if(seen is None):
-        seen = set()
+        seen = set([start])
         parents = {}
         parents[start] = None # start has no parents
 
-    if(start in restriction_set or start in seen):
+    if(start in restriction_set): # or start in seen):
         # Kill this branch. 
         return {
             "result": False,
         }
     
-    seen.add(start)
+    
     
     if(start == end):
         return {
                 "result": True,
                 "parents": parents,
-                "seen": seen
+                "seen": seen, 
+                "start": start, 
+                "end" : end
             }
+
     neighbors = graph[start]
     
     for i in neighbors:
-        parents[i] = start
-        dfs_result = dfs_with_restriction_set(graph, i, end, restriction_set, seen, parents)
-        if(dfs_result["result"]):
-            return dfs_result
+        if( i not in seen): 
+            parents[i] = start
+            seen.add(start)
+
+            dfs_result = dfs_with_restriction_set(graph, i, end, restriction_set, seen, parents)
+            if(dfs_result["result"]):
+                return dfs_result
 
     return {
         "result": False
@@ -87,20 +93,20 @@ def dfs_with_restriction_set(graph, start, end, restriction_set, seen = None, pa
 
 # Get the path to the root of a DFS or BFS tree. 
 # bfs_tree is also the parents hashmap. we climb parents to get to root!
-def get_path_to_root(bfs_tree, node):
+def get_path_to_root(bfs_tree, node, DEBUG=False):
     # root has parent called undefiend
     n = node 
     path = [n]
 
-    print("GET PATH TO ROOT CALLED WITH FOLLOWING; ")
-    print("NODE IS: ", node)
-    print("bfs_tree", bfs_tree)
+    if(DEBUG): print("GET PATH TO ROOT CALLED WITH FOLLOWING; ")
+    if(DEBUG): print("NODE IS: ", node)
+    if(DEBUG): print("bfs_tree", bfs_tree)
     
 
     while True:
-        print("n is", n)
+        if(DEBUG): print("n is", n)
         parent = bfs_tree[n]
-        print(parent)    
+        #print(parent)    
 
         if(parent is None):
             break

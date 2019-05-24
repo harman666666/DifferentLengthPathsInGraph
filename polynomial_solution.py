@@ -253,7 +253,6 @@ def create_crazy_path_without_overlaps(X,
                                        X_to_Z_bfs_tree_parents, 
                                        Z_to_Y_bfs_tree_parents, 
                                        graph, 
-                                       reversed_graph,
                                        shortest_paths_dag, 
                                        DEBUG=DO_DEBUG):
 
@@ -264,16 +263,19 @@ def create_crazy_path_without_overlaps(X,
     # BFS from Z to Y
     # Then DFS from X to Z
     
+    print("CALLLED CREATE CRAZY PATH WITHOUT OVERLAPPING! #########################################3")
+    print("X is " + str(X) + " Y is " + str(Y) + " Z is " + str(Z))
 
-    shortest_path_x_to_z = get_path_to_root(X_to_Z_bfs_tree_parents, X)[:-1]
+    shortest_path_x_to_z = get_path_to_root(X_to_Z_bfs_tree_parents, X)
     if(DEBUG): print("SHORTEST PATH FROM X TO Z IS THE FOLLOWING ", shortest_path_x_to_z)
     
     
-
-    dfs_path_from_z_to_y = dfs_with_restriction_set(graph=reversed_graph, 
+    dfs_from_z_to_y_restriction_set = set(shortest_path_x_to_z + shortest_paths_dag.keys()) - set([Z, Y])
+    dfs_path_from_z_to_y = dfs_with_restriction_set(graph=graph, 
                                                     start=Z, 
                                                     end=Y, 
-                                                    restriction_set=(set(shortest_path_x_to_z + shortest_paths_dag.keys()) - set([Z, Y])))
+                                                    restriction_set=dfs_from_z_to_y_restriction_set)
+
 
     if(DEBUG): print("dfs path from z to y crazy path", dfs_path_from_z_to_y)
 
@@ -281,20 +283,22 @@ def create_crazy_path_without_overlaps(X,
     if(dfs_path_from_z_to_y["result"]):
         return {
             "result": True,
-            "crazy_path": shortest_path_x_to_z[::1] + get_path_to_root(dfs_path_from_z_to_y["parents"], Y) 
+            "crazy_path": shortest_path_x_to_z[::1] + 
+                          get_path_to_root(dfs_path_from_z_to_y["parents"], Y) 
         }
     
 
     if(DEBUG): print("CRAZY PATH BUILD FAILED ON FIRST ATTEMPT. SECOND ATTEMPT")
 
-    shortest_path_z_to_y = get_path_to_root(Z_to_Y_bfs_tree_parents, Y)[1::]
+    shortest_path_z_to_y = get_path_to_root(Z_to_Y_bfs_tree_parents, Y)
     
     if(DEBUG): print("SHORTEST PATH FROM Z TO Y IS THE FOLLOWING ", shortest_path_z_to_y)
 
     dfs_path_from_x_to_z = dfs_with_restriction_set(graph=graph, 
                                                start=X, 
                                                end=Z, 
-                                               restriction_set=(set(shortest_path_z_to_y + shortest_paths_dag.keys()) - set([X, Z])) ) 
+                                               restriction_set=(set(shortest_path_z_to_y + 
+                                                                    shortest_paths_dag.keys()) - set([X, Z])) ) 
     
     if(DEBUG): print("dfs path from x to z crazy path", dfs_path_from_x_to_z)
 
@@ -525,13 +529,12 @@ def create_longer_path_using_an_outer_vertex(graph, reversed_graph, shortest_pat
 
 
                     X_to_Z_to_Y_path = create_crazy_path_without_overlaps(X=x, 
-                                                                              Y=y, 
-                                                                              Z=Z, 
-                                                                              X_to_Z_bfs_tree_parents=X_to_Z_Result["parents"],
-                                                                              Z_to_Y_bfs_tree_parents=Z_to_Y_Result["parents"],
-                                                                              graph=graph, 
-                                                                              reversed_graph=reversed_graph,
-                                                                              shortest_paths_dag=shortest_paths_dag)
+                                                                          Y=y, 
+                                                                          Z=Z, 
+                                                                          X_to_Z_bfs_tree_parents=X_to_Z_Result["parents"],
+                                                                          Z_to_Y_bfs_tree_parents=Z_to_Y_Result["parents"],
+                                                                          graph=graph, 
+                                                                          shortest_paths_dag=shortest_paths_dag)
                     if(X_to_Z_to_Y_path["result"] == False):
                         if(DEBUG): print(" SIMPLE PATH FROM X TO Z TO Y does not exist!!! CREATING CRAZY PATH WITHOUT OVERLAPS FAILED.")
                         continue

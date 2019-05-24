@@ -8,7 +8,7 @@ def find_longer_path(graph, s, t, shortest_length):
 
     if s == t:
         return {
-            "founder_longer_path": False, 
+            "found_longer_path": False, 
         }
     
     
@@ -39,6 +39,10 @@ def find_longer_path(graph, s, t, shortest_length):
             else: 
                 # Detected cycle. kill recursion
                 continue
+    
+    return {
+        "found_longer_path": False
+    }
 
 def brute_force_solution(graph, s, t, DEBUG=False):
 

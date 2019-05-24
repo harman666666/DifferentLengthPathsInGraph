@@ -156,9 +156,9 @@ def test_when_shortest_path_is_length_1():
 
 def benchmark_correctness_testing():
     for i in range(999999):
-        g = create_example_rand_directed_graph(vertices=100, max_neighbors=20)
+        g = create_example_rand_directed_graph(vertices=20, max_neighbors=3)
         S = 1
-        T = 89
+        T = 18
 
         print("GRAPH IS: ")
         pprint.pprint(g)
