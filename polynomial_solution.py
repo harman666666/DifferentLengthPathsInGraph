@@ -436,8 +436,7 @@ def create_longer_path_using_lost_edges(graph,
         lost_dag_neighbors = vertices_in_dag.intersection(all_neighbors - dag_neighbors) # set subtraction
         
         
-        if(DEBUG): print("NOT IN DAG NEIGHBORS IS ") 
-        if(DEBUG): print(lost_dag_neighbors)
+        if(DEBUG): print("FOR VERTEX V, LOST DAG NEIGHBORS IS ",V, lost_dag_neighbors) 
         
         for K in lost_dag_neighbors:            
             # We found a lost edge. REPORT THAT 2 PATHS OF DIFFERENT SIZE EXIST.

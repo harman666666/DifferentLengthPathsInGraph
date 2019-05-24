@@ -257,9 +257,15 @@ def hard_example_1():
 
 
 
+def hard_example_2():
+    g = {0: set([]), 1: set([0, 5]), 2: set([]), 3: set([19, 15]), 4: set([16]), 5: set([18, 10]), 6: set([]), 7: set([13, 14]), 8: set([7]), 9: set([17]), 10: set([9, 12]), 11: set([9, 12]), 12: set([17, 13]), 13: set([]), 14: set([]), 15: set([3, 6]), 16: set([]), 17: set([3, 15]), 18: set([16, 12]), 19: set([4])}
+    S = 1
+    T = 19
+    run_example(g, S, T)
 
 
-# benchmark_correctness_testing()
+#benchmark_correctness_testing()
  
-# test_when_shortest_path_is_length_1()
-hard_example_1()
+#test_when_shortest_path_is_length_1()
+#hard_example_1()
+hard_example_2()
