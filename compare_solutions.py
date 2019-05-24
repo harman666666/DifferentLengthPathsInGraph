@@ -264,8 +264,8 @@ def hard_example_2():
     run_example(g, S, T)
 
 
-#benchmark_correctness_testing()
+benchmark_correctness_testing()
  
 #test_when_shortest_path_is_length_1()
 #hard_example_1()
-hard_example_2()
+# hard_example_2()

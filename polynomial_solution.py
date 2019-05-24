@@ -66,7 +66,8 @@ def poly_solution(graph, s, t, DEBUG=DO_DEBUG):
     did_we_get_2_paths_using_lost_edges = create_longer_path_using_lost_edges(graph, 
                                                              s,
                                                              t,
-                                                             shortest_paths_dag) 
+                                                             
+                                                             shortest_paths_dag, shortest_path_length) 
 
     if(did_we_get_2_paths_using_lost_edges["result"]):
         # WE FOUND 2 PATHS!!!
@@ -124,6 +125,10 @@ def add_path_to_graph(path, g):
 
 # Shortest paths subgraph contains all the shortest paths from node s to t.
 # it is a DAG from s to t. 
+# Correction. shortest path subgraph contains all the vertices for all possible 
+# shortest paths from s to t
+# and most edges for these shortest paths. 
+# some edges dont get included. but we just need the vertices for our solution
 def create_shortest_paths_dag(graph, reversed_graph, s, t, DEBUG=DO_DEBUG):
     # You can do this by doing BFS on every vertex. Then
     
@@ -175,12 +180,12 @@ def create_shortest_paths_dag(graph, reversed_graph, s, t, DEBUG=DO_DEBUG):
                 # Add path [s -> v -> t] to shortest paths subgraph
                 path_V_to_S = get_path_to_root(parentsS, v)
                 path_V_to_T = get_path_to_root(parentsT, v) # remove the V node
-                if(DEBUG): print("path V to S", path_V_to_S)
-                if(DEBUG): print("path V to T", path_V_to_T)
+                # if(DEBUG): print("path V to S", path_V_to_S)
+                # if(DEBUG): print("path V to T", path_V_to_T)
 
                 path_S_to_V_to_T = path_V_to_S[::-1] + path_V_to_T[1::]
                 
-                if(DEBUG): print("path S to V to T", path_S_to_V_to_T)
+                if(DEBUG): print("FOR THIS V, path S to V to T added is", v, path_S_to_V_to_T)
                 # add path to subgraph
                  
                 add_path_to_graph(path_S_to_V_to_T, shortest_paths_dag)
@@ -419,6 +424,7 @@ def create_longer_path_using_lost_edges(graph,
                                         s,
                                         t,
                                         shortest_paths_dag, 
+                                        shortest_path_length,
                                         DEBUG=DO_DEBUG):
     if(DEBUG): print("Start lost edges method")
     vertices_in_dag = set(shortest_paths_dag.keys())
@@ -463,11 +469,17 @@ def create_longer_path_using_lost_edges(graph,
                 
                 if(DEBUG): print("S_TO_V", get_path_to_root(S_TO_V_DFS_TREE,  V)[::-1] )
                 if(DEBUG): print("K_To_T", get_path_to_root(K_TO_T_DFS_TREE, t)[::-1])
-
-                return {
-                    "result": True,
-                    "a_longer_path": get_path_to_root(S_TO_V_DFS_TREE, V)[::-1] + get_path_to_root(K_TO_T_DFS_TREE, t)[::-1]
+                a_longer_path = get_path_to_root(S_TO_V_DFS_TREE, V)[::-1] + get_path_to_root(K_TO_T_DFS_TREE, t)[::-1]
+                
+                # SOME LONGER PATHS WE FIND USIGN LOST EDGES METHOD ARE ACTUALLY SHORTEST PATHS BECAUSE SOME EDGES DIDNT GET ADDED.
+                
+                if(len(a_longer_path) > shortest_path_length + 1):
+                    return {
+                        "result": True,
+                        "a_longer_path": a_longer_path
                     }
+                else:
+                    continue
     
     if(DEBUG): print("Lost edges method yielded no results")
     return {
