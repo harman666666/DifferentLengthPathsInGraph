@@ -7,6 +7,7 @@ from polynomial_solution import poly_solution
 import pickle
 import time
 
+
 def test_outer_vertex_method():
     # This graph will test outer vertex method for the polynomial solution
     g = {
@@ -194,17 +195,17 @@ def performance_testing_2():
 
 # SAVE RESULTS FOR THE TEST USING BRUTEFORCE!
 
-def benchmark_correctness_testing(DEBUG=True):
+def benchmark_correctness_testing(DEBUG=False):
     score = 0
     i = 0
     while True:
         g = create_example_rand_directed_graph(vertices=25, max_neighbors=5)
         S = 1
         T = 19
+        # ITERATE THROUGH DIFFERENT S AND T: 
         
-      
         i+= 1
-        # print("GRAPH IS: ")
+        print("index: ", i)
         if DEBUG: pprint.pprint(g)
 
         if DEBUG: print("################################# BRUTE FORCE SOLUTION, index is ", i)
@@ -231,14 +232,14 @@ def benchmark_correctness_testing(DEBUG=True):
         if(poly_soln["result"]):
             b = verify_solution_if_paths_exist(g, poly_soln["a_shortest_path"],poly_soln["a_longer_path"], S, T)
             if(b):
-                print("poly soln is correct")
+                if DEBUG: print("poly soln is correct")
             else:
                 print("solution POLY came up with is WRONG")
                 break
 
 
         else:
-            print("Solution was not found with poly solution")
+            if DEBUG: print("Solution was not found with poly solution")
         
         if DEBUG: print("##############################################")
         if DEBUG: print(brute_force_soln)
@@ -286,6 +287,7 @@ def run_example(g, S, T):
 
         if(a):
             print("brute force correct")
+            print(brute_force_soln)
         else:
             print("solution brute force came up with is WRONG")
     else:
@@ -307,7 +309,7 @@ def run_example(g, S, T):
         print("Solution was not found with poly solution")
     
     print("##############################################")
-    print(brute_force_soln)
+  
 
 
 # HARD EXAMPLE 1 ONLY PASSES IF YOU USE LOST EDGES METHOD
@@ -332,6 +334,13 @@ def hard_example_3():
     run_example(g, S, T)
 
 
+def hard_example_4():
+    g = {0: set([12]), 1: set([20, 5, 13]), 2: set([21]), 3: set([19, 20]), 4: set([1, 10, 2, 17]), 5: set([0, 11, 4]), 6: set([]), 7: set([24, 11, 21]), 8: set([10, 12, 13]), 9: set([]), 10: set([8, 5, 23]), 11: set([17]), 12: set([]), 13: set([8, 9, 7]), 14: set([12, 5]), 15: set([16, 8, 2, 3]), 16: set([4, 12, 13, 14]), 17: set([]), 18: set([]), 19: set([3]), 20: set([12, 4]), 21: set([]), 22: set([]), 23: set([19, 11, 22, 7]), 24: set([12, 23])}
+    S = 1
+    T = 19
+
+    run_example(g, S, T)
+
 
 # benchmark_correctness_testing()
  
@@ -339,7 +348,9 @@ def hard_example_3():
 #hard_example_1()
 # hard_example_2()
 
-hard_example_3()
+# hard_example_3()
 
 # create_performance_graphs("1graph10000V100N")
 # performance_testing(name="1graph10000V100N")
+
+hard_example_4()

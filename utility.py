@@ -138,7 +138,7 @@ def verify_solution_if_paths_exist(graph, small_path, long_path, s, t):
     
 
     if(a and b):
-        print("Two paths are GOOD. VERIFIED")
+        # print("Two paths are GOOD. VERIFIED")
         return True
     elif(a):
         print("only short path was correct")
@@ -168,7 +168,7 @@ def verify_path_exists(graph, path, s, t):
         parent = child
 
     if(path[0] == s and path[-1] == t):
-        print("THE PATH " + str(path) + " has been verified")
+        # print("THE PATH " + str(path) + " has been verified")
         return True
     else: 
         print("The path does not start at S, and end at T")

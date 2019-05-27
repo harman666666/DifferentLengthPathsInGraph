@@ -218,11 +218,11 @@ def create_shortest_paths_dag(graph, reversed_graph, s, t, DEBUG=DO_DEBUG):
             # check if V -> K is a forward edge from S to T in shortest paths dag and it because it creates shortest paths
             if(distT.get(K) < distT.get(V)):
                 
-                print("OK so adding a neighbor relationship! (V, K)", (V, K))
-                print("distT.get(K)", distT.get(K))
-                print("distT.get(V)", distT.get(V))
-                print("distS.get(K)", distS.get(K))
-                print("distS.get(V)", distS.get(V))
+                if(DEBUG): print("OK so adding a neighbor relationship! (V, K)", (V, K))
+                if(DEBUG): print("distT.get(K)", distT.get(K))
+                if(DEBUG): print("distT.get(V)", distT.get(V))
+                if(DEBUG): print("distS.get(K)", distS.get(K))
+                if(DEBUG): print("distS.get(V)", distS.get(V))
 
                 shortest_paths_dag[V].add(K)
 
