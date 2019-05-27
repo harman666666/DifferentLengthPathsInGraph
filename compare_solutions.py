@@ -333,6 +333,10 @@ def hard_example_3():
     T = 19
     run_example(g, S, T)
 
+# Tests lost edges method
+# This hard test will remind you that you can traverse not only one but multiple
+# lost edges to create a longer path
+# Allow multiple lost edges to be traversed in both the lost edges method and the outer vertex method. 
 
 def hard_example_4():
     g = {0: set([12]), 1: set([20, 5, 13]), 2: set([21]), 3: set([19, 20]), 4: set([1, 10, 2, 17]), 5: set([0, 11, 4]), 6: set([]), 7: set([24, 11, 21]), 8: set([10, 12, 13]), 9: set([]), 10: set([8, 5, 23]), 11: set([17]), 12: set([]), 13: set([8, 9, 7]), 14: set([12, 5]), 15: set([16, 8, 2, 3]), 16: set([4, 12, 13, 14]), 17: set([]), 18: set([]), 19: set([3]), 20: set([12, 4]), 21: set([]), 22: set([]), 23: set([19, 11, 22, 7]), 24: set([12, 23])}
@@ -342,7 +346,7 @@ def hard_example_4():
     run_example(g, S, T)
 
 
-# benchmark_correctness_testing()
+benchmark_correctness_testing()
  
 #test_when_shortest_path_is_length_1()
 #hard_example_1()
@@ -353,4 +357,4 @@ def hard_example_4():
 # create_performance_graphs("1graph10000V100N")
 # performance_testing(name="1graph10000V100N")
 
-hard_example_4()
+#hard_example_4()
