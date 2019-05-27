@@ -20,7 +20,7 @@ all possible paths in graphs.
 '''
 
 
-DO_DEBUG=False
+DO_DEBUG=True
 
 
 ##### START READING THE CODE FROM HERE. THIS IS THE MAIN METHOD. 
@@ -187,12 +187,48 @@ def create_shortest_paths_dag(graph, reversed_graph, s, t, DEBUG=DO_DEBUG):
                 
                 if(DEBUG): print("FOR THIS V, path S to V to T added is", v, path_S_to_V_to_T)
                 # add path to subgraph
-                 
+                
                 add_path_to_graph(path_S_to_V_to_T, shortest_paths_dag)
                 # shortest_path_vertices.update(path_S_to_V_to_T)
 
                 # TODO: you can optimize here by subtracting vertices you added from vertices to test. 
-                             
+
+    # All the vertices for the shortest path dag were added but some 
+    # edges pointing to other vertices in this dag may be missing
+    # Those will be added next. 
+    vertices_in_dag = set(shortest_paths_dag.keys())
+
+    for V in vertices_in_dag: 
+        all_neighbors = graph[V]
+        dag_neighbors = shortest_paths_dag[V]
+
+        # lost dag neighbors are vertices in the dag that have relationships 
+        # with other vertices in the dag, but not dag relationships 
+        # because dag relationships required a shortest path to exist. 
+        # Instead these are relationships that had existed in the original graph
+        # since lost dag neighbor relationships didnt make the cut to be part of the shortest_paths_dag, they
+        # could be used to make a longer path! But we have to also check that the longer path is a simple path
+        # which is done by merge_two_overlapping_paths_in_dag
+        lost_dag_neighbors = vertices_in_dag.intersection(all_neighbors - dag_neighbors) # set subtraction
+        
+        
+        if(DEBUG): print("FOR VERTEX V, LOST DAG NEIGHBORS IS ",V, lost_dag_neighbors) 
+        
+        for K in lost_dag_neighbors:    
+            # check if V -> K is a forward edge from S to T in shortest paths dag and it because it creates shortest paths
+            if(distT.get(K) < distT.get(V)):
+                
+                print("OK so adding a neighbor relationship! (V, K)", (V, K))
+                print("distT.get(K)", distT.get(K))
+                print("distT.get(V)", distT.get(V))
+                print("distS.get(K)", distS.get(K))
+                print("distS.get(V)", distS.get(V))
+
+                shortest_paths_dag[V].add(K)
+
+
+
+
     if(DEBUG): print("shortest path subgraph is: ", shortest_paths_dag)
     if(DEBUG): print("graph_bfs_tree_with_root_s", graphBFS)
     if(DEBUG): print("reverse_graph_bfs_tree_with_root_t", reverseGraphBFS)
@@ -333,6 +369,12 @@ def create_crazy_path_without_overlaps(X,
 # or outer vertex (an outer vertex is a vertex in the graph but not in the DAG) 
 # respectively to create the longer path from s->t
 # RUNTIME ANALYSIS: DFS on a DAG is O(V+E). WE DO 4 IN THIS BACK TO BACK WORST CASE SO 4 * O(V+E)
+
+
+# FOR THIS METHOD, have to implement avoidance!
+# avoidance is done after the second dfs fails. For the third dfs, when the path is being generated, 
+# you have to avoid the path nodes the first dfs used if you can. visit those nodes last, and visit unavoided nodes 
+# first so you can create paths that avoid the nodes the 4th dfs will need. 
 def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_DEBUG):
     '''
      PSUEDOCODE FOR THE 4 DFS's in this function numbered 1 to 4:

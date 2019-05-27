@@ -152,7 +152,7 @@ def test_when_shortest_path_is_length_1():
     print(brute_force_soln)
         
 
-def create_performance_graphs(name, amount=10000, vertices=50, max_neighbors=5):
+def create_performance_graphs(name, amount=1, vertices=10000, max_neighbors=100):
     graphs = []
     for i in range(amount):
         g = create_example_rand_directed_graph(vertices, max_neighbors)
@@ -182,40 +182,49 @@ def performance_testing(name, s=1, t=19):
     duration2 = (time.time() - start_time2)
     print("TIME TO EXECUTE IN SECONDS FOR BRUTE FORCE WAS", duration2)
 
+def performance_testing_2():
+    
+    g = {
+        1: set([])
+
+    }
+    s = 1
+    t = 9
 
 
 # SAVE RESULTS FOR THE TEST USING BRUTEFORCE!
 
-def benchmark_correctness_testing():
+def benchmark_correctness_testing(DEBUG=True):
     score = 0
-    for i in range(999999):
-        g = create_example_rand_directed_graph(vertices=20, max_neighbors=4)
+    i = 0
+    while True:
+        g = create_example_rand_directed_graph(vertices=25, max_neighbors=5)
         S = 1
         T = 19
         
       
-
+        i+= 1
         # print("GRAPH IS: ")
-        pprint.pprint(g)
+        if DEBUG: pprint.pprint(g)
 
-        print("################################# BRUTE FORCE SOLUTION, index is ", i)
+        if DEBUG: print("################################# BRUTE FORCE SOLUTION, index is ", i)
 
 
         brute_force_soln = brute_force_solution(g, S, T)
-        print(brute_force_soln)
+        if DEBUG:  print(brute_force_soln)
         if(brute_force_soln["result"]):
             a = verify_solution_if_paths_exist(g, brute_force_soln["a_shortest_path"], brute_force_soln["a_longer_path"], S, T)
 
 
             if(a):
-                print("brute force correct")
+                if DEBUG: print("brute force correct")
             else:
                 print("solution brute force came up with is WRONG")
                 break
         else:
-            print("Solution was not found with brute force solution")
+            if DEBUG: print("Solution was not found with brute force solution")
 
-        print("################################# POLY SOLUTION, index is ", i)
+        if DEBUG: print("################################# POLY SOLUTION, index is ", i)
 
         poly_soln = poly_solution(g, S, T)
 
@@ -231,11 +240,13 @@ def benchmark_correctness_testing():
         else:
             print("Solution was not found with poly solution")
         
-        print("##############################################")
-        print(brute_force_soln)
+        if DEBUG: print("##############################################")
+        if DEBUG: print(brute_force_soln)
         
         if brute_force_soln["result"] != poly_soln["result"]:
             print("BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK")
+            pprint.pprint(g)
+            print("S AND T WERE ", (S, T))
             break
         else:
             score += 1
@@ -314,6 +325,13 @@ def hard_example_2():
     T = 19
     run_example(g, S, T)
 
+def hard_example_3():
+    g = {0: set([16, 9]), 1: set([5]), 2: set([]), 3: set([16, 0, 21]), 4: set([]), 5: set([24, 1, 18, 8]), 6: set([10, 20]), 7: set([17, 2, 18, 13]), 8: set([24, 9, 10, 7]), 9: set([1, 11]), 10: set([17, 20]), 11: set([12]), 12: set([]), 13: set([24, 12, 5]), 14: set([20]), 15: set([9, 12]), 16: set([21]), 17: set([24, 19, 10, 3]), 18: set([24, 10, 7]), 19: set([16, 10, 4, 7]), 20: set([24]), 21: set([23]), 22: set([7, 15]), 23: set([]), 24: set([23])}
+    S = 1
+    T = 19
+    run_example(g, S, T)
+
+
 
 # benchmark_correctness_testing()
  
@@ -321,5 +339,7 @@ def hard_example_2():
 #hard_example_1()
 # hard_example_2()
 
-# create_performance_graphs("10000graphs50V5N")
-performance_testing(name="10000graphs50V5N")
+hard_example_3()
+
+# create_performance_graphs("1graph10000V100N")
+# performance_testing(name="1graph10000V100N")
