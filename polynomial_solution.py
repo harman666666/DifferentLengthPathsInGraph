@@ -425,20 +425,29 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_
             "result": False
         }
     
+
+    '''
+    
+                        a_longer_path =  get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x)[::-1] + \
+                                          X_to_Z_to_Y_path["crazy_path"][1:] + \
+                                          get_path_to_root(longer_path_result["Y_to_T_dfs_tree"], t)[::-1][1:]
+    '''
+    S_to_X_path = get_path_to_root(S_to_X_dfs["parents"], X)[::-1]
+ 
     # Do second dfs
     if DEBUG: print("S_to_X_dfs_seen", S_to_X_dfs["seen"])
 
     Y_to_T_dfs = dfs_with_restriction_set(graph=shortest_paths_dag, 
                                           start=Y, 
                                           end=t, 
-                                          restriction_set=S_to_X_dfs["seen"])
+                                          restriction_set=set(S_to_X_path))
 
     if(Y_to_T_dfs["result"] == True):
         if(DEBUG): print("IT WAS MERGED WITHIN 2 DFS'S")
         return {
             "result": True,
-            "S_to_X_dfs_tree": S_to_X_dfs["parents"],
-            "Y_to_T_dfs_tree": Y_to_T_dfs["parents"] 
+            "S_to_X_path": S_to_X_path,
+            "Y_to_T_path": get_path_to_root(Y_to_T_dfs["parents"], t)[::-1] 
         }
 
     # The second dfs failed, so move on to the third dfs:
@@ -454,20 +463,22 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_
             "result": False
         }
     
+    Y_to_T_path_2 = get_path_to_root(Y_to_T_dfs_2["parents"], t)[::-1]
+
     # do fourth dfs
     if(DEBUG): print("Y TO T DFS 2 SEEN ", Y_to_T_dfs_2["seen"])
     S_to_X_dfs_2 = dfs_with_restriction_set(graph=shortest_paths_dag, 
                                           start=s, 
                                           end=X, 
-                                          restriction_set=Y_to_T_dfs_2["seen"])
+                                          restriction_set=set(Y_to_T_path_2))
 
     if(S_to_X_dfs_2["result"] == True):
         if(DEBUG): print("IT WAS MERGED WITHIN 4 DFS'S")
 
         return {
             "result": True,
-            "S_to_X_dfs_tree": S_to_X_dfs_2["parents"],
-            "Y_to_T_dfs_tree": Y_to_T_dfs_2["parents"] 
+            "S_to_X_path": get_path_to_root(S_to_X_dfs_2["parents"], X)[::-1],
+            "Y_to_T_path": Y_to_T_path_2 
         }
     else:
         if(DEBUG): print("FAILED ON FOURTH DFS")
@@ -522,16 +533,18 @@ def create_longer_path_using_lost_edges(graph,
                                                                      shortest_paths_dag=shortest_paths_dag_with_all_neighbors)
 
             if(did_path_merge_work["result"]):
-                S_TO_V_DFS_TREE =  did_path_merge_work["S_to_X_dfs_tree"]
-                K_TO_T_DFS_TREE = did_path_merge_work["Y_to_T_dfs_tree"]
+                S_TO_V_PATH =  did_path_merge_work["S_to_X_path"]
+                K_TO_T_PATH = did_path_merge_work["Y_to_T_path"]
+                
                 if(DEBUG): print("(s, t, V, K) is ", (s,t,V,K))
            
-                if(DEBUG): print("S_TO_X_DFS_TREE", did_path_merge_work["S_to_X_dfs_tree"])
-                if(DEBUG): print("Y_TO_T_DFS_TREE", did_path_merge_work["Y_to_T_dfs_tree"])
+                # if(DEBUG): print("S_TO_X_DFS_TREE", did_path_merge_work["S_to_X_dfs_tree"])
+                # if(DEBUG): print("Y_TO_T_DFS_TREE", did_path_merge_work["Y_to_T_dfs_tree"])
                 
-                if(DEBUG): print("S_TO_V", get_path_to_root(S_TO_V_DFS_TREE,  V)[::-1] )
-                if(DEBUG): print("K_To_T", get_path_to_root(K_TO_T_DFS_TREE, t)[::-1])
-                a_longer_path = get_path_to_root(S_TO_V_DFS_TREE, V)[::-1] + get_path_to_root(K_TO_T_DFS_TREE, t)[::-1]
+                if(DEBUG): print("S_TO_V", S_TO_V_PATH )
+                if(DEBUG): print("K_To_T", K_TO_T_PATH)
+                    
+                a_longer_path = S_TO_V_PATH + K_TO_T_PATH
                 
                 # SOME LONGER PATHS WE FIND USIGN LOST EDGES METHOD ARE ACTUALLY SHORTEST PATHS BECAUSE SOME EDGES DIDNT GET ADDED.
                 
@@ -582,8 +595,10 @@ def create_longer_path_using_an_outer_vertex(graph,
         # but we wont for now because without it, its still polynomial time. check readme for extra dp.
         if(DEBUG): print("TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         if(DEBUG): print("COORDINATION POINT Z IS ", Z)
-        if DEBUG: print("CRAZY BFS RESULT X_to_Z_result", X_to_Z_Result)
-        if DEBUG: print("CRAZY_BFS_RESULT_Z_to_Y",Z_to_Y_Result)
+        if(DEBUG): print("INTERSECTION VERTICES X FOUND: ", X_to_Z_Result["intersection_vertices"])
+        if(DEBUG): print("INTERSECTION VERTICES Y FOUND: ", Z_to_Y_Result["intersection_vertices"])
+        if DEBUG:  print("CRAZY BFS RESULT X_to_Z_result", X_to_Z_Result)
+        if DEBUG:  print("CRAZY_BFS_RESULT_Z_to_Y",Z_to_Y_Result)
 
         for x in X_to_Z_Result["intersection_vertices"]:
             for y in Z_to_Y_Result["intersection_vertices"]:
@@ -633,17 +648,15 @@ def create_longer_path_using_an_outer_vertex(graph,
                         
 
                         # create [S->X->Z->Y->T]
-                        if(DEBUG): print("S->X", get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x)[::-1]  ) # S is the root of this. get path to s. WE want away from S so flip 
-                        #if(DEBUG): print("X->Z", get_path_to_root(X_to_Z_Result["parents"], x) ) # Z is the root of this parents array
-                        #if(DEBUG): print("Z->Y", get_path_to_root(Z_to_Y_Result["parents"], y)[::-1] ) # Z is the root of this parents array
+                        if(DEBUG): print("S->X", longer_path_result["S_to_X_path"] ) # S is the root of this. get path to s. WE want away from S so flip 
                         if(DEBUG): print("X->Z->Y CRAZY PATH", X_to_Z_to_Y_path["crazy_path"])
-                        if(DEBUG): print("Y->T", get_path_to_root(longer_path_result["Y_to_T_dfs_tree"], t)[::-1]) # Y is the roof of this. Dont want path to Y, but path to T, so flip it with [::-1]
+                        if(DEBUG): print("Y->T", longer_path_result["Y_to_T_path"]) # Y is the roof of this. Dont want path to Y, but path to T, so flip it with [::-1]
                         
                        
                         
-                        a_longer_path =  get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x)[::-1] + \
+                        a_longer_path =   longer_path_result["S_to_X_path"] + \
                                           X_to_Z_to_Y_path["crazy_path"][1:] + \
-                                          get_path_to_root(longer_path_result["Y_to_T_dfs_tree"], t)[::-1][1:]
+                                          longer_path_result["Y_to_T_path"][1:]
 
                         if(DEBUG): print("a longest path: "  + str(a_longer_path))
                         return {

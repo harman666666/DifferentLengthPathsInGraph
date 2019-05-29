@@ -345,6 +345,7 @@ def hard_example_4():
 
     run_example(g, S, T)
 
+# Outer vertex test
 def hard_example_5():
     g = {0: set([3]), 1: set([15, 4, 6, 7]), 2: set([0, 16, 14, 23]), 3: set([]), 4: set([]), 5: set([12]), 6: set([0, 10, 4, 18]), 7: set([9, 13]), 8: set([20]), 9: set([17, 2, 5]), 10: set([]), 11: set([24]), 12: set([20, 22]), 13: set([3]), 14: set([6, 23]), 15: set([0]), 16: set([6, 22, 7]), 17: set([16, 0, 21, 9]), 18: set([8, 15]), 19: set([24, 11, 21]), 20: set([10, 11, 15]), 21: set([17, 13]), 22: set([8, 1, 19, 16]), 23: set([2, 20, 22]), 24: set([4, 13])}
     S = 1 
@@ -352,17 +353,18 @@ def hard_example_5():
     run_example(g, S, T)
 
 
-
-# benchmark_correctness_testing()
+benchmark_correctness_testing()
  
 #test_when_shortest_path_is_length_1()
-hard_example_1()
-hard_example_2()
+#hard_example_1()
+#hard_example_2()
 
-hard_example_3()
+#hard_example_3()
 
 # create_performance_graphs("1graph10000V100N")
 # performance_testing(name="1graph10000V100N")
 
-hard_example_4()
-hard_example_5()
+#hard_example_4()
+
+# Outer vertex test
+# hard_example_5()
