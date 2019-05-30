@@ -2,7 +2,7 @@
 import numpy as np
 import pprint
 from collections import defaultdict, deque
-from utility import bfs, dfs_with_restriction_set, get_path_to_root, create_example_rand_directed_graph
+from utility import bfs, bfs_with_restriction_set, dfs_with_restriction_set, get_path_to_root, create_example_rand_directed_graph
 
 
 '''
@@ -20,7 +20,7 @@ all possible paths in graphs.
 '''
 
 
-DO_DEBUG=False
+DO_DEBUG=True
 
 
 ##### START READING THE CODE FROM HERE. THIS IS THE MAIN METHOD. 
@@ -414,7 +414,7 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_
                     Fail Path Creation due to contention for this piece of critical segment in the DAG that both S->X and Y->T needed.
     '''
     
-    S_to_X_dfs = dfs_with_restriction_set(graph=shortest_paths_dag, 
+    S_to_X_dfs = bfs_with_restriction_set(graph=shortest_paths_dag, 
                                           start=s, 
                                           end=X, 
                                           restriction_set=set([Y, t]))
@@ -435,7 +435,7 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_
     S_to_X_path = get_path_to_root(S_to_X_dfs["parents"], X)[::-1]
  
     # Do second dfs
-    if DEBUG: print("S_to_X_dfs_seen", S_to_X_dfs["seen"])
+    if DEBUG: print("S_to_X_path_found: ", S_to_X_path)
 
     Y_to_T_dfs = dfs_with_restriction_set(graph=shortest_paths_dag, 
                                           start=Y, 
@@ -453,7 +453,7 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_
     # The second dfs failed, so move on to the third dfs:
     if DEBUG: print("SECOND DFS FAILED move on to third. second was y->T", (Y, t))
 
-    Y_to_T_dfs_2 =  dfs_with_restriction_set(graph=shortest_paths_dag, 
+    Y_to_T_dfs_2 =  bfs_with_restriction_set(graph=shortest_paths_dag, 
                                           start=Y, 
                                           end=t, 
                                           restriction_set=set([X, s]))
@@ -465,8 +465,8 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_
     
     Y_to_T_path_2 = get_path_to_root(Y_to_T_dfs_2["parents"], t)[::-1]
 
-    # do fourth dfs
-    if(DEBUG): print("Y TO T DFS 2 SEEN ", Y_to_T_dfs_2["seen"])
+    # do fourth dfs (IMPLEMENT AVOIDANCE HERE!!!!!)
+    if(DEBUG): print("Y TO T 2 PATH ", Y_to_T_path_2)
     S_to_X_dfs_2 = dfs_with_restriction_set(graph=shortest_paths_dag, 
                                           start=s, 
                                           end=X, 
@@ -593,12 +593,12 @@ def create_longer_path_using_an_outer_vertex(graph,
 
         # WE CAN ADD MORE DYNAMIC PROGRAMMING HERE TO MAKE THIS VERY FAST. 
         # but we wont for now because without it, its still polynomial time. check readme for extra dp.
-        if(DEBUG): print("TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        if(DEBUG): print("~~~~~~~~~ TEST NEW COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", Z)
         if(DEBUG): print("COORDINATION POINT Z IS ", Z)
         if(DEBUG): print("INTERSECTION VERTICES X FOUND: ", X_to_Z_Result["intersection_vertices"])
         if(DEBUG): print("INTERSECTION VERTICES Y FOUND: ", Z_to_Y_Result["intersection_vertices"])
-        if DEBUG:  print("CRAZY BFS RESULT X_to_Z_result", X_to_Z_Result)
-        if DEBUG:  print("CRAZY_BFS_RESULT_Z_to_Y",Z_to_Y_Result)
+        # if DEBUG:  print("CRAZY BFS RESULT X_to_Z_result", X_to_Z_Result)
+        # if DEBUG:  print("CRAZY_BFS_RESULT_Z_to_Y",Z_to_Y_Result)
 
         for x in X_to_Z_Result["intersection_vertices"]:
             for y in Z_to_Y_Result["intersection_vertices"]:
@@ -628,7 +628,11 @@ def create_longer_path_using_an_outer_vertex(graph,
                     # if DEBUG: print("CRAZY BFS RESULT X_to_Z_result[parents]", X_to_Z_Result["parents"])
                     # if DEBUG: print("CRAZY_BFS_RESULT_Z_to_Y[parents]",Z_to_Y_Result["parents"])
 
-
+                    if(longer_path_result["result"] == False):
+                        if DEBUG: print("Could not merge S->X and Y->T with 4DFS")
+                        continue
+                    else:
+                        if DEBUG: print("MERGED S->X and Y->T, paths are respectively ", (longer_path_result["S_to_X_path"],  longer_path_result["Y_to_T_path"]))
                     X_to_Z_to_Y_path = create_crazy_path_without_overlaps(X=x, 
                                                                           Y=y, 
                                                                           Z=Z, 
@@ -642,7 +646,7 @@ def create_longer_path_using_an_outer_vertex(graph,
                     
 
                     if(longer_path_result["result"]):
-                        if(DEBUG): print("There are is a shorter and longer path! They are the following: ")
+                        if(DEBUG): print("There is a shorter and longer path! They are the following: ")
                         
 
                         

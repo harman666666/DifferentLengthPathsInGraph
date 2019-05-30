@@ -352,6 +352,12 @@ def hard_example_5():
     T = 19
     run_example(g, S, T)
 
+def hard_example_6():
+    g =  {0: set([17]), 1: set([17]), 2: set([9, 14]), 3: set([17, 11, 15]), 4: set([9, 7, 13, 17]), 5: set([12, 13]), 6: set([20, 21]), 7: set([8]), 8: set([9, 3, 21, 14]), 9: set([16, 17, 18, 4]), 10: set([8, 24, 3, 7]), 11: set([0, 9, 23]), 12: set([3, 5, 6]), 13: set([16, 9, 19, 15]), 14: set([8, 9, 18, 7]), 15: set([9, 3, 14]), 16: set([3]), 17: set([16]), 18: set([]), 19: set([]), 20: set([9]), 21: set([7]), 22: set([9, 14, 15]), 23: set([3, 4]), 24: set([16, 11, 7])}
+    S = 1 
+    T = 19
+    run_example(g, S, T)
+
 
 benchmark_correctness_testing()
  
@@ -368,3 +374,4 @@ benchmark_correctness_testing()
 
 # Outer vertex test
 # hard_example_5()
+# hard_example_6()

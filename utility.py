@@ -51,6 +51,42 @@ def bfs(graph, s):
         "dist": dist
     })
 
+def bfs_with_restriction_set(graph, start, end, restriction_set, seen = None, parents=None, DEBUG=False):
+    
+    seen, queue = set([start]), deque([start])
+    parents, dist = {}, {}
+    dist[start] = 0
+    parents[start] = None
+    
+    if(start in restriction_set): 
+        return {
+            "result": False
+        }
+    
+    while queue:
+        v = queue.popleft()
+        if(v == end): 
+            return {
+                "result": True,
+                "parents": parents, 
+                "seen": seen,
+                "start": start, 
+                "end": end
+            }
+
+        neighbors = graph[v]
+        for node in neighbors:
+            if(node not in seen and node not in restriction_set):
+                parents[node] = v
+                seen.add(node)
+                dist[node] = dist[v] + 1
+                
+                queue.append(node)
+    
+    return ({
+        "result": False
+    })
+
 def dfs_with_restriction_set(graph, start, end, restriction_set, seen = None, parents=None, DEBUG=False):
     # dont dfs in a cycle. visited set stops that!
     if DEBUG: print("FOR THIS DFS, (start, end), restrict set was ", (start, end), restriction_set)
