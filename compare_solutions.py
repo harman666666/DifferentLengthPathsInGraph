@@ -199,58 +199,65 @@ def benchmark_correctness_testing(DEBUG=False):
     score = 0
     i = 0
     while True:
-        g = create_example_rand_directed_graph(vertices=25, max_neighbors=5)
-        S = 1
-        T = 19
-        # ITERATE THROUGH DIFFERENT S AND T: 
-        
-        i+= 1
-        print("index: ", i)
-        if DEBUG: pprint.pprint(g)
+        g = create_example_rand_directed_graph(vertices=30, max_neighbors=5)
+        Sarr = [1]
+        Tarr = [19]
+        # ITERATE THROUGH DIFFERENT S AND T:
+        fail = False 
+        for S in Sarr:
+            for T in Tarr: 
+                i += 1
+                print("index: ", i)
+                if DEBUG: pprint.pprint(g)
 
-        if DEBUG: print("################################# BRUTE FORCE SOLUTION, index is ", i)
-
-
-        brute_force_soln = brute_force_solution(g, S, T)
-        if DEBUG:  print(brute_force_soln)
-        if(brute_force_soln["result"]):
-            a = verify_solution_if_paths_exist(g, brute_force_soln["a_shortest_path"], brute_force_soln["a_longer_path"], S, T)
+                if DEBUG: print("################################# BRUTE FORCE SOLUTION, index is ", i)
 
 
-            if(a):
-                if DEBUG: print("brute force correct")
-            else:
-                print("solution brute force came up with is WRONG")
+                brute_force_soln = brute_force_solution(g, S, T)
+                if DEBUG:  print(brute_force_soln)
+                if(brute_force_soln["result"]):
+                    a = verify_solution_if_paths_exist(g, brute_force_soln["a_shortest_path"], brute_force_soln["a_longer_path"], S, T)
+
+
+                    if(a):
+                        if DEBUG: print("brute force correct")
+                    else:
+                        print("solution brute force came up with is WRONG")
+                        break
+                else:
+                    if DEBUG: print("Solution was not found with brute force solution")
+
+                if DEBUG: print("################################# POLY SOLUTION, index is ", i)
+
+                poly_soln = poly_solution(g, S, T)
+
+                if(poly_soln["result"]):
+                    b = verify_solution_if_paths_exist(g, poly_soln["a_shortest_path"],poly_soln["a_longer_path"], S, T)
+                    if(b):
+                        if DEBUG: print("poly soln is correct")
+                    else:
+                        print("solution POLY came up with is WRONG")
+                        break
+
+
+                else:
+                    if DEBUG: print("Solution was not found with poly solution")
+                
+                if DEBUG: print("##############################################")
+                if DEBUG: print(brute_force_soln)
+                
+                if brute_force_soln["result"] != poly_soln["result"]:
+                    print("BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK")
+                    pprint.pprint(g)
+                    print("S AND T WERE ", (S, T))
+                    fail = True
+                    break
+                else:
+                    score += 1
+            if(fail): 
                 break
-        else:
-            if DEBUG: print("Solution was not found with brute force solution")
-
-        if DEBUG: print("################################# POLY SOLUTION, index is ", i)
-
-        poly_soln = poly_solution(g, S, T)
-
-        if(poly_soln["result"]):
-            b = verify_solution_if_paths_exist(g, poly_soln["a_shortest_path"],poly_soln["a_longer_path"], S, T)
-            if(b):
-                if DEBUG: print("poly soln is correct")
-            else:
-                print("solution POLY came up with is WRONG")
+        if(fail): 
                 break
-
-
-        else:
-            if DEBUG: print("Solution was not found with poly solution")
-        
-        if DEBUG: print("##############################################")
-        if DEBUG: print(brute_force_soln)
-        
-        if brute_force_soln["result"] != poly_soln["result"]:
-            print("BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK")
-            pprint.pprint(g)
-            print("S AND T WERE ", (S, T))
-            break
-        else:
-            score += 1
     print("THE SCORE OUR POLY SOLUTION RECIEVED IS ", score)
 
 def run_poly_example(g, S, T):

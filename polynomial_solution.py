@@ -20,7 +20,7 @@ all possible paths in graphs.
 '''
 
 
-DO_DEBUG=True
+DO_DEBUG=False
 
 
 ##### START READING THE CODE FROM HERE. THIS IS THE MAIN METHOD. 
