@@ -4,6 +4,9 @@ from utility import verify_solution_if_paths_exist, create_example_rand_directed
 from brute_force_dfs_solution import brute_force_solution
 from polynomial_solution import poly_solution
 
+import pickle
+import time
+
 
 def test_outer_vertex_method():
     # This graph will test outer vertex method for the polynomial solution
@@ -150,55 +153,235 @@ def test_when_shortest_path_is_length_1():
     print(brute_force_soln)
         
 
+def create_performance_graphs(name, amount=1, vertices=10000, max_neighbors=100):
+    graphs = []
+    for i in range(amount):
+        g = create_example_rand_directed_graph(vertices, max_neighbors)
+        graphs.append(g)
+
+    with open(name, 'wb') as f:
+        pickle.dump(graphs, f)
+
+
+def performance_testing(name, s=1, t=19):
+    # One way is to create lots of big graphs, and test both algos and see which ones better
+    with open(name, 'rb') as f:
+        graphs = pickle.load(f)
+
+    start_time = time.time()
+
+    for g in graphs:
+        run_poly_example(g, s, t)
+    
+    duration = (time.time() - start_time)
+    print("TIME TO EXECUTE IN SECONDS FOR POLY WAS", duration)
+    
+    start_time2 = time.time()
+    for g in graphs:
+            run_brute_force_example(g, s, t)
+    
+    duration2 = (time.time() - start_time2)
+    print("TIME TO EXECUTE IN SECONDS FOR BRUTE FORCE WAS", duration2)
+
+def performance_testing_2():
+    
+    g = {
+        1: set([])
+
+    }
+    s = 1
+    t = 9
 
 
 # SAVE RESULTS FOR THE TEST USING BRUTEFORCE!
 
-def benchmark_correctness_testing():
-    for i in range(1):
-        g = create_example_rand_directed_graph(vertices=100, max_neighbors=20)
-        S = 1
-        T = 89
+def benchmark_correctness_testing(DEBUG=False):
+    score = 0
+    i = 0
+    while True:
+        g = create_example_rand_directed_graph(vertices=30, max_neighbors=5)
+        Sarr = [1]
+        Tarr = [19]
+        # ITERATE THROUGH DIFFERENT S AND T:
+        fail = False 
+        for S in Sarr:
+            for T in Tarr: 
+                i += 1
+                
+                if DEBUG: pprint.pprint(g)
 
-        print("GRAPH IS: ")
-        pprint.pprint(g)
-
-        print("################################# BRUTE FORCE SOLUTION")
+                if DEBUG: print("################################# BRUTE FORCE SOLUTION, index is ", i)
 
 
-        brute_force_soln = brute_force_solution(g, S, T)
-        print(brute_force_soln)
-        if(brute_force_soln["result"]):
-            a = verify_solution_if_paths_exist(g, brute_force_soln["a_shortest_path"], brute_force_soln["a_longer_path"], S, T)
+                brute_force_soln = brute_force_solution(g, S, T)
+                if DEBUG:  print(brute_force_soln)
+                if(brute_force_soln["result"]):
+                    a = verify_solution_if_paths_exist(g, brute_force_soln["a_shortest_path"], brute_force_soln["a_longer_path"], S, T)
 
 
-            if(a):
-                print("brute force correct")
-            else:
-                print("solution brute force came up with is WRONG")
+                    if(a):
+                        if DEBUG: print("brute force correct")
+                    else:
+                        print("solution brute force came up with is WRONG")
+                        break
+                else:
+                    if DEBUG: print("Solution was not found with brute force solution")
+
+                if DEBUG: print("################################# POLY SOLUTION, index is ", i)
+
+                poly_soln = poly_solution(g, S, T)
+
+                if(poly_soln["result"]):
+                    b = verify_solution_if_paths_exist(g, poly_soln["a_shortest_path"],poly_soln["a_longer_path"], S, T)
+                    if(b):
+                        if DEBUG: print("poly soln is correct")
+                    else:
+                        print("solution POLY came up with is WRONG")
+                        break
+
+
+                else:
+                    if DEBUG: print("Solution was not found with poly solution")
+                
+                if DEBUG: print("##############################################")
+                if DEBUG: print(brute_force_soln)
+                
+                if brute_force_soln["result"] != poly_soln["result"]:
+                    print("BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK")
+                    pprint.pprint(g)
+                    print("S AND T WERE ", (S, T))
+                    fail = True
+                    break
+                else:
+                    score += 1
+                
+                print("index: " +  str(i) + " is correct. poly soln matches brute force.")
+
+            if(fail): 
+                break
+        if(fail): 
+                break
+    print("THE SCORE OUR POLY SOLUTION RECIEVED IS ", score)
+
+def run_poly_example(g, S, T):
+
+    poly_soln = poly_solution(g, S, T)
+
+    #if(poly_soln["result"]):
+    #    b = verify_solution_if_paths_exist(g, poly_soln["a_shortest_path"],poly_soln["a_longer_path"], S, T)
+    #    if(b):
+    #        print("poly soln is correct")
+    #    else:
+    #        print("solution POLY came up with is WRONG")
+
+
+    #else:
+    #    print("Solution was not found with poly solution")
+
+def run_brute_force_example(g, S, T):
+    brute_force_soln = brute_force_solution(g, S, T)
+
+
+def run_example(g, S, T):
+    print("GRAPH IS: ")
+    pprint.pprint(g)
+
+    print("################################# BRUTE FORCE SOLUTION")
+
+
+    brute_force_soln = brute_force_solution(g, S, T)
+
+    if(brute_force_soln["result"]):
+        a = verify_solution_if_paths_exist(g, brute_force_soln["a_shortest_path"], brute_force_soln["a_longer_path"], S, T)
+
+
+        if(a):
+            print("brute force correct")
+            print(brute_force_soln)
         else:
-            print("Solution was not found with brute force solution")
+            print("solution brute force came up with is WRONG")
+    else:
+        print("Solution was not found with brute force solution")
 
-        print("################################# POLY SOLUTION")
+    print("################################# POLY SOLUTION")
 
-        poly_soln = poly_solution(g, S, T)
+    poly_soln = poly_solution(g, S, T)
 
-        if(poly_soln["result"]):
-            b = verify_solution_if_paths_exist(g, poly_soln["a_shortest_path"],poly_soln["a_longer_path"], S, T)
-            if(b):
-                print("poly soln is correct")
-            else:
-                print("solution POLY came up with is WRONG")
-
-
+    if(poly_soln["result"]):
+        b = verify_solution_if_paths_exist(g, poly_soln["a_shortest_path"],poly_soln["a_longer_path"], S, T)
+        if(b):
+            print("poly soln is correct")
         else:
-            print("Solution was not found with poly solution")
-        
-        print("##############################################")
-        print(brute_force_soln)
-        
+            print("solution POLY came up with is WRONG")
 
-#benchmark_correctness_testing()
+
+    else:
+        print("Solution was not found with poly solution")
+    
+    print("##############################################")
+  
+
+
+# HARD EXAMPLE 1 ONLY PASSES IF YOU USE LOST EDGES METHOD
+def hard_example_1():
+    g = {0: set([]), 1: set([13, 14]), 2: set([14, 7]), 3: set([]), 4: set([]), 5: set([19, 4]), 6: set([11]), 7: set([10, 12]), 8: set([17, 11]), 9: set([10]), 10: set([17]), 11: set([]), 12: set([16, 19]), 13: set([4]), 14: set([10, 7]), 15: set([]), 16: set([]), 17: set([19]), 18: set([9, 4]), 19: set([16])}
+    S = 1
+    T = 19
+    run_example(g, S, T)
+
+
+
+def hard_example_2():
+    g = {0: set([]), 1: set([0, 5]), 2: set([]), 3: set([19, 15]), 4: set([16]), 5: set([18, 10]), 6: set([]), 7: set([13, 14]), 8: set([7]), 9: set([17]), 10: set([9, 12]), 11: set([9, 12]), 12: set([17, 13]), 13: set([]), 14: set([]), 15: set([3, 6]), 16: set([]), 17: set([3, 15]), 18: set([16, 12]), 19: set([4])}
+    S = 1
+    T = 19
+    run_example(g, S, T)
+
+def hard_example_3():
+    g = {0: set([16, 9]), 1: set([5]), 2: set([]), 3: set([16, 0, 21]), 4: set([]), 5: set([24, 1, 18, 8]), 6: set([10, 20]), 7: set([17, 2, 18, 13]), 8: set([24, 9, 10, 7]), 9: set([1, 11]), 10: set([17, 20]), 11: set([12]), 12: set([]), 13: set([24, 12, 5]), 14: set([20]), 15: set([9, 12]), 16: set([21]), 17: set([24, 19, 10, 3]), 18: set([24, 10, 7]), 19: set([16, 10, 4, 7]), 20: set([24]), 21: set([23]), 22: set([7, 15]), 23: set([]), 24: set([23])}
+    S = 1
+    T = 19
+    run_example(g, S, T)
+
+# Tests lost edges method
+# This hard test will remind you that you can traverse not only one but multiple
+# lost edges to create a longer path
+# Allow multiple lost edges to be traversed in both the lost edges method and the outer vertex method. 
+
+def hard_example_4():
+    g = {0: set([12]), 1: set([20, 5, 13]), 2: set([21]), 3: set([19, 20]), 4: set([1, 10, 2, 17]), 5: set([0, 11, 4]), 6: set([]), 7: set([24, 11, 21]), 8: set([10, 12, 13]), 9: set([]), 10: set([8, 5, 23]), 11: set([17]), 12: set([]), 13: set([8, 9, 7]), 14: set([12, 5]), 15: set([16, 8, 2, 3]), 16: set([4, 12, 13, 14]), 17: set([]), 18: set([]), 19: set([3]), 20: set([12, 4]), 21: set([]), 22: set([]), 23: set([19, 11, 22, 7]), 24: set([12, 23])}
+    S = 1
+    T = 19
+
+    run_example(g, S, T)
+
+# Outer vertex test
+def hard_example_5():
+    g = {0: set([3]), 1: set([15, 4, 6, 7]), 2: set([0, 16, 14, 23]), 3: set([]), 4: set([]), 5: set([12]), 6: set([0, 10, 4, 18]), 7: set([9, 13]), 8: set([20]), 9: set([17, 2, 5]), 10: set([]), 11: set([24]), 12: set([20, 22]), 13: set([3]), 14: set([6, 23]), 15: set([0]), 16: set([6, 22, 7]), 17: set([16, 0, 21, 9]), 18: set([8, 15]), 19: set([24, 11, 21]), 20: set([10, 11, 15]), 21: set([17, 13]), 22: set([8, 1, 19, 16]), 23: set([2, 20, 22]), 24: set([4, 13])}
+    S = 1 
+    T = 19
+    run_example(g, S, T)
+
+def hard_example_6():
+    g =  {0: set([17]), 1: set([17]), 2: set([9, 14]), 3: set([17, 11, 15]), 4: set([9, 7, 13, 17]), 5: set([12, 13]), 6: set([20, 21]), 7: set([8]), 8: set([9, 3, 21, 14]), 9: set([16, 17, 18, 4]), 10: set([8, 24, 3, 7]), 11: set([0, 9, 23]), 12: set([3, 5, 6]), 13: set([16, 9, 19, 15]), 14: set([8, 9, 18, 7]), 15: set([9, 3, 14]), 16: set([3]), 17: set([16]), 18: set([]), 19: set([]), 20: set([9]), 21: set([7]), 22: set([9, 14, 15]), 23: set([3, 4]), 24: set([16, 11, 7])}
+    S = 1 
+    T = 19
+    run_example(g, S, T)
+
+
+benchmark_correctness_testing()
  
-test_when_shortest_path_is_length_1()
+#test_when_shortest_path_is_length_1()
+#hard_example_1()
+#hard_example_2()
 
+#hard_example_3()
+
+# create_performance_graphs("1graph10000V100N")
+# performance_testing(name="1graph10000V100N")
+
+#hard_example_4()
+
+# Outer vertex test
+# hard_example_5()
+# hard_example_6()

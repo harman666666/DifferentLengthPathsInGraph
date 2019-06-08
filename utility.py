@@ -51,35 +51,77 @@ def bfs(graph, s):
         "dist": dist
     })
 
-def dfs_with_restriction_set(graph, start, end, restriction_set, seen = None, parents=None):
-    # dont dfs in a cycle. visited set stops that!
+def bfs_with_restriction_set(graph, start, end, restriction_set, seen = None, parents=None, DEBUG=False):
+    
+    seen, queue = set([start]), deque([start])
+    parents, dist = {}, {}
+    dist[start] = 0
+    parents[start] = None
+    
+    if(start in restriction_set): 
+        return {
+            "result": False
+        }
+    
+    while queue:
+        v = queue.popleft()
+        if(v == end): 
+            return {
+                "result": True,
+                "parents": parents, 
+                "seen": seen,
+                "start": start, 
+                "end": end
+            }
 
+        neighbors = graph[v]
+        for node in neighbors:
+            if(node not in seen and node not in restriction_set):
+                parents[node] = v
+                seen.add(node)
+                dist[node] = dist[v] + 1
+                
+                queue.append(node)
+    
+    return ({
+        "result": False
+    })
+
+def dfs_with_restriction_set(graph, start, end, restriction_set, seen = None, parents=None, DEBUG=False):
+    # dont dfs in a cycle. visited set stops that!
+    if DEBUG: print("FOR THIS DFS, (start, end), restrict set was ", (start, end), restriction_set)
     if(seen is None):
-        seen = set()
+        seen = set([start])
         parents = {}
         parents[start] = None # start has no parents
 
-    if(start in restriction_set or start in seen):
+    if(start in restriction_set): # or start in seen):
         # Kill this branch. 
         return {
             "result": False,
         }
     
     seen.add(start)
+
     
     if(start == end):
         return {
                 "result": True,
                 "parents": parents,
-                "seen": seen
+                "seen": seen, 
+                "start": start, 
+                "end" : end
             }
+
     neighbors = graph[start]
     
     for i in neighbors:
-        parents[i] = start
-        dfs_result = dfs_with_restriction_set(graph, i, end, restriction_set, seen, parents)
-        if(dfs_result["result"]):
-            return dfs_result
+        if( i not in seen and i not in restriction_set): 
+            parents[i] = start
+
+            dfs_result = dfs_with_restriction_set(graph, i, end, restriction_set, seen, parents)
+            if(dfs_result["result"]):
+                return dfs_result
 
     return {
         "result": False
@@ -87,20 +129,20 @@ def dfs_with_restriction_set(graph, start, end, restriction_set, seen = None, pa
 
 # Get the path to the root of a DFS or BFS tree. 
 # bfs_tree is also the parents hashmap. we climb parents to get to root!
-def get_path_to_root(bfs_tree, node):
+def get_path_to_root(bfs_tree, node, DEBUG=False):
     # root has parent called undefiend
     n = node 
     path = [n]
 
-    # print("GET PATH TO ROOT CALLED WITH FOLLOWING; ")
-    # print("NODE IS: ", node)
-    # print("bfs_tree", bfs_tree)
+    if(DEBUG): print("GET PATH TO ROOT CALLED WITH FOLLOWING; ")
+    if(DEBUG): print("NODE IS: ", node)
+    if(DEBUG): print("bfs_tree", bfs_tree)
     
 
     while True:
-        # print("n is", n)
+        if(DEBUG): print("n is", n)
         parent = bfs_tree[n]
-        # print(parent)    
+        #print(parent)    
 
         if(parent is None):
             break
@@ -132,7 +174,7 @@ def verify_solution_if_paths_exist(graph, small_path, long_path, s, t):
     
 
     if(a and b):
-        print("Two paths are GOOD. VERIFIED")
+        # print("Two paths are GOOD. VERIFIED")
         return True
     elif(a):
         print("only short path was correct")
@@ -162,7 +204,7 @@ def verify_path_exists(graph, path, s, t):
         parent = child
 
     if(path[0] == s and path[-1] == t):
-        print("THE PATH " + str(path) + " has been verified")
+        # print("THE PATH " + str(path) + " has been verified")
         return True
     else: 
         print("The path does not start at S, and end at T")
