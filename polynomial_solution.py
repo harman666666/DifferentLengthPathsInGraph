@@ -134,7 +134,6 @@ def add_path_to_graph(path, g):
 # and most edges for these shortest paths. 
 # some edges dont get included. but we just need the vertices for our solution
 def create_shortest_paths_dag(graph, reversed_graph, s, t, DEBUG=DO_DEBUG):
-    # You can do this by doing BFS on every vertex. Then
     
     graphBFS = bfs(graph, s)
     reverseGraphBFS = bfs(reversed_graph, t)
@@ -375,8 +374,7 @@ def create_crazy_path_without_overlaps(X,
 # Overlapping occurs due to Y topologically coming before X in the DAG so the two paths created overlap
 # 
 # This method tries to find 2 paths that go from s->X and Y->t without either overlapping to create SIMPLE paths 
-# When the function returns, it sends back 2 parent arrays, one for each path, to allow for the creation of the 
-# longer path (or fails because every possible 2 paths will overlap when S is trying to reach X and Y is trying to reach T in their respective DFS's
+#   RETURNS THOSE 2 SIMPLE PATHS
 
 # This functions is used by Lost edges method and outer vertex method which merge the two paths returned either with a 
 # lost edge (edge between two vertices in shortest paths dag, but edge isnt in shortest paths dag. edge is in graph however!), 
@@ -385,7 +383,7 @@ def create_crazy_path_without_overlaps(X,
 # RUNTIME ANALYSIS: DFS on a DAG is O(V+E). WE DO 4 IN THIS BACK TO BACK WORST CASE SO 4 * O(V+E)
 
 
-# FOR THIS METHOD, have to implement avoidance!
+# FOR THIS METHOD, still have to implement avoidance! (maybe needed)
 # avoidance is done after the second dfs fails. For the third dfs, when the path is being generated, 
 # you have to avoid the path nodes the first dfs used if you can. visit those nodes last, and visit unavoided nodes 
 # first so you can create paths that avoid the nodes the 4th dfs will need. 
@@ -414,12 +412,12 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_
                     Fail Path Creation due to contention for this piece of critical segment in the DAG that both S->X and Y->T needed.
     '''
     
-    S_to_X_dfs = bfs_with_restriction_set(graph=shortest_paths_dag, 
+    S_to_X_bfs = bfs_with_restriction_set(graph=shortest_paths_dag, 
                                           start=s, 
                                           end=X, 
                                           restriction_set=set([Y, t]))
 
-    if(S_to_X_dfs["result"] == False):
+    if(S_to_X_bfs["result"] == False):
         if(DEBUG): print("FAILED ON FIRST DFS. from s -> x", (s, X))
         return {
             "result": False
@@ -432,7 +430,7 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_
                                           X_to_Z_to_Y_path["crazy_path"][1:] + \
                                           get_path_to_root(longer_path_result["Y_to_T_dfs_tree"], t)[::-1][1:]
     '''
-    S_to_X_path = get_path_to_root(S_to_X_dfs["parents"], X)[::-1]
+    S_to_X_path = get_path_to_root(S_to_X_bfs["parents"], X)[::-1]
  
     # Do second dfs
     if DEBUG: print("S_to_X_path_found: ", S_to_X_path)
@@ -453,17 +451,17 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_
     # The second dfs failed, so move on to the third dfs:
     if DEBUG: print("SECOND DFS FAILED move on to third. second was y->T", (Y, t))
 
-    Y_to_T_dfs_2 =  bfs_with_restriction_set(graph=shortest_paths_dag, 
+    Y_to_T_bfs_2 =  bfs_with_restriction_set(graph=shortest_paths_dag, 
                                           start=Y, 
                                           end=t, 
                                           restriction_set=set([X, s]))
-    if(Y_to_T_dfs_2["result"] == False):
+    if(Y_to_T_bfs_2["result"] == False):
         if(DEBUG): print("FAILED ON THIRD DFS. Y->T", (Y, t))
         return {
             "result": False
         }
     
-    Y_to_T_path_2 = get_path_to_root(Y_to_T_dfs_2["parents"], t)[::-1]
+    Y_to_T_path_2 = get_path_to_root(Y_to_T_bfs_2["parents"], t)[::-1]
 
     # do fourth dfs (IMPLEMENT AVOIDANCE HERE!!!!!)
     if(DEBUG): print("Y TO T 2 PATH ", Y_to_T_path_2)
@@ -545,16 +543,12 @@ def create_longer_path_using_lost_edges(graph,
                 if(DEBUG): print("K_To_T", K_TO_T_PATH)
                     
                 a_longer_path = S_TO_V_PATH + K_TO_T_PATH
-                
-                # SOME LONGER PATHS WE FIND USIGN LOST EDGES METHOD ARE ACTUALLY SHORTEST PATHS BECAUSE SOME EDGES DIDNT GET ADDED.
-                
-                #if(len(a_longer_path) > shortest_path_length + 1):
+
                 return {
                     "result": True,
                     "a_longer_path": a_longer_path
                 }
-                #else:
-                #    continue
+
     
     if(DEBUG): print("Lost edges method yielded no results")
     return {

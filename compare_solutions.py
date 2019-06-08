@@ -207,7 +207,7 @@ def benchmark_correctness_testing(DEBUG=False):
         for S in Sarr:
             for T in Tarr: 
                 i += 1
-                print("index: ", i)
+                
                 if DEBUG: pprint.pprint(g)
 
                 if DEBUG: print("################################# BRUTE FORCE SOLUTION, index is ", i)
@@ -254,6 +254,9 @@ def benchmark_correctness_testing(DEBUG=False):
                     break
                 else:
                     score += 1
+                
+                print("index: " +  str(i) + " is correct. poly soln matches brute force.")
+
             if(fail): 
                 break
         if(fail): 
