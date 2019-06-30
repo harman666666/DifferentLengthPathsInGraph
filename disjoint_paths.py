@@ -1,4 +1,5 @@
 
+from brute_force_get_all_paths import brute_force_get_all_solution
 
 
 '''
@@ -12,111 +13,51 @@ Find path from s to t
 from collections import deque
 from utility import bfs_with_restriction_set, \
                     dfs_with_restriction_set, \
-                    get_path_to_root
+                    get_path_to_root, \
+                    create_example_rand_directed_graph, \
+                    create_graph_without_longer_path,  \
+                    create_graph_with_h_path
 
 def brute_force_disjoint_paths(graph, s, t, y, z, DEBUG=False):
-    # CREATE path from s to t
-    
-    # other algo tries to create path from y to z
-    # if it sees vertex from s to t, 
-    # saves the location right, and tries to complete dfs,
-    # if it fails ->
 
-    '''
-    go back to saved locations 
-    WHERE WE INTERSECTING IN OUR ORIGINAL
-    DFS,
-    s -> t bfs, we tell it to choose a different neighbor, then BFS to t.
-    then we try dfs from y to z again starting at that node we just changed!
-    
-    
-    
-    
-    if it still didnt work, go to 
-        
-    '''
+    all_paths_from_s_to_t = brute_force_get_all_solution(graph, s, t, get_shortest_paths_too=True)
+    all_paths_from_y_to_z = brute_force_get_all_solution(graph, y, z, get_shortest_paths_too=True)
 
+    print("all_paths_from_s_to_t", all_paths_from_s_to_t)
+    print("all paths from y to z", all_paths_from_y_to_z)
 
-    s_to_t_bfs = bfs_with_restriction_set(graph, s, t, set())
-
-    if(s_to_t_bfs["result"] == False):
-        if(DEBUG): print("FAILED ON FIRST DFS. from s -> x", (s, X))
-        return {
-            "result": False
-        }
-
-    
-    s_to_t_path = get_path_to_root(s_to_t_bfs["parents"], t)[::-1]
-    '''
-    # TRY TO DFS FROM Y TO Z!
-    # We may touch a vertex in s->t path
-    # if we fail, go back to these touch points,
-
-    # recreate path from s to t, 
-    # go through each touch point, and make path that avoids touch point!
-    # from s to t, using bfs.
-
-    # try dfs again, we will get new touch points!
-    # add new touch points to old touch points, and modify s -> t path,
-    # and try to make path from y to z again!
-    
-    dfs_result = dfs_with_restriction_set(graph, s, t, set(s_t_path))
-    if dfs_result == True => RETURN SOLUTION
-    else:
-        # find places where dfs touchd!
-        touches = stack( zip(dfs_result.touches(), [array full of st-bfs path]) )
-        checked_touch_point = set()
-        for (touch, old_st_path) in touches:
+    for i in all_paths_from_s_to_t["longer_paths"]:
+        for j in all_paths_from_y_to_z["longer_paths"]:
+            # print("i", i)
+            # print("j", j)
             
-            if(touch in checked_touch_point):
-                continue
-            else:
-                checked_touch_point.add(touch)
+            path_i = set(i)
+            path_j = set(j)
+
+            intersection = path_i.intersection(path_j)
+            # print("intersection", intersection)
+            if(len(intersection) == 0):
+                return {
+                    "is_disjoint": True,
+                    "paths": [i, j] 
+                }
+    return {
+        "is_disjoint": False,
+        "paths": []
+    }
             
-            split bfs s_t path into  2 pieces, part before touch, 
-                                                and part after touch
-
-            new_s_t_path = => node before touch point (call it Z)
-                           => choose different neighbor and bfs to t
-                           => if failed, move on to next neighbor
-                           => in list of neighbors for Z
-                           => all neighbors exhausted, 
-                                move on to next touch point.
-            
-            NEW_TOUCH_POINTS = TRY TO DFS AGAIN FROM Y TO Z
-            append new touch points to stack!
-            stack.append(zip(touch_points, old_st_path + choosen_neighbor ))
-
-            IF WORKS => RETURN TRUE
-            ELSE IF FAIL, CONTINUE WITH NEXT TOUCH POINT!
 
 
 
-    for touchpoint in touch_points_from
-    
-    '''
 
 
-    # ALGORITHM 2:
 
-    '''
+g = create_example_rand_directed_graph(vertices=20, max_neighbors=4)
 
-    bfs from s to t
-
-    bfs from y to z 
-
-    BFS does shortest path, so each vertex in bfs is very important
-
-    okay so common vertices between 2 bfs paths are called critical vertices!
-
-    one path can have a critical vertex, but then other path has to avoid 
-    
-    go through each common vertex, use as part of restriction set. 
-    .... THIS MIGHT BE GOOD.    
-
-    '''
+result = brute_force_disjoint_paths(g, 0, 10, 1, 19)
 
 
+print(result)
 
     
 '''
@@ -236,6 +177,6 @@ g = Graph(graph)
   
 source = 0; sink = 5
    
-print ("The maximum possible flow is %d " % g.FordFulkerson(source, sink)) 
+# print ("The maximum possible flow is %d " % g.FordFulkerson(source, sink)) 
   
 #This code is contributed by Neelam Yadav 

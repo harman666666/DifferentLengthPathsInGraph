@@ -43,7 +43,7 @@ def find_longer_path(graph, s, t, shortest_length):
         "longer_paths": longer_paths
     }
 
-def brute_force_h_solution(graph, s, t, DEBUG=False):
+def brute_force_get_all_solution(graph, s, t, get_shortest_paths_too=False, DEBUG=False):
 
     graphBFS = bfs(graph, s)
 
@@ -56,7 +56,9 @@ def brute_force_h_solution(graph, s, t, DEBUG=False):
         # There is no path from s to t, FAIL!
         if(DEBUG): print("Hi brute force here. THERE IS NO SHORTEST PATH. FAIL.")
         return {
-            "result": False,     
+            "result": False, 
+            "shortest_paths": [],
+            "longer_paths": []    
         }
 
 
@@ -67,6 +69,9 @@ def brute_force_h_solution(graph, s, t, DEBUG=False):
     use dfs to find longer path!
     start at s, 
     '''
+
+    if(get_shortest_paths_too):
+        shortest_length = 0
 
     result = find_longer_path(graph, s, t, shortest_length)
 

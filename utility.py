@@ -49,8 +49,8 @@ def create_graph_with_h_path(vertices, max_neighbors):
         # the graph cannot have a node that has itself as a neighbor
         possible_neighbors = set(range(vertices)) - set([i]) - g[i]
         
-        ne = np.random.randint(max_neighbors - 1) # degree is random
-
+        # ne = np.random.randint(max_neighbors - 1) # degree is random
+        ne = max_neighbors - 1
         g[i] = g[i].union(set(np.random.choice(list(possible_neighbors), ne, replace=False)))
     
     return {"g": g, "hpath": perm}

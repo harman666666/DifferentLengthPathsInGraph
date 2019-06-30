@@ -313,7 +313,7 @@ def find_two_vertex_disjoint_paths(s, t, y, z, graph, DEBUG=DO_DEBUG):
     Y_to_Z_dfs = dfs_with_restriction_set(graph=graph, 
                                           start=y, 
                                           end=z, 
-                                          avoidance_set=set(S_to_T_path),
+                                          avoidance_set=set(S_to_T_bfs_path),
                                           restriction_set=set())
 
 

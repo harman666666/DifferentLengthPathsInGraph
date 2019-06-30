@@ -233,7 +233,7 @@ def benchmark_correctness_testing(DEBUG=False):
     while True:
                 
         #g = create_example_rand_directed_graph(vertices=50, max_neighbors=3)
-        g = create_graph_with_h_path(12, 4)["g"]
+        g = create_graph_with_h_path(20, 2)["g"]
 
         Sarr = [1, 2,3,4,5]
         Tarr = [10,11,12,13,14]
@@ -420,7 +420,28 @@ def hard_example_7():
     run_example(g, S, T)
 
 
-# benchmark_correctness_testing()
+def hard_example_8():
+    '''
+    BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK
+    defaultdict(<class 'set'>,
+            {0: {1, 10},
+             1: {9},
+             2: {8, 3},
+             3: {9, 11},
+             4: {3},
+             5: {0},
+             6: {10, 11},
+             7: {2},
+             8: {5},
+             9: {0, 4},
+             10: {7},
+             11: {6}})
+    S AND T WERE  (2, 10)
+    '''
+    # CREATE THIS!
+    pass
+
+benchmark_correctness_testing()
  
 # performance_testing_2()
 
@@ -439,4 +460,4 @@ def hard_example_7():
 # hard_example_5()
 # hard_example_6()
 
-hard_example_7()
+# hard_example_7()

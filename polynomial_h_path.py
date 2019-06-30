@@ -10,7 +10,7 @@ from utility import bfs, \
                     create_graph_with_h_path
 
 from brute_force_dfs_solution import brute_force_solution
-from brute_force_hamiltonian_path import brute_force_h_solution
+from brute_force_get_all_paths import brute_force_get_all_solution
 
 '''
 Consider the following problem: 
