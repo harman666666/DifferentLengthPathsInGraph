@@ -10,6 +10,7 @@ from utility import bfs, \
                     create_graph_with_h_path
 
 from brute_force_dfs_solution import brute_force_solution
+from brute_force_hamiltonian_path import brute_force_h_solution
 
 '''
 Consider the following problem: 
@@ -680,7 +681,7 @@ pprint.pprint(longer_paths)
 
 
 print("BRUTE FORCE SOLUTION WAS ")
-brute_force_soln = brute_force_solution(g["g"], s=1, t=5)
+brute_force_soln = brute_force_h_solution(g["g"], s=1, t=5)
 
 pprint.pprint(brute_force_soln)
 
