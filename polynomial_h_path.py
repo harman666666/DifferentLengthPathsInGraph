@@ -679,7 +679,6 @@ longer_paths = poly_h_solution(graph=g["g"], s=1, t=5)
 pprint.pprint(longer_paths)
 
 
-
 print("BRUTE FORCE SOLUTION WAS ")
 brute_force_soln = brute_force_h_solution(g["g"], s=1, t=5)
 

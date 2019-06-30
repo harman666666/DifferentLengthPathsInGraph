@@ -290,6 +290,83 @@ def crazy_bfs(graph, Z, shortest_paths_dag_vertices, DEBUG=DO_DEBUG):
         "intersection_vertices": intersection_vertices,
     })
 
+
+def find_two_vertex_disjoint_paths(s, t, y, z, graph, DEBUG=DO_DEBUG):
+    # finds 2 vertex disjoint paths in a graph. One from s to t. The other from y to z
+    
+    S_to_T_bfs = bfs_with_restriction_set(graph=graph, 
+                                          start=s, 
+                                          end=t, 
+                                          restriction_set=set([Y, t]))
+
+    if(S_to_T_bfs["result"] == False):
+        if(DEBUG): print("FAILED ON FIRST BFS. from s -> x", (s, X))
+        return {
+            "result": False
+        }
+    
+    S_to_T_bfs_path = get_path_to_root(S_to_T_bfs["parents"], X)[::-1]
+ 
+    # Do second dfs
+    if DEBUG: print("S_to_X_bfs_path_found: ", S_to_T_bfs_path)
+
+    Y_to_Z_dfs = dfs_with_restriction_set(graph=graph, 
+                                          start=y, 
+                                          end=z, 
+                                          avoidance_set=set(S_to_T_path),
+                                          restriction_set=set())
+
+
+    if(Y_to_Z_dfs["result"] == True):
+        if(DEBUG): print("IT WAS MERGED WITHIN FIRST BFS AND DFS")
+        return {
+            "result": True,
+            "S_to_X_path": S_to_T_bfs_path,
+            "Y_to_Z_path": get_path_to_root(Y_to_Z_dfs["parents"], z)[::-1] 
+        }
+    '''
+    # The second dfs failed, so move on to the third dfs:
+    if DEBUG: print("SECOND DFS FAILED move on to third. second was y->T", (Y, t))
+
+    Y_to_T_bfs_2 =  bfs_with_restriction_set(graph=graph, 
+                                          start=y, 
+                                          end=z, 
+                                          restriction_set=set([X, s]))
+    if(Y_to_T_bfs_2["result"] == False):
+        if(DEBUG): print("FAILED ON THIRD DFS. Y->T", (Y, t))
+        return {
+            "result": False
+        }
+    
+    Y_to_T_path_2 = get_path_to_root(Y_to_T_bfs_2["parents"], t)[::-1]
+
+    # do fourth dfs (IMPLEMENT AVOIDANCE HERE!!!!!)
+    if(DEBUG): print("Y TO T 2 PATH ", Y_to_T_path_2)
+    S_to_X_dfs_2 = dfs_with_restriction_set(graph=graph, 
+                                          start=s, 
+                                          end=X, 
+                                          restriction_set=set(Y_to_T_path_2))
+
+    if(S_to_X_dfs_2["result"] == True):
+        if(DEBUG): print("IT WAS MERGED WITHIN 4 DFS'S")
+
+        return {
+            "result": True,
+            "S_to_X_path": get_path_to_root(S_to_X_dfs_2["parents"], X)[::-1],
+            "Y_to_T_path": Y_to_T_path_2 
+        }
+    else:
+        if(DEBUG): print("FAILED ON FOURTH DFS")
+        return {
+            "result": False
+        }
+
+    '''
+
+
+
+
+
 '''
                 get_path_to_root(X_to_Z_Result["parents"], x)[1:] +  \
                                           get_path_to_root(Z_to_Y_Result["parents"], y)[::-1][1:] + \
@@ -319,7 +396,7 @@ def create_crazy_path_without_overlaps(X,
     if(DEBUG): print("SHORTEST PATH FROM X TO Z IS THE FOLLOWING ", shortest_path_x_to_z)
     
     
-    dfs_from_z_to_y_restriction_set = set(shortest_path_x_to_z + shortest_paths_dag_vertices) - set([Z, Y])
+    dfs_from_z_to_y_restriction_set = set(shortest_path_x_to_z + list(shortest_paths_dag_vertices)) - set([Z, Y])
     dfs_path_from_z_to_y = dfs_with_restriction_set(graph=graph, 
                                                     start=Z, 
                                                     end=Y, 
@@ -347,7 +424,7 @@ def create_crazy_path_without_overlaps(X,
     dfs_path_from_x_to_z = dfs_with_restriction_set(graph=graph, 
                                                start=X, 
                                                end=Z, 
-                                               restriction_set=(set(shortest_path_z_to_y + shortest_paths_dag_vertices) - set([X, Z])) ) 
+                                               restriction_set=(set(shortest_path_z_to_y + list(shortest_paths_dag_vertices)) - set([X, Z])) ) 
     
     if(DEBUG): print("dfs path from x to z crazy path", dfs_path_from_x_to_z)
 
@@ -395,7 +472,8 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_
          2a) If T is reached, we are done. Return True. 
          2b) Otherwise T was not reached. Go to Step 3
 
-     3) Lift restriction that Y->T path can't use visitedX, and try to use visitedX vertices to get to T (this DFS however, still cant visit X). 
+     3) Lift restriction that Y->T path can't use visitedX, and try to use visitedX vertices to get to T 
+        (this DFS however, still cant visit X). 
         Save visited vertices to visitedY, including the ones we see when we lift the restriction to not use visitedX. 
         3a)  If T still cant be reached because Y->T path still sees X, then FAIL PATH CREATION. Return false. 
         3b)  If T is reached. Go To Step 4

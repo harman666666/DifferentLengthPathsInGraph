@@ -32,7 +32,7 @@ def create_graph_with_h_path(vertices, max_neighbors):
     g = defaultdict(set)
 
     perm = np.random.permutation([i for i in range(vertices)])
-    print("PERM IS ", perm)
+    # print("PERM IS ", perm)
     i = 0
     for j in range(1, vertices):
         g[perm[i]].add(perm[j])
@@ -40,7 +40,7 @@ def create_graph_with_h_path(vertices, max_neighbors):
 
     g[perm[i]].add(perm[0])
     
-    print("GRAPH WITH H PATH", g)
+    # print("GRAPH WITH H PATH", g)
 
     # every vertex has degree 1, add other neighbors!
     

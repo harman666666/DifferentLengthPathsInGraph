@@ -1,12 +1,17 @@
 import pprint
 
-from utility import verify_solution_if_paths_exist, create_example_rand_directed_graph, create_graph_without_longer_path
+from utility import verify_solution_if_paths_exist, \
+                    create_example_rand_directed_graph, \
+                    create_graph_without_longer_path,  \
+                    create_graph_with_h_path
+
 from brute_force_dfs_solution import brute_force_solution
 from polynomial_solution import poly_solution
 
 import pickle
 import time
-
+import datetime
+import os
 
 def test_outer_vertex_method():
     # This graph will test outer vertex method for the polynomial solution
@@ -214,10 +219,25 @@ def performance_testing_2():
 def benchmark_correctness_testing(DEBUG=False):
     score = 0
     i = 0
+    errors = 0
+    # Create file that saves examples that lead to errors
+    filename = "correctness-benchmarking/correctness-testing-" + \
+                    str(datetime.datetime.now().date()) + '_' + \
+                    str(datetime.datetime.now().time()).replace(':', '.')
+    
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+
+
+    fp = open( filename, "w+")
+
     while True:
-        g = create_example_rand_directed_graph(vertices=50, max_neighbors=3)
-        Sarr = [1]
-        Tarr = [14]
+                
+        #g = create_example_rand_directed_graph(vertices=50, max_neighbors=3)
+        g = create_graph_with_h_path(12, 4)["g"]
+
+        Sarr = [1, 2,3,4,5]
+        Tarr = [10,11,12,13,14]
+
         # ITERATE THROUGH DIFFERENT S AND T:
         fail = False 
         for S in Sarr:
@@ -265,18 +285,24 @@ def benchmark_correctness_testing(DEBUG=False):
                 if DEBUG: print(brute_force_soln)
                 
                 if brute_force_soln["result"] != poly_soln["result"]:
+                    print("BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK", file=fp)
                     print("BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK")
+
+                    pprint.pprint(g, fp)
                     pprint.pprint(g)
+                    print("S AND T WERE ", (S, T), file=fp)
                     print("S AND T WERE ", (S, T))
-                    fail = True
+
+                    # fail = True
+                    errors += 1
                     break
                 else:
                     score += 1
                 
-                print("index: " +  str(i) + " is correct. poly soln matches brute force.")
+                print("index: " +  str(i) + " is correct. poly soln matches brute force." + "tot errors: " + str(errors))
 
-            if(fail): 
-                break
+            #if(fail): 
+            #    break
         if(fail): 
                 break
     print("THE SCORE OUR POLY SOLUTION RECIEVED IS ", score)
@@ -387,7 +413,14 @@ def hard_example_6():
     run_example(g, S, T)
 
 
-benchmark_correctness_testing()
+def hard_example_7():
+    g = {0: set([7]), 1: set([9, 10]), 2: set([1]), 3: set([17]), 4: set([5]), 5: set([11]), 6: set([19, 14]), 7: set([11, 19]), 8: set([9]), 9: set([2, 15]), 10: set([16, 11]), 11: set([0, 12]), 12: set([4, 6]), 13: set([1, 6]), 14: set([3]), 15: set([12]), 16: set([13]), 17: set([18, 19]), 18: set([8, 1]), 19: set([2, 10])}
+    S = 1
+    T = 14
+    run_example(g, S, T)
+
+
+# benchmark_correctness_testing()
  
 # performance_testing_2()
 
@@ -405,3 +438,5 @@ benchmark_correctness_testing()
 # Outer vertex test
 # hard_example_5()
 # hard_example_6()
+
+hard_example_7()
