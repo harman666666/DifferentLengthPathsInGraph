@@ -86,9 +86,13 @@ Are there shorter lengths in this dag between s and t?
 MAYBE.
 to not enumerate them, you can set a counter on each node. 
 
-So S node has counter 0, next node has counter 1, next node after that has counter 2. because its 2 away from s.
-and the rule is you can only go towards nodes that have a counter that is 1 higher than you. not same or less. 
+So S node has counter 0, next node has counter 1, next node after that has counter 2. 
+because its 2 away from s.
+and the rule is you can only go towards nodes that have a counter that is 
+1 higher than you. not same or less. 
 This way, all paths in the DAG will have exactly length N. 
 
 
+
+################################
 

@@ -27,6 +27,72 @@ def create_example_rand_directed_graph(vertices, max_neighbors):
 
     return g
 
+def create_graph_with_h_path(vertices, max_neighbors):
+
+    g = defaultdict(set)
+
+    perm = np.random.permutation([i for i in range(vertices)])
+    print("PERM IS ", perm)
+    i = 0
+    for j in range(1, vertices):
+        g[perm[i]].add(perm[j])
+        i = j
+
+    g[perm[i]].add(perm[0])
+    
+    print("GRAPH WITH H PATH", g)
+
+    # every vertex has degree 1, add other neighbors!
+    
+    for i in range(vertices):
+        
+        # the graph cannot have a node that has itself as a neighbor
+        possible_neighbors = set(range(vertices)) - set([i]) - g[i]
+        
+        ne = np.random.randint(max_neighbors - 1) # degree is random
+
+        g[i] = g[i].union(set(np.random.choice(list(possible_neighbors), ne, replace=False)))
+    
+    return {"g": g, "hpath": perm}
+
+
+def create_graph_without_longer_path(side_length):
+    g = defaultdict(set)
+    
+    # These are square graphs! CAN ALSO MAKE CUBE GRAPH! try that too!
+    # each node either can go write or down!
+
+    # Vertices are 0 to 2^n - 1
+    # Each vertex either connects right or down!
+
+    vertices = side_length ** 2
+    print("num vertices are", vertices)
+    row = 1
+
+    is_bottom = False
+
+    for i in range(vertices):
+        if(i == side_length*row):
+            row += 1
+            if(row == side_length):
+                is_bottom = True
+    
+        if(i+1 < side_length*row):
+            g[i].add(i + 1) # it will connect to vertices that dont exist sometimes!
+        if(not is_bottom):
+            g[i].add(i + side_length)
+
+
+        
+        # print(i)
+        # print(row)
+
+
+    # print(g)
+    return g
+
+
+
 
 def bfs(graph, s):
 

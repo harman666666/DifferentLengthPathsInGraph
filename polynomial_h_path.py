@@ -2,8 +2,14 @@
 import numpy as np
 import pprint
 from collections import defaultdict, deque
-from utility import bfs, bfs_with_restriction_set, dfs_with_restriction_set, get_path_to_root, create_example_rand_directed_graph
+from utility import bfs, \
+                    bfs_with_restriction_set, \
+                    dfs_with_restriction_set, \
+                    get_path_to_root, \
+                    create_example_rand_directed_graph, \
+                    create_graph_with_h_path
 
+from brute_force_dfs_solution import brute_force_solution
 
 '''
 Consider the following problem: 
@@ -20,11 +26,11 @@ all possible paths in graphs.
 '''
 
 
-DO_DEBUG=False
+DO_DEBUG=True
 
 
 ##### START READING THE CODE FROM HERE. THIS IS THE MAIN METHOD. 
-def poly_solution(graph, s, t, DEBUG=DO_DEBUG):
+def poly_h_solution(graph, s, t, DEBUG=DO_DEBUG):
 
     # Reversed graph is needed. 
     reversed_graph = defaultdict(set) # a map with values as list type
@@ -40,7 +46,6 @@ def poly_solution(graph, s, t, DEBUG=DO_DEBUG):
         if(DEBUG): print("THERE IS NO SHORTEST PATH BETWEEN S AND T, SO THERE IS NO SOLUTION. FALSE. BYE")
         return {
             "result": False,
-           
         }
 
 
@@ -65,47 +70,27 @@ def poly_solution(graph, s, t, DEBUG=DO_DEBUG):
     # These 2 methods encapsulate all possible ways for these 2 paths to exist, that's why if they fail, then there is none
     
     
-    did_we_get_2_paths_using_lost_edges = create_longer_path_using_lost_edges(graph, 
+    longer_paths_from_lost_edges = create_longer_path_using_lost_edges(graph, 
                                                              s,
                                                              t,
                                                              shortest_paths_dag, 
                                                              shortest_paths_dag_with_all_neighbors, 
                                                              shortest_path_length) 
 
-    if(did_we_get_2_paths_using_lost_edges["result"]):
-        # WE FOUND 2 PATHS!!!
-        if(DEBUG): print("WE FOUND A SHORTER AND A LONGER DIRECTED SIMPLE PATH USING LOST EDGES METHOD. THEY ARE: ")
-        if(DEBUG): print(a_shortest_path)
-        if(DEBUG): print(did_we_get_2_paths_using_lost_edges["a_longer_path"])
-        
-        return {
-            "result": True,
-            "a_shortest_path": a_shortest_path,
-            "a_longer_path": did_we_get_2_paths_using_lost_edges["a_longer_path"]
-        }
-    
+
     # OK LOST EDGES FAILED. now have to try outer vertex method.
-    did_we_get_2_paths_using_outer_an_outer_vertex = create_longer_path_using_an_outer_vertex(graph=graph, 
+    longer_paths_from_outer_vertex = create_longer_path_using_an_outer_vertex(graph=graph, 
                                                                                               reversed_graph=reversed_graph, 
                                                                                               shortest_paths_dag=shortest_paths_dag, 
                                                                                               shortest_paths_dag_with_all_neighbors=shortest_paths_dag_with_all_neighbors,
                                                                                               s=s, 
                                                                                               t=t)   
 
-
-    if(did_we_get_2_paths_using_outer_an_outer_vertex["result"]):
-        if(DEBUG): print("WE FOUND A SHORTER AND A LONGER DIRECTED SIMPLE PATH USING OUTER VERTEX METHOD. THEY ARE: ")
-        if(DEBUG): print(a_shortest_path)
-        if(DEBUG): print(did_we_get_2_paths_using_outer_an_outer_vertex["a_longer_path"])
-        
-        return {
-            "result": True,
-            "a_shortest_path": a_shortest_path,
-            "a_longer_path": did_we_get_2_paths_using_outer_an_outer_vertex["a_longer_path"]
-        }
+    longer_paths = longer_paths_from_lost_edges["longer_paths"] + longer_paths_from_outer_vertex["longer_paths"]
 
     return {
-        "result": False
+        "shortest_path": a_shortest_path,
+        "longer_paths": longer_paths 
     }
 
 
@@ -491,6 +476,10 @@ def create_longer_path_using_lost_edges(graph,
                                         DEBUG=DO_DEBUG):
     if(DEBUG): print("Start lost edges method")
     vertices_in_dag = set(shortest_paths_dag.keys())
+    
+
+    longer_paths = []
+
     for V in vertices_in_dag: 
         all_neighbors = graph[V]
         dag_neighbors = shortest_paths_dag[V]
@@ -538,17 +527,20 @@ def create_longer_path_using_lost_edges(graph,
                 if(DEBUG): print("K_To_T", K_TO_T_PATH)
                     
                 a_longer_path = S_TO_V_PATH + K_TO_T_PATH
+                if(DEBUG): print("FOUND LONGER PATH", a_longer_path)
 
-                return {
-                    "result": True,
-                    "a_longer_path": a_longer_path
-                }
+                longer_paths.append(a_longer_path)
+
+                #return {
+                #    "result": True,
+                #    "a_longer_path": a_longer_path
+                #}
 
     
-    if(DEBUG): print("Lost edges method yielded no results")
+    if(DEBUG): print("Lost edges method yielded following", longer_paths)
+
     return {
-        "result": False,
-        "a_longer_path": None
+        "longer_paths": longer_paths
         }
 
 
@@ -571,6 +563,8 @@ def create_longer_path_using_an_outer_vertex(graph,
     # X, and Y are places where we touch the shortest_paths_dag from coordinate vertex Z (Z is from vertices_to_test variable above)
     
     if DEBUG: print("OUTER VERTICES TO TEST", vertices_to_test)
+    
+    longer_paths = []
 
     while vertices_to_test:
         Z = vertices_to_test.pop() # Get a random vertex from set and do crazy bfs and reverse crazy bfs on it.
@@ -650,20 +644,22 @@ def create_longer_path_using_an_outer_vertex(graph,
                         a_longer_path =   longer_path_result["S_to_X_path"] + \
                                           X_to_Z_to_Y_path["crazy_path"][1:] + \
                                           longer_path_result["Y_to_T_path"][1:]
+                        
+                        if(DEBUG): print("FOUND LONGER PATH", a_longer_path)
 
-                        if(DEBUG): print("a longest path: "  + str(a_longer_path))
-                        return {
-                                "result": True,
-                                "a_longer_path": a_longer_path
-                                }
+                        #return {
+                        #        "result": True,
+                        #        "a_longer_path": a_longer_path
+                        #        }
+                        longer_paths.append(a_longer_path)
 
     if(DEBUG): print("END TEST FOR COORDINATION POINT ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 
-    if DEBUG: print("OUTER VERTEX METHOD DID NOT YIELD RESULTS")
+    if DEBUG: print("OUTER VERTEX METHOD YIELDED FOLLOWING", longer_paths)
 
     return {
-        "result": False
+        "longer_paths": longer_paths
     }
 
 
@@ -672,13 +668,20 @@ def create_longer_path_using_an_outer_vertex(graph,
 ############################################################################################
 
 # EXECUTE POLYNOMIAL TIME SOLUTION TO PROBLEM HERE:
-# g = create_example_rand_directed_graph(10)
+g = create_graph_with_h_path(10, 4)
 
-# pprint.pprint(g)
+
+pprint.pprint(g)
 
 # DOES THERE EXIST AT LEAST 2 DIRECTED SIMPLE PATHS FROM S TO T of different lengths
-# poly_solution(graph=g, s=1, t=5)
-    
+longer_paths = poly_h_solution(graph=g["g"], s=1, t=5)
+pprint.pprint(longer_paths)
 
 
 
+print("BRUTE FORCE SOLUTION WAS ")
+brute_force_soln = brute_force_solution(g["g"], s=1, t=5)
+
+pprint.pprint(brute_force_soln)
+
+print("H PATH WAS", g["hpath"])

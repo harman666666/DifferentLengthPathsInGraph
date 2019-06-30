@@ -1,6 +1,6 @@
 import pprint
 
-from utility import verify_solution_if_paths_exist, create_example_rand_directed_graph
+from utility import verify_solution_if_paths_exist, create_example_rand_directed_graph, create_graph_without_longer_path
 from brute_force_dfs_solution import brute_force_solution
 from polynomial_solution import poly_solution
 
@@ -184,13 +184,29 @@ def performance_testing(name, s=1, t=19):
     print("TIME TO EXECUTE IN SECONDS FOR BRUTE FORCE WAS", duration2)
 
 def performance_testing_2():
-    
-    g = {
-        1: set([])
+    square_size = 100
+    g = create_graph_without_longer_path(square_size)
+    s = 0
+    t = square_size** 2 - 1
 
-    }
-    s = 1
-    t = 9
+    # run_example(g, S, T)
+
+    start_time = time.time()
+
+    run_poly_example(g, s, t)
+    
+    duration = (time.time() - start_time)
+    print("TIME TO EXECUTE IN SECONDS FOR POLY WAS", duration)
+    
+    start_time2 = time.time()
+    
+    run_brute_force_example(g, s, t)
+    
+    duration2 = (time.time() - start_time2)
+    print("TIME TO EXECUTE IN SECONDS FOR BRUTE FORCE WAS", duration2)
+
+
+
 
 
 # SAVE RESULTS FOR THE TEST USING BRUTEFORCE!
@@ -199,9 +215,9 @@ def benchmark_correctness_testing(DEBUG=False):
     score = 0
     i = 0
     while True:
-        g = create_example_rand_directed_graph(vertices=30, max_neighbors=5)
+        g = create_example_rand_directed_graph(vertices=50, max_neighbors=3)
         Sarr = [1]
-        Tarr = [19]
+        Tarr = [14]
         # ITERATE THROUGH DIFFERENT S AND T:
         fail = False 
         for S in Sarr:
@@ -216,7 +232,9 @@ def benchmark_correctness_testing(DEBUG=False):
                 brute_force_soln = brute_force_solution(g, S, T)
                 if DEBUG:  print(brute_force_soln)
                 if(brute_force_soln["result"]):
-                    a = verify_solution_if_paths_exist(g, brute_force_soln["a_shortest_path"], brute_force_soln["a_longer_path"], S, T)
+                    a = verify_solution_if_paths_exist(g, 
+                                                       brute_force_soln["a_shortest_path"], 
+                                                       brute_force_soln["a_longer_path"], S, T)
 
 
                     if(a):
@@ -371,6 +389,8 @@ def hard_example_6():
 
 benchmark_correctness_testing()
  
+# performance_testing_2()
+
 #test_when_shortest_path_is_length_1()
 #hard_example_1()
 #hard_example_2()

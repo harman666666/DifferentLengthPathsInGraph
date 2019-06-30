@@ -1,0 +1,90 @@
+Finding Disjoint paths in a grpah is important for the algorithm.
+
+##################################
+ONE CONCERN IS THE ALGORITHM USED TO FIND VERTEX DISJOINT PATHS IN THE GRAPH
+
+we have to use flow to solve it!
+
+The algorithm to be used is called: 
+
+Given: Vertices s1, t1, . . . , t1, tk in a graph.
+Output: k disjoint paths connecting each source with
+an arbitrary target.
+Solution: Reduction to single source/single target version.
+
+The k-VDPP
+The (k-)disjoint path-problem (k-)VDPP
+Given: Vertex pairs (s1, t1), . . . ,(sk, tk) in a graph.
+Output: Disjoint paths p1 : s1 → t1, . . . , pk : sk → tk.
+
+############################################## (USE THIS ALGORITHM!!!)
+
+
+
+
+Maximum flow can be used to find them. 
+
+17
+
+You can solve this problem by reducing it to a max-flow problem in an appropriately-constructed graph. 
+The idea is as follows:
+
+Split each node v in the graph into to nodes: vin and vout.
+For each node v, add an edge of capacity one from vin to vout.
+Replace each other edge (u, v) in the graph with an edge from uout to vin of capacity 1.
+Add in a new dedicated destination node t.
+
+For each of the target nodes v, add an edge from vin to t with capacity 1.
+
+Find a max-flow from sout to t. The value of the flow is the number of node-disjoint paths.
+
+The idea behind this construction is as follows. Any flow path from the start node s to 
+the destination node t must have capacity one, since all edges have capacity one. 
+Since all capacities are integral, there exists an integral max-flow. No two flow 
+paths can pass through the same intermediary node, because in passing through a 
+node in the graph the flow path must cross the edge from vin to vout, and the 
+capacity here has been restricted to one. Additionally, this flow path must 
+arrive at t by ending at one of the three special nodes you've identified, 
+then following the edge from that node to t. Thus each flow path represents a 
+node-disjoint path from the source node s to one of the three destination nodes. 
+Accordingly, computing a max-flow here corresponds to finding the maximum number 
+of node-disjoint paths you can take from s to any of the three destinations.
+
+Hope this helps!
+
+
+
+############################################################
+ANOTHER SOLUTION FOR DISJOINT VERTEX:
+
+You can solve this problem by reducing it to a max-flow problem in an 
+appropriately-constructed graph. The idea is as follows:
+
+Split each node v in the graph into to nodes: vin and vout.
+For each node v, add an edge of capacity one from vin to vout.
+
+Replace each other edge (u, v) in the graph with an 
+edge from uout to vin of capacity 1.
+Add in a new dedicated destination node t.
+
+For each of the target nodes v, add an edge from vin to t with capacity 1.
+
+Find a max-flow from sout to t. The value of the flow is the number of 
+node-disjoint paths.
+
+The idea behind this construction is as follows.
+Any flow path from the start node s to 
+the destination node t must have capacity one, since all edges have capacity one. 
+Since all capacities are integral, there exists an integral max-flow. No two flow 
+paths can pass through the same intermediary node, because in passing through a 
+node in the graph the flow path must cross the edge from vin to vout, and the 
+capacity here has been restricted to one. 
+
+Additionally, this flow path must 
+arrive at t by ending at one of the three special nodes you've identified, 
+then following the edge from that node to t. Thus each flow path represents 
+a node-disjoint path from the source node s to one of the three destination nodes. 
+Accordingly, computing a max-flow here corresponds to finding the maximum number 
+of node-disjoint paths you can take from s to any of the three destinations.
+
+Hope this helps!
