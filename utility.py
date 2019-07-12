@@ -153,7 +153,14 @@ def bfs_with_restriction_set(graph, start, end, restriction_set, seen = None, pa
         "result": False
     })
 
-def dfs_with_restriction_set(graph, start, end, restriction_set, seen = None, parents=None, DEBUG=False):
+def dfs_with_restriction_set(graph, 
+                             start, 
+                             end, 
+                             restriction_set, 
+                             avoidance_set=set(), 
+                             seen = None, 
+                             parents=None, 
+                             DEBUG=False):
     # dont dfs in a cycle. visited set stops that!
     if DEBUG: print("FOR THIS DFS, (start, end), restrict set was ", (start, end), restriction_set)
     if(seen is None):
@@ -179,13 +186,25 @@ def dfs_with_restriction_set(graph, start, end, restriction_set, seen = None, pa
                 "end" : end
             }
 
-    neighbors = graph[start]
+    neighbors = deque([])
+
+    # Preprocess neighbors so we visit the ones in our avoidance set last
+    for i in graph[start]:
+        if( i not in seen and i not in restriction_set):  
+            if(i in avoidance_set):
+                neighbors.append(i) # put last
+            else:
+                neighbors.appendleft(i) # visit first
     
     for i in neighbors:
-        if( i not in seen and i not in restriction_set): 
             parents[i] = start
-
-            dfs_result = dfs_with_restriction_set(graph, i, end, restriction_set, seen, parents)
+            dfs_result = dfs_with_restriction_set(graph, 
+                                                  i, 
+                                                  end, 
+                                                  restriction_set, 
+                                                  avoidance_set,
+                                                  seen, 
+                                                  parents)
             if(dfs_result["result"]):
                 return dfs_result
 

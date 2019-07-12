@@ -297,10 +297,10 @@ def find_two_vertex_disjoint_paths(s, t, y, z, graph, DEBUG=DO_DEBUG):
     S_to_T_bfs = bfs_with_restriction_set(graph=graph, 
                                           start=s, 
                                           end=t, 
-                                          restriction_set=set([Y, t]))
+                                          restriction_set=set())
 
     if(S_to_T_bfs["result"] == False):
-        if(DEBUG): print("FAILED ON FIRST BFS. from s -> x", (s, X))
+        if(DEBUG): print("FAILED ON FIRST BFS. from s -> t", (s, t))
         return {
             "result": False
         }
@@ -495,14 +495,7 @@ def merge_two_overlapping_paths_in_dag(s, t, X, Y, shortest_paths_dag, DEBUG=DO_
         return {
             "result": False
         }
-    
 
-    '''
-    
-                         a_longer_path =  get_path_to_root(longer_path_result["S_to_X_dfs_tree"], x)[::-1] + \
-                                          X_to_Z_to_Y_path["crazy_path"][1:] + \
-                                          get_path_to_root(longer_path_result["Y_to_T_dfs_tree"], t)[::-1][1:]
-    '''
     S_to_X_path = get_path_to_root(S_to_X_bfs["parents"], X)[::-1]
  
     # Do second dfs
