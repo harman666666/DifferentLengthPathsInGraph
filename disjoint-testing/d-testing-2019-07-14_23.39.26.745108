@@ -1,0 +1,154 @@
+BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK
+defaultdict(<class 'set'>,
+            {0: set(),
+             1: {4},
+             2: {7},
+             3: {7},
+             4: {5},
+             5: {3},
+             6: {1},
+             7: {1}})
+S AND T AND Y AND Z WERE  (2, 5, 4, 7)
+BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK
+defaultdict(<class 'set'>,
+            {0: {6},
+             1: {3},
+             2: {7},
+             3: set(),
+             4: {5},
+             5: {1},
+             6: {1},
+             7: {5}})
+S AND T AND Y AND Z WERE  (2, 5, 4, 7)
+BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK
+defaultdict(<class 'set'>,
+            {0: {3},
+             1: {7},
+             2: {5},
+             3: {5},
+             4: set(),
+             5: set(),
+             6: set(),
+             7: {5}})
+S AND T AND Y AND Z WERE  (1, 5, 3, 7)
+BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK
+defaultdict(<class 'set'>,
+            {0: {5},
+             1: {0},
+             2: {3},
+             3: {7},
+             4: {1},
+             5: {0},
+             6: set(),
+             7: {0}})
+S AND T AND Y AND Z WERE  (2, 5, 4, 7)
+BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK
+defaultdict(<class 'set'>,
+            {0: set(),
+             1: {5},
+             2: {7},
+             3: {2},
+             4: {5},
+             5: {0},
+             6: set(),
+             7: {1}})
+S AND T AND Y AND Z WERE  (2, 5, 4, 7)
+BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK
+defaultdict(<class 'set'>,
+            {0: set(),
+             1: set(),
+             2: {7},
+             3: {5},
+             4: {3},
+             5: {0},
+             6: {4},
+             7: {3}})
+S AND T AND Y AND Z WERE  (2, 5, 4, 7)
+BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK
+defaultdict(<class 'set'>,
+            {0: {4},
+             1: set(),
+             2: {7},
+             3: {4},
+             4: {5},
+             5: {7},
+             6: set(),
+             7: {3}})
+S AND T AND Y AND Z WERE  (2, 5, 4, 7)
+BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK
+defaultdict(<class 'set'>,
+            {0: set(),
+             1: {4},
+             2: {7},
+             3: set(),
+             4: {5},
+             5: {6},
+             6: {2},
+             7: {1}})
+S AND T AND Y AND Z WERE  (2, 5, 4, 7)
+BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK
+defaultdict(<class 'set'>,
+            {0: set(),
+             1: {7},
+             2: {7},
+             3: set(),
+             4: {5},
+             5: {3},
+             6: {4},
+             7: {4}})
+S AND T AND Y AND Z WERE  (2, 5, 4, 7)
+BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK
+defaultdict(<class 'set'>,
+            {0: set(),
+             1: {7},
+             2: {1},
+             3: set(),
+             4: {5},
+             5: set(),
+             6: set(),
+             7: {5}})
+S AND T AND Y AND Z WERE  (2, 5, 4, 7)
+BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK
+defaultdict(<class 'set'>,
+            {0: {5},
+             1: {5},
+             2: {7},
+             3: set(),
+             4: {0},
+             5: {6},
+             6: set(),
+             7: {5}})
+S AND T AND Y AND Z WERE  (2, 5, 4, 7)
+BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK
+defaultdict(<class 'set'>,
+            {0: {7},
+             1: {7},
+             2: set(),
+             3: {5},
+             4: {3},
+             5: set(),
+             6: set(),
+             7: {3}})
+S AND T AND Y AND Z WERE  (1, 5, 3, 7)
+BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK
+defaultdict(<class 'set'>,
+            {0: set(),
+             1: {7},
+             2: set(),
+             3: {5},
+             4: {2},
+             5: set(),
+             6: {3},
+             7: {3}})
+S AND T AND Y AND Z WERE  (1, 5, 3, 7)
+BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK
+defaultdict(<class 'set'>,
+            {0: {5},
+             1: {4},
+             2: {0},
+             3: {5},
+             4: {7},
+             5: set(),
+             6: set(),
+             7: {3}})
+S AND T AND Y AND Z WERE  (1, 5, 3, 7)

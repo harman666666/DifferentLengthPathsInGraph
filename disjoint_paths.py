@@ -236,6 +236,7 @@ def disjoint_graph(s, t, y, z, graph, DEBUG=False):
 def max_flow_disjoint_paths(s, t, y, z, graph, DEBUG=True):
     # create a residual graph!
     # each edge has weight 1!
+    import copy
 
     residual = {}
     
@@ -269,8 +270,39 @@ def max_flow_disjoint_paths(s, t, y, z, graph, DEBUG=True):
     y = str(y) + "i"
     t = str(t) + "o"
     z = str(z) + "o"
+    
+    # Connect A to all start nodes
 
-    # pprint.pprint(residual)
+    # Connect B to all end nodes
+    # Max flow from A to B, get all edge independent paths from A to B
+    # then get min cut edges! == max flow
+
+    # then check if you can use min cut edges to 
+    # create independent paths from s to t, and y to z?
+    residual["A"] = {}
+    residual["B"] = {}
+    residual["A"][s] = 1
+    residual["A"][y] = 1
+    residual[t]["B"] = 1
+    residual[z]["B"] = 1 
+
+    original_graph = copy.deepcopy(residual)
+
+
+    # remove in and out str parts from path!
+    def normalize_path(path):
+        # removes the in and out part from the path!
+        p = []
+        for i in path:
+            if i[-1] == "i":
+                p.append(i[:-1])
+            else:
+                continue
+        
+        return p
+
+
+    if DEBUG: pprint.pprint(residual)
 
     '''Returns true if there is a path from source 's' to sink 't' in 
     residual graph. Also fills parent[] to store the path '''
@@ -318,12 +350,16 @@ def max_flow_disjoint_paths(s, t, y, z, graph, DEBUG=True):
     while True: 
         
         if(finding_st_right_now):
-            source = s 
-            sink = t 
+            # source = s 
+            # sink = t 
+            source = "A"
+            sink = "B"
             finding_st_right_now = False 
         else:
-            source = y 
-            sink = z 
+            # source = y 
+            # sink = z 
+            source = "A"
+            sink = "B"
             finding_st_right_now = True
 
 
@@ -342,7 +378,6 @@ def max_flow_disjoint_paths(s, t, y, z, graph, DEBUG=True):
         max_flow += 1
 
         path = get_path_to_root(bfs_tree, sink)[::-1]
-        if DEBUG: print("FLOW FOUND IS", path)
         
         if(source == s):
             st_path = path
@@ -357,38 +392,54 @@ def max_flow_disjoint_paths(s, t, y, z, graph, DEBUG=True):
         while(v != source):
             u = bfs_tree[v]
             residual[u][v] -= 1
+            
 
+            # Do not create a backward edge from an Input to an outputself
+            # Input edges should not have backward edges because they can ONLY Lead out of one output. 
+            
             # if backward edge isnt there, add it!
-            if residual[v].get(u) is None:
-                residual[v][u] = 0
+            if DEBUG: print("v[-1]", v[-1])
+            
+
+            # only outs can connect to ins on the reverse side. 
+            reverse_residual_v = v
+            reverse_residual_u = u 
+            if(v[-1] == "i"):
+                # connect v-out to u-in 
+                # even if we are dealing with v-in
+                reverse_residual_v = v[:-1] + "o"
+                reverse_residual_u = u[:-1] + "i"
+
+             
+            if residual[reverse_residual_v].get(reverse_residual_u) is None:
+                residual[reverse_residual_v][reverse_residual_u] = 0
                 
-            residual[v][u] += 1
+            residual[reverse_residual_v][reverse_residual_u] += 1
             v = bfs_tree[v]
         
+        if DEBUG: print("FLOW FOUND IS", path)
+        if DEBUG: print("NORMALIZED FLOW", normalize_path(path))
+        if DEBUG: print("RESIDUAL AFTER FINDING A PATH from", (source, sink))
+        if DEBUG: pprint.pprint(residual)
+
         if(max_flow == 2):
             if DEBUG: print("FOUND BOTH PATHS! WE GUCCI")
 
             break
 
     
-    # remove in and out str parts from path!
-    def normalize_path(path):
-        # removes the in and out part from the path!
-        p = []
-        for i in path:
-            if i[-1] == "i":
-                p.append(i[:-1])
-            else:
-                continue
-        
-        return p
-
-
     return_output = {
             "result": True,
-            "S_to_T_path": normalize_path(st_path),
-            "Y_to_Z_path": normalize_path(yz_path) # get_path_to_root(Y_to_Z_dfs_2["parents"], z)[::-1]
+            # "S_to_T_path": normalize_path(st_path),
+            # "Y_to_Z_path": normalize_path(yz_path) # get_path_to_root(Y_to_Z_dfs_2["parents"], z)[::-1]
     }
+
+     # original graph has all edge relationships with postiive val. 
+     # if they now 0, its a min cut edge
+    for i, neighbors in original_graph.items():
+        for j in neighbors:
+            if(residual[i][j] == 0):
+                print("MINIUM CUT EDGE IS ", (i, j))                 
 
     if DEBUG: pprint.pprint(return_output)
 
@@ -439,12 +490,17 @@ def benchmark_correctness_testing(DEBUG=False):
     while True:
                 
         #g = create_example_rand_directed_graph(vertices=50, max_neighbors=3)
-        g = create_example_rand_directed_graph(vertices=21, max_neighbors=4)
+        g = create_example_rand_directed_graph(vertices=8, max_neighbors=2)
 
-        Sarr = [1, 2,3,4,5]
-        Tarr = [11,12,13,14, 15]
-        Yarr = [6,7,8,9,10]
-        Zarr = [16,17,18,19,20]
+        # Sarr = [1, 2,3,4,5]
+        # Tarr = [11,12,13,14, 15]
+        # Yarr = [6,7,8,9,10]
+        # Zarr = [16,17,18,19,20]
+
+        Sarr = [1, 2]
+        Tarr = [5,6]
+        Yarr = [3,4]
+        Zarr = [7,8]
 
         # ITERATE THROUGH DIFFERENT S AND T:
         fail = False 
@@ -507,6 +563,10 @@ def run_example(g, S, T, Y, Z, DEBUG):
 
     else:   
         print("SAME SOLUTION")
+        print("BRUTE FORCE RESULT")
+        pprint.pprint(brute_force_soln)
+        print("poly soln")
+        pprint.pprint(poly_soln)
 
 
 def ex_1():
@@ -600,8 +660,39 @@ def simple_ex_2():
 
     run_example(g, s, t, y, z, True)
 
-simple_ex_2()
+def simple_ex_3():
+    '''
+    BRUTE FORCE SOLUTION RESULT AND POLY SOLUTION RESULT DIFFER. BAD BREAK
+defaultdict(<class 'set'>,
+            {0: {5},
+             1: {4},
+             2: {0},
+             3: {5},
+             4: {7},
+             5: set(),
+             6: set(),
+             7: {3}})
+S AND T AND Y AND Z WERE  (1, 5, 3, 7)
+    '''
+
+    g = {0: {5},
+             1: {4},
+             2: {0},
+             3: {5},
+             4: {7},
+             5: set(),
+             6: set(),
+             7: {3}}
+
+    s = 1
+    t = 5
+    y = 3
+    z = 7
+    run_example(g, s, t, y, z, True)
+
+# simple_ex_2()
 
 
-# simple_ex_1()
+simple_ex_1()
 # benchmark_correctness_testing()
+# simple_ex_3()
